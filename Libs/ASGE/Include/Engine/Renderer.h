@@ -1,0 +1,240 @@
+#pragma once
+
+#include <memory>
+#include "Engine/Colours.h"
+#include "Engine/Texture.h"
+
+namespace ASGE {
+	
+	struct Font;
+	class  Input;
+	class  Sprite;
+
+	/**
+	*  The renderer used in the game.
+	*  The renderer is the heart and sole of the engine. 
+	*  It's responsible for managing rendering, shaders
+	*  input initialisation, the window etc. This class
+	*  defines the interface that all platform specific
+	*  renders must utilise. This allows renderers to be
+	*  replaced easily if their interface matches. The 
+	*  platform specific renders may use batching or 
+	*  texture caching but this is not enforced. 
+	*/
+	class Renderer
+	{
+
+	public:
+		
+		/**
+		*  The renderer (platform) type.
+		*/
+		enum class RenderLib
+		{
+			INVALID = -1,     /**< Invalid engine. There is a serious issue here. */
+			PDCURSES = 0,     /**< PDCurses for unix. An ASCII only renderer. */
+			PDCURSES_W32 = 1, /**< PDCurses for w32. An ASCII only renderer. */
+			GLEW = 2          /**< GLEW. An OpenGL library. */
+		}; RenderLib getRenderLibrary();  
+
+		/**
+		*  Supported window modes
+		*/
+		enum class WindowMode
+		{
+			FULLSCREEN = 0, /**< Fullscreen without decorations. Typical fullscreen rendering window. */
+			WINDOWED   = 1, /**< Windowed mode. Typical window mode, resident on the desktop. */
+			BORDERLESS = 2  /**< Bordless window mode. Windowed mode that is displayed in fullscreen. */
+		}; WindowMode getWindowMode();
+
+	public:
+
+		/**
+		*  The constructor.
+		*  The constructor must be provided with the type
+		*  of renderer that is going to be used in the game.
+		*  @param RenderLib the renderer type.
+		*/
+		Renderer(RenderLib render_lib)
+			: lib(render_lib) {}
+
+		/**
+		*  Default destructor.
+		*/
+		virtual ~Renderer() = default;
+
+		/**
+		*  Sets the clear colour.
+		*  This colour will be used to clear the window
+		*  on every update. Allowing a clean slate before
+		*  performing the next render. 
+		*  @param Colour An RGB clear colour.
+		*  @see Colour
+		*/
+		void setClearColour(Colour rgb);
+
+		/**
+		*  Loads a font that can be used to render text
+		*  @param font The filepath to the font file.
+		*  @param pt The size of the font to use in atlas generation.
+		*  @return The loaded font index. 
+		*/
+		virtual int loadFont(const char* font, int pt) = 0;
+
+		/**
+		*  Initialises the renderer. 
+		*  Performs all the initialisation of the renderer, its
+		*  framework and the window creation.
+		*  @param w The width of the window in pixels. 
+		*  @param h The height of the window in pixels.
+		*  @return True if success.
+		*/
+		virtual bool init(int w, int h, bool fullscreen) = 0;
+		
+		/**
+		*  Exits the renderer and performs clean-up. 
+		*  @return True if achieved gracefully.
+		*/
+		virtual bool exit() = 0;
+		
+		/**
+		*  Sets the pre render environment.
+		*  Can be used amongst other things to reset render
+		*  settings and to clear the screen.
+		*/
+		virtual void preRender() = 0;
+		
+		/**
+		*  Sets the post render environment.
+		*  Can be used amongst other things to update OSD
+		*  settings and to flush batched render calls. 
+		*/
+		virtual void postRender() = 0;
+		
+		/**
+		*  Renders a string to the screen. 
+		*  The renderer will always use the currently set
+		*  active font. To use different fonts change the 
+		*  active font using a loaded ID. 
+		*  @param str The text to render.
+		*  @param x The text position in the X axis.
+		*  @param y The text starting position in the Y axis.
+		*  @param scale Any scaling factor to apply.
+		*  @param Colour The colour to use for rendering.
+		*/
+		virtual void renderText(const char* str, int x, int y, float scale, const Colour&) = 0;
+
+		/**
+		*  Renders a string to the screen.
+		*  The renderer will always use the currently set
+		*  active font. To use different fonts change the
+		*  active font using a loaded ID.
+		*  @param str The text to render.
+		*  @param x The text position in the X axis.
+		*  @param y The text starting position in the Y axis.
+		*  @param Colour The colour to use for rendering.
+		*/
+		virtual void renderText(const char* str, int x, int y, const Colour&) = 0;
+		
+		/**
+		*  Renders a string to the screen.
+		*  The renderer will always use the currently set
+		*  active font. To use different fonts change the
+		*  active font using a loaded ID.
+		*  @param str The text to render.
+		*  @param x The text position in the X axis.
+		*  @param y The text starting position in the Y axis.
+		*/
+		virtual void renderText(const char* str, int x, int y) = 0;
+
+		/**
+		*  Sets the default text colour. 
+		*  When rendering text, if a colour is not specificed
+		*  the default one will be used instead. This can be set
+		*  using this function.
+		*  @param Colour The colour to use.
+		*/
+		virtual void setDefaultTextColour(const Colour&) = 0;
+
+		/**
+		*  Returns the currently active font. 
+		*  When rendering text, if a colour is not specificed
+		*  the default one will be used instead. This can be set
+		*  using this function.
+		*  @return Font The font currently being used by the renderer.
+		*  @see Font
+		*/
+		virtual const Font& getActiveFont() const = 0;
+
+		/**
+		*  Sets the currently active font.
+		*  In order for this to work, a valid id must be provided. 
+		*  The ID is returned from the load font function, so it
+		*  is advisable to keep a record of it. 
+		*/
+		virtual void setFont(int id) = 0;
+
+		/**
+		*  Renders a sprite to the screen.
+		*  All the rendering params are stored within the 
+		*  sprite class itself.
+		*  @param Sprite A reference to a sprite to render.
+		*  @see Sprite
+		*/
+		virtual void renderSprite(const Sprite&) const = 0;
+
+		/**
+		*  Sets the sprite rendering mode. Useful for batching.
+		*  @param SpriteSortMode.
+		*  @see SpriteSortMode
+		*/
+		virtual void setSpriteMode(SpriteSortMode) = 0;
+		
+		/**
+		*  Attempts to enable the requested window mode.
+		*  Will only swap if the mode is different and will
+		*  attempt to perform this operation gracefully as
+		*  possible. 
+		*  @param mode The requested window mode. 
+		*/
+		virtual void setWindowedMode(WindowMode) = 0;
+		
+		/**
+		*  Sets the window title.
+		*  @param str The name of the window. 
+		*/
+		virtual void setWindowTitle(const char* str) = 0;
+
+		/**
+		*  Tells the graphics subsystem to swap buffers.
+		*/
+		virtual void swapBuffers() = 0;
+		
+		/**
+		*  Creates an input system, linked to the renderer.
+		*  @return A uniquely owned input system.
+		*/
+		virtual std::unique_ptr<Input> inputPtr() = 0;				
+
+		/**
+		*  Creates a new Sprite using ownership semantics.
+		*  The sprite will be auto-deallocated when it falls
+		*  out of scope, so be careful where to store it. 
+		*  @return A uniquely owned sprite.
+		*/
+		virtual std::unique_ptr<Sprite> createUniqueSprite() = 0;		
+		
+		/**
+		*  Creates a new Sprite using the heap.
+		*  The sprite will be leaked when it falls
+		*  out of scope, so needs to be manually freed.
+		*  @return A dynamically allocated sprite.
+		*/
+		virtual Sprite*	createRawSprite() = 0;			
+		
+	protected:
+		WindowMode window_mode = WindowMode::WINDOWED; /**< The window mode being used. */
+		RenderLib lib = RenderLib::INVALID; /**< The renderer being used. */
+		Colour cls = COLOURS::STEELBLUE; /**< The clear colour. Used to blank the window every redraw. */
+	};
+}
