@@ -19,7 +19,7 @@ var searchData=
   ['setspritemode',['setSpriteMode',['../class_a_s_g_e_1_1_renderer.html#a3c906e66c7c725d44d39a2612d9d2309',1,'ASGE::Renderer']]],
   ['setwindowedmode',['setWindowedMode',['../class_a_s_g_e_1_1_renderer.html#aac16aa7e07456e03b1f39c6ea24bf950',1,'ASGE::Renderer']]],
   ['setwindowtitle',['setWindowTitle',['../class_a_s_g_e_1_1_renderer.html#ae2f4bff8a3f3eb76b053c47a67eb7e56',1,'ASGE::Renderer']]],
-  ['sharedeventdata',['SharedEventData',['../namespace_a_s_g_e.html#afb87770d2096ea147cd94bb3f8e47ce0',1,'ASGE']]],
+  ['sharedeventdata',['SharedEventData',['../namespace_a_s_g_e.html#aa98ce31de963e1cacff2c4aa4a06c70e',1,'ASGE']]],
   ['show_5ffps',['show_fps',['../class_a_s_g_e_1_1_game.html#a754ed4233a37abc76a340a68801e3fa6',1,'ASGE::Game']]],
   ['sienna',['SIENNA',['../namespace_a_s_g_e_1_1_c_o_l_o_u_r_s.html#a14286518562402d2d72e9740a023eff8',1,'ASGE::COLOURS']]],
   ['signalexit',['signalExit',['../class_a_s_g_e_1_1_game.html#a499f26119b6005c2073511a3980ec908',1,'ASGE::Game']]],

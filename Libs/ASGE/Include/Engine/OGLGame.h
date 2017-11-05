@@ -18,7 +18,8 @@ namespace ASGE {
 		* Initialises the OpenGL subsystem.
 		* @return True if successful.
 		*/
-		virtual bool initAPI() override final;
+		virtual bool initAPI(Renderer::WindowMode mode = 
+			Renderer::WindowMode::WINDOWED) override final;
 		
 		/**
 		* Terminates the OpenGL subsystem.

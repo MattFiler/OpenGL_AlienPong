@@ -85,13 +85,13 @@ namespace ASGE
 		virtual void* getData() = 0;
 
 		/**
-		* Retrieves the width of the loaded texture..
+		* Retrieves the width of the loaded texture.
 		* @return The width of the texture.
 		*/
 		unsigned int getWidth()  const { return dims[0]; }
 		
 		/**
-		* Retrieves the width of the loaded texture..
+		* Retrieves the width of the loaded texture.
 		* @return The height of the texture.
 		*/
 		unsigned int getHeight() const { return dims[1]; }

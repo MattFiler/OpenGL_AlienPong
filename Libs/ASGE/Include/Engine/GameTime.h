@@ -14,13 +14,22 @@ namespace ASGE {
 	*/
 	struct GameTime
 	{
-		/**< Time point of frame. The time point of the current frame */
+		/** 
+		*  Time point of frame.  
+		*  The time at which the previous frame began. 
+		*/
 		std::chrono::time_point<std::chrono::steady_clock> frame_time = std::chrono::steady_clock::now();
 
-		/**< Frame delta. The amount of elapsed time since the last update. */
+		/**
+		*  Frame delta. 
+		*  The amount of elapsed time since the last update. 
+		*/
 		std::chrono::duration<double, std::milli> delta_time;
 
-		/**< Running time. The amount of time since the start of the game. */
+		/**
+		*  Running time. 
+		*  The amount of time since the start of the game. 
+		*/
 		std::chrono::milliseconds game_time;
 	};
 }

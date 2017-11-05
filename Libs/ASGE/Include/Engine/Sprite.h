@@ -98,12 +98,28 @@ namespace ASGE {
 		float width() const;
 
 		/**
-		* Gets the height of the sprite.
+		* Sets the width of the sprite.
 		* Width is used to determine how wide/long a sprite
+		* will be when it's rendered to the screen. It is
+		* mapped using pixels.
+		* @param [in] width The sprites width. */
+		void width(float width);
+
+		/**
+		* Gets the height of the sprite.
+		* Height is used to determine how tall a sprite
 		* will be when it's rendered to the screen. It is
 		* mapped using pixels.
 		* @return The sprites height. */
 		float height() const;
+
+		/**
+		* Sets the height of the sprite.
+		* Height is used to determine how tall a sprite
+		* will be when it's rendered to the screen. It is
+		* mapped using pixels.
+		* @param [in] height The sprites height. */
+		void height(float height);
 
 		/**
 		* Gets the height and the width of the sprite.
@@ -149,7 +165,7 @@ namespace ASGE {
 		* the fly alterations withouth having to edit the sprite's true
 		* size. The scaling operation is performed in both axis.
 		* @param scale_value The scale factor. */
-		void  scale(float scale_value);
+		void scale(float scale_value);
 		
 		/**
 		* Gets the colour of the sprite.
@@ -163,7 +179,7 @@ namespace ASGE {
 		* The colour of the sprite can be influenced by providing 
 		* a tint.
 		* @param sprite_colour The sprite's colour. */
-		void   colour(ASGE::Colour sprite_colour);
+		void colour(ASGE::Colour sprite_colour);
 
 		/**
 		* Checks to see if the texture is flipped on the X axis.

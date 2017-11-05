@@ -53,7 +53,7 @@ namespace ASGE {
 		*  The constructor.
 		*  The constructor must be provided with the type
 		*  of renderer that is going to be used in the game.
-		*  @param RenderLib the renderer type.
+		*  @param render_lib the renderer library being used.
 		*/
 		Renderer(RenderLib render_lib)
 			: lib(render_lib) {}
@@ -68,7 +68,7 @@ namespace ASGE {
 		*  This colour will be used to clear the window
 		*  on every update. Allowing a clean slate before
 		*  performing the next render. 
-		*  @param Colour An RGB clear colour.
+		*  @param rgb A RGB defined colour to use for clearing.
 		*  @see Colour
 		*/
 		void setClearColour(Colour rgb);
@@ -87,9 +87,11 @@ namespace ASGE {
 		*  framework and the window creation.
 		*  @param w The width of the window in pixels. 
 		*  @param h The height of the window in pixels.
+		*  @param mode Should the window launch in fullscreen.
 		*  @return True if success.
+		*  @see WindowMode
 		*/
-		virtual bool init(int w, int h, bool fullscreen) = 0;
+		virtual bool init(int w, int h, Renderer::WindowMode mode) = 0;
 		
 		/**
 		*  Exits the renderer and performs clean-up. 
@@ -120,9 +122,9 @@ namespace ASGE {
 		*  @param x The text position in the X axis.
 		*  @param y The text starting position in the Y axis.
 		*  @param scale Any scaling factor to apply.
-		*  @param Colour The colour to use for rendering.
+		*  @param colour The colour to use for rendering.
 		*/
-		virtual void renderText(const char* str, int x, int y, float scale, const Colour&) = 0;
+		virtual void renderText(const char* str, int x, int y, float scale, const Colour& colour) = 0;
 
 		/**
 		*  Renders a string to the screen.
@@ -132,9 +134,9 @@ namespace ASGE {
 		*  @param str The text to render.
 		*  @param x The text position in the X axis.
 		*  @param y The text starting position in the Y axis.
-		*  @param Colour The colour to use for rendering.
+		*  @param colour The colour to use for rendering.
 		*/
-		virtual void renderText(const char* str, int x, int y, const Colour&) = 0;
+		virtual void renderText(const char* str, int x, int y, const Colour& colour) = 0;
 		
 		/**
 		*  Renders a string to the screen.
@@ -152,9 +154,9 @@ namespace ASGE {
 		*  When rendering text, if a colour is not specificed
 		*  the default one will be used instead. This can be set
 		*  using this function.
-		*  @param Colour The colour to use.
+		*  @param colour The colour to use.
 		*/
-		virtual void setDefaultTextColour(const Colour&) = 0;
+		virtual void setDefaultTextColour(const Colour& colour) = 0;
 
 		/**
 		*  Returns the currently active font. 
@@ -171,6 +173,7 @@ namespace ASGE {
 		*  In order for this to work, a valid id must be provided. 
 		*  The ID is returned from the load font function, so it
 		*  is advisable to keep a record of it. 
+		*  @param id The index of the font to use (must be loaded). 
 		*/
 		virtual void setFont(int id) = 0;
 
@@ -178,17 +181,17 @@ namespace ASGE {
 		*  Renders a sprite to the screen.
 		*  All the rendering params are stored within the 
 		*  sprite class itself.
-		*  @param Sprite A reference to a sprite to render.
+		*  @param sprite A reference to the sprite to render.
 		*  @see Sprite
 		*/
-		virtual void renderSprite(const Sprite&) const = 0;
+		virtual void renderSprite(const Sprite& sprite) const = 0;
 
 		/**
 		*  Sets the sprite rendering mode. Useful for batching.
-		*  @param SpriteSortMode.
+		*  @param mode The SpriteSortMode used for rendering.
 		*  @see SpriteSortMode
 		*/
-		virtual void setSpriteMode(SpriteSortMode) = 0;
+		virtual void setSpriteMode(SpriteSortMode mode) = 0;
 		
 		/**
 		*  Attempts to enable the requested window mode.
@@ -197,7 +200,7 @@ namespace ASGE {
 		*  possible. 
 		*  @param mode The requested window mode. 
 		*/
-		virtual void setWindowedMode(WindowMode) = 0;
+		virtual void setWindowedMode(WindowMode mode) = 0;
 		
 		/**
 		*  Sets the window title.

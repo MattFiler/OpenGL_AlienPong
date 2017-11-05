@@ -40,10 +40,10 @@ namespace ASGE {
 		/**
 		* Destructor.
 		* Initialises and sets up the input system.
-		* @param Renderer* A pointer to the linked renderer. 
+		* @param renderer A pointer to the linked renderer system. 
 		* @return Returns whether the input system initialised.
 		*/
-		virtual bool init(Renderer*) = 0;
+		virtual bool init(Renderer* renderer) = 0;
 		
 		/**
 		* Updates the input handler.
@@ -81,21 +81,21 @@ namespace ASGE {
 		* via their function pointer. NOTE: the data is shared
 		* because the events can be sent using threads and this
 		* ensures their lifespan. 
-		* @param EventType the type of event registered.
-		* @param SharedEventData the data relating to the event. 
+		* @param type The type of event registered.
+		* @param data The data relating to the event. 
 		* @see EventType
 		* @see SharedEventData
 		*/
-		void sendEvent(EventType, SharedEventData);
+		void sendEvent(EventType type, SharedEventData data);
 
 		/**
 		* Adds a callback function.
 		* Many events are callback driven. This function
 		* allows the use of a member function to be called
 		* when the event happens. 
-		* @param Eventype the type of event being listened for.
-		* @param T the function pointer.
-		* @param T2 the object the function belongs to. 
+		* @param type the type of event being listened for.
+		* @param fncPtr the function pointer.
+		* @param obj the object (this ptr) the function belongs to. 
 		* @see EventType
 		* @return the handle for the registered callback.
 		*/
@@ -111,8 +111,8 @@ namespace ASGE {
 		* Many events are callback driven. This function
 		* allows the use of a function to be called
 		* when the event happens.
-		* @param Eventype the type of event being listened for.
-		* @param T the function pointer.
+		* @param type the type of event being listened for.
+		* @param fncPtr the function pointer.
 		* @see EventType
 		* @return the handle for the registered callback.
 		*/
@@ -143,7 +143,7 @@ namespace ASGE {
 		bool use_threads = true;
 
 	private:
-		using InputFnc = std::function<void(SharedEventData)>;
+		using InputFnc = std::function<void(const SharedEventData)>;
 		int registerCallback(EventType, InputFnc);
 		
 		using InputFncPair = std::pair<EventType, InputFnc>;

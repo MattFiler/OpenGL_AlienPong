@@ -1,5 +1,7 @@
 #pragma once
+#include <memory>
 #include "Keys.h"
+
 namespace ASGE
 {
 	/**
@@ -94,5 +96,5 @@ namespace ASGE
 		bool connected = false; /**< Was connected? */
 	};
 
-	using SharedEventData = std::shared_ptr<EventData>;
+	using SharedEventData = std::shared_ptr<const EventData>;
 }

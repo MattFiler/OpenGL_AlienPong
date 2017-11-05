@@ -113,9 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a89908bc92650f4edad07ab174e32ad2d"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_g_e_1_1_renderer.html#a89908bc92650f4edad07ab174e32ad2d">loadFont</a> (const char *font, int pt)=0</td></tr>
 <tr class="memdesc:a89908bc92650f4edad07ab174e32ad2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a font that can be used to render text.  <a href="#a89908bc92650f4edad07ab174e32ad2d">More...</a><br /></td></tr>
 <tr class="separator:a89908bc92650f4edad07ab174e32ad2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a371129dd11b26697c558296c5cf837bf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_g_e_1_1_renderer.html#a371129dd11b26697c558296c5cf837bf">init</a> (int w, int h, bool fullscreen)=0</td></tr>
-<tr class="memdesc:a371129dd11b26697c558296c5cf837bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises the renderer.  <a href="#a371129dd11b26697c558296c5cf837bf">More...</a><br /></td></tr>
-<tr class="separator:a371129dd11b26697c558296c5cf837bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb87c2764b8322e9f775acee97c78ad4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_g_e_1_1_renderer.html#acb87c2764b8322e9f775acee97c78ad4">init</a> (int w, int h, <a class="el" href="class_a_s_g_e_1_1_renderer.html#a829ce479969d58bf68369355cfc8ea9f">Renderer::WindowMode</a> mode)=0</td></tr>
+<tr class="memdesc:acb87c2764b8322e9f775acee97c78ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises the renderer.  <a href="#acb87c2764b8322e9f775acee97c78ad4">More...</a><br /></td></tr>
+<tr class="separator:acb87c2764b8322e9f775acee97c78ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e21f2479ec3c75e8b02d9aef2de0f32"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_g_e_1_1_renderer.html#a2e21f2479ec3c75e8b02d9aef2de0f32">exit</a> ()=0</td></tr>
 <tr class="memdesc:a2e21f2479ec3c75e8b02d9aef2de0f32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exits the renderer and performs clean-up.  <a href="#a2e21f2479ec3c75e8b02d9aef2de0f32">More...</a><br /></td></tr>
 <tr class="separator:a2e21f2479ec3c75e8b02d9aef2de0f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -450,8 +450,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a371129dd11b26697c558296c5cf837bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a371129dd11b26697c558296c5cf837bf">&#9670;&nbsp;</a></span>init()</h2>
+<a id="acb87c2764b8322e9f775acee97c78ad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb87c2764b8322e9f775acee97c78ad4">&#9670;&nbsp;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -474,8 +474,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>fullscreen</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_a_s_g_e_1_1_renderer.html#a829ce479969d58bf68369355cfc8ea9f">Renderer::WindowMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -493,11 +493,12 @@ Protected Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">w</td><td>The width of the window in pixels. </td></tr>
     <tr><td class="paramname">h</td><td>The height of the window in pixels. </td></tr>
-    <tr><td class="paramname">fullscreen</td><td>Should the window launch in fullscreen. </td></tr>
+    <tr><td class="paramname">mode</td><td>Should the window launch in fullscreen. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if success. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_a_s_g_e_1_1_renderer.html#a829ce479969d58bf68369355cfc8ea9f" title="Supported window modes. ">WindowMode</a> </dd></dl>
 
 </div>
 </div>
