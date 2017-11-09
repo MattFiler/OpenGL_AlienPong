@@ -22,9 +22,14 @@ private:
 	// Inherited via OGLGame
 	virtual void update(const ASGE::GameTime &) override;
 	virtual void render(const ASGE::GameTime &) override;
+	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const;
 
-	int  callback_id = -1;             /**< Input Callback ID. The callback ID assigned by the game engine. */
 	bool exit = false;                 /**< Exit boolean. If true the game loop will exit. */
-	ASGE::Sprite* sprite = nullptr;    /**< Sprite Object. The background sprite. */
+
+	int  key_callback_id = -1;	        /**< Key Input Callback ID. */
+
+	ASGE::Sprite* paddle1 = nullptr;  /**< Sprite Object. Paddle 1. */
+	ASGE::Sprite* paddle2 = nullptr;  /**< Sprite Object. Paddle 2. */
+	ASGE::Sprite* ball1 = nullptr;  /**< Sprite Object. Ball. */
 };
 
