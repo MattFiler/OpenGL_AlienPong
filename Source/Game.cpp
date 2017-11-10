@@ -14,7 +14,26 @@ int paddle_width = 10;
 int ball_size = 10;
 
 //Movement direction: left = 0, right = 1.
-int movement_direction = 0;
+int movement_direction = 1;
+int movement_angle = 0;
+
+//Angle/speed settings
+int angle_variant = 140;
+int angle_base = 25;
+int speed_base = 300;
+
+//Score
+int player_1_points = 0;
+int player_2_points = 0;
+
+
+/*
+
+When the ball hits the top Y or bottom Y, reverse movement_angle (to minus)
+movement_angle needs to be a randomly generated number which is applied to the Y axis when the ball hits a paddle
+randomly - or + to apply up/down vals.
+
+*/
 
 
 /**
@@ -190,7 +209,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 void Pong::update(const ASGE::GameTime & us)
 {
 	//Ball move speed
-	int movement_speed = 200;
+	int movement_speed = speed_base;
 
 	//Get current ball position
 	auto x_pos = ball1->xPos();
@@ -200,14 +219,31 @@ void Pong::update(const ASGE::GameTime & us)
 	if (isTouchingPaddle(paddle1, x_pos, y_pos, "LeftPaddle"))
 	{
 		movement_direction = 1;
+		movement_angle = rand() % angle_variant + angle_base; 
+
+		if (rand() % 2 == 1) {
+			movement_angle *= -1; //50% of the time we will reverse the angle to up/down
+		}
 	}
 
 	//See if we're touching the RIGHT paddle
 	if (isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
 	{
 		movement_direction = 0;
+		movement_angle = rand() % angle_variant + angle_variant; 
+
+		if (rand() % 2 == 1) {
+			movement_angle *= -1; //50% of the time we will reverse the angle to up/down
+		}
 	}
 
+	//See if we're touching the TOP of the window
+	if (hasHitEdge("Top") || hasHitEdge("Bottom"))
+	{
+		movement_angle *= -1; //Swap angle on touch of top or bottom
+	}
+
+	//Movement direction - 0 = left, 1 = right
 	if (movement_direction == 0) {
 		//Set X position
 		x_pos -= movement_speed * (us.delta_time.count() / 1000.f);
@@ -218,8 +254,42 @@ void Pong::update(const ASGE::GameTime & us)
 		x_pos += movement_speed * (us.delta_time.count() / 1000.f);
 	}
 
+	//Apply movement angle
+	y_pos += movement_angle * (us.delta_time.count() / 1000.f);
+
 	//Update X position of ball
 	ball1->xPos(x_pos);
+
+	//Update Y position of ball
+	ball1->yPos(y_pos);
+
+	//See if we're touching the LEFT of the window
+	if (hasHitEdge("Left"))
+	{
+		//Update points 
+		player_2_points += 1;
+
+		//Reset ball position
+		ball1->xPos((game_width / 2) - (ball_size / 2));
+		ball1->yPos((game_height / 2) - (ball_size / 2));
+
+		//Reset angle
+		movement_angle = 0;
+	}
+
+	//See if we're touching the RIGHT of the window
+	if (hasHitEdge("Right"))
+	{
+		//Update points 
+		player_1_points += 1;
+
+		//Reset ball position
+		ball1->xPos((game_width / 2) - (ball_size / 2));
+		ball1->yPos((game_height / 2) - (ball_size / 2));
+
+		//Reset angle
+		movement_angle = 0;
+	}
 }
 
 
@@ -243,6 +313,10 @@ void Pong::render(const ASGE::GameTime &)
 
 	//Render ball 1
 	renderer->renderSprite(*ball1);
+
+	//Points
+	renderer->renderText(std::to_string(player_1_points).c_str(), 850, 25, 1.0, ASGE::COLOURS::DARKORANGE);
+	renderer->renderText(std::to_string(player_2_points).c_str(), 850, 55, 1.0, ASGE::COLOURS::DARKORANGE);
 }
 
 /**
@@ -272,9 +346,11 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 	float ballY = y; //Get the Y value of our ball
 
 	//See if we hit any Y
-	for (int i = 0; i < (paddle_height + 1); i++) {
-		for (int b = 0; b < ball_size; b++) {
-			if ((sprite->yPos() + i) == ballY) {
+	for (int i = 0; i < (paddle_height + 1); i++) { //loop for whole height of paddle
+		for (int b = 0; b < ball_size; b++) { //loop for whole size of ball
+			if (int(sprite->yPos() + i) == int(ballY) - 1||
+				int(sprite->yPos() + i) == int(ballY) ||
+				int(sprite->yPos() + i) == int(ballY) + 1) {
 				hitY = true; //Hit
 			}
 		}
@@ -289,4 +365,58 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 	{
 		return false;
 	}
+}
+
+/**
+*   Checks to see if ball is touching the top or bottom of the screen
+*/
+bool Pong::hasHitEdge(std::string edgeName) const
+{
+	//Has hit?
+	bool hasHitEdge = false;
+
+	//Set sizes/positions
+	int xPosToHit = 0;
+	int yPosToHit = 0;
+	int ballXPosition = ball1->xPos();
+	int ballYPosition = ball1->yPos();
+	if (edgeName == "Right") 
+	{
+		xPosToHit = game_width;
+	}
+	if (edgeName == "Bottom")
+	{
+		yPosToHit = game_height;
+	}
+	if (edgeName == "Left")
+	{
+		ballXPosition += ball_size; 
+	}
+
+	//Touching right or left?
+	if (edgeName == "Left" || edgeName == "Right")
+	{
+		if (ballXPosition == xPosToHit - 1 ||
+			ballXPosition == xPosToHit ||
+			ballXPosition == xPosToHit + 1)
+		{
+			hasHitEdge = true; //Hit
+		}
+	}
+
+	//Touching bottom or top?
+	if (edgeName == "Top" || edgeName == "Bottom")
+	{
+		for (int i = 0; i < ball_size; i++)
+		{
+			if (ballYPosition + i == yPosToHit - 1 ||
+				ballYPosition + i == yPosToHit ||
+				ballYPosition + i == yPosToHit + 1)
+			{
+				hasHitEdge = true; //Hit
+			}
+		}
+	}
+
+	return hasHitEdge;
 }

@@ -23,6 +23,7 @@ private:
 	virtual void update(const ASGE::GameTime &) override;
 	virtual void render(const ASGE::GameTime &) override;
 	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const;
+	bool hasHitEdge(std::string edgeName) const;
 
 	bool exit = false;                 /**< Exit boolean. If true the game loop will exit. */
 
