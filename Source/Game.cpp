@@ -27,15 +27,6 @@ int player_1_points = 0;
 int player_2_points = 0;
 
 
-/*
-
-When the ball hits the top Y or bottom Y, reverse movement_angle (to minus)
-movement_angle needs to be a randomly generated number which is applied to the Y axis when the ball hits a paddle
-randomly - or + to apply up/down vals.
-
-*/
-
-
 /**
 *   @brief   Default Constructor.
 */
