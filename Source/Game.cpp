@@ -327,9 +327,9 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 		targetX = sprite->xPos() - ball_size; //Adjust X position for right paddle
 	}
 
-	//See if we hit any X
+	//See if we hit any X, this will encounter issues if we're using V-Sync
 	if (int(x) == int(targetX) - 1 ||
-		int(x) == int(targetX) || 
+		int(x) == int(targetX) ||
 		int(x) == int(targetX) + 1) {
 		hitX = true; //Hit
 	}
@@ -384,25 +384,42 @@ bool Pong::hasHitEdge(std::string edgeName) const
 		ballXPosition += ball_size; 
 	}
 
-	//Touching right or left?
-	if (edgeName == "Left" || edgeName == "Right")
+	//Touching left?
+	if (edgeName == "Left")
 	{
-		if (ballXPosition == xPosToHit - 1 ||
-			ballXPosition == xPosToHit ||
-			ballXPosition == xPosToHit + 1)
+		if (ballXPosition <= xPosToHit)
 		{
 			hasHitEdge = true; //Hit
 		}
 	}
 
-	//Touching bottom or top?
-	if (edgeName == "Top" || edgeName == "Bottom")
+	//Touching right?
+	if (edgeName == "Right")
+	{
+		if (ballXPosition >= xPosToHit)
+		{
+			hasHitEdge = true; //Hit
+		}
+	}
+
+	//Touching top?
+	if (edgeName == "Top")
 	{
 		for (int i = 0; i < ball_size; i++)
 		{
-			if (ballYPosition + i == yPosToHit - 1 ||
-				ballYPosition + i == yPosToHit ||
-				ballYPosition + i == yPosToHit + 1)
+			if (ballYPosition + i <= yPosToHit)
+			{
+				hasHitEdge = true; //Hit
+			}
+		}
+	}
+
+	//Touching bottom?
+	if (edgeName == "Bottom")
+	{
+		for (int i = 0; i < ball_size; i++)
+		{
+			if (ballYPosition + i >= yPosToHit)
 			{
 				hasHitEdge = true; //Hit
 			}
