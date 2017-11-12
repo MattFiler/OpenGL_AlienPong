@@ -8,25 +8,6 @@
 #include "GameFont.h"
 
 
-//Paddle and ball sizes
-int paddle_height = 150;
-int paddle_width = 10;
-int ball_size = 10;
-
-//Movement direction: left = 0, right = 1.
-int movement_direction = 1;
-int movement_angle = 0;
-
-//Angle/speed settings
-int angle_variant = 140;
-int angle_base = 25;
-int speed_base = 300;
-
-//Score
-int player_1_points = 0;
-int player_2_points = 0;
-
-
 /**
 *   @brief   Default Constructor.
 */
@@ -73,6 +54,13 @@ Pong::~Pong()
 	{
 		delete ball1;
 		ball1 = nullptr;
+	}
+
+	//Menu text
+	if (menuTitle)
+	{
+		delete menuTitle;
+		menuTitle = nullptr;
 	}
 }
 
@@ -131,6 +119,14 @@ bool Pong::init()
 	ball1->xPos((game_width / 2) - (ball_size / 2));
 	ball1->yPos((game_height / 2) - (ball_size / 2));
 
+	//Create Title
+	menuTitle = renderer->createRawSprite();
+	menuTitle->loadTexture(".\\Resources\\Textures\\main_logo.png");
+	menuTitle->width(300);
+	menuTitle->height(149);
+	menuTitle->xPos((game_width / 2) - (300 / 2));
+	menuTitle->yPos(((game_height / 2)/2) - (149 / 2));
+
 	//Handle inputs
 	key_callback_id = inputs->addCallbackFnc(
 		ASGE::E_KEY, &Pong::keyHandler, this);
@@ -160,32 +156,87 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		signalExit();
 	}
 
-	/* LEFT PADDLE */
-	//Move up
-	if (key->key == ASGE::KEYS::KEY_W)
-	{
-		//Update Y position of paddle
-		paddle1->yPos(paddle1->yPos() - 10);
+	//Change menu controls
+	if (is_in_menu) {
+		/* MENU */
+		//Go down on press of down
+		if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			if (menu_option == 0) {
+				menu_option = 1;
+			}
+			if (menu_option == 1) {
+				menu_option = 2;
+			}
+		}
+		//Go up on press of up
+		if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			if (menu_option == 2) {
+				menu_option = 1;
+			}
+			if (menu_option == 1) {
+				menu_option = 0;
+			}
+		}
+		//Handle menu selections
+		if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			//Free play
+			if (menu_option == 0)
+			{
+				is_in_menu = false;
+				bool gamestate_freeplay = true;
+				bool gamestate_timedgameplay = false;
+				bool gamestate_firsttofive = false;
+			}
+			//Timed gameplay
+			if (menu_option == 1)
+			{
+				is_in_menu = false;
+				bool gamestate_freeplay = false;
+				bool gamestate_timedgameplay = true;
+				bool gamestate_firsttofive = false;
+			}
+			//First to 5
+			if (menu_option == 2)
+			{
+				is_in_menu = false;
+				bool gamestate_freeplay = false;
+				bool gamestate_timedgameplay = false;
+				bool gamestate_firsttofive = true;
+			}
+		}
 	}
-	//Move Down
-	if (key->key == ASGE::KEYS::KEY_S)
+	else 
 	{
-		//Update Y position of paddle
-		paddle1->yPos(paddle1->yPos() + 10);
-	}
+		/* LEFT PADDLE */
+		//Move up
+		if (key->key == ASGE::KEYS::KEY_W)
+		{
+			//Update Y position of paddle
+			paddle1->yPos(paddle1->yPos() - 10);
+		}
+		//Move Down
+		if (key->key == ASGE::KEYS::KEY_S)
+		{
+			//Update Y position of paddle
+			paddle1->yPos(paddle1->yPos() + 10);
+		}
 
-	/* RIGHT PADDLE */
-	//Move up
-	if (key->key == ASGE::KEYS::KEY_UP)
-	{
-		//Update Y position of paddle
-		paddle2->yPos(paddle2->yPos() - 10);
-	}
-	//Move Down
-	if (key->key == ASGE::KEYS::KEY_DOWN)
-	{
-		//Update Y position of paddle
-		paddle2->yPos(paddle2->yPos() + 10);
+		/* RIGHT PADDLE */
+		//Move up
+		if (key->key == ASGE::KEYS::KEY_UP)
+		{
+			//Update Y position of paddle
+			paddle2->yPos(paddle2->yPos() - 10);
+		}
+		//Move Down
+		if (key->key == ASGE::KEYS::KEY_DOWN)
+		{
+			//Update Y position of paddle
+			paddle2->yPos(paddle2->yPos() + 10);
+		}
 	}
 }
 
@@ -206,80 +257,89 @@ void Pong::update(const ASGE::GameTime & us)
 	auto x_pos = ball1->xPos();
 	auto y_pos = ball1->yPos();
 
-	//See if we're touching the LEFT paddle
-	if (isTouchingPaddle(paddle1, x_pos, y_pos, "LeftPaddle"))
-	{
-		movement_direction = 1;
-		movement_angle = rand() % angle_variant + angle_base; 
+	//Only run game scripts if out of menu
+	if (is_in_menu == false) {
+		//See if we're touching the LEFT paddle
+		if (isTouchingPaddle(paddle1, x_pos, y_pos, "LeftPaddle"))
+		{
+			movement_direction = 1;
+			movement_angle = rand() % angle_variant + angle_base;
 
-		if (rand() % 2 == 1) {
-			movement_angle *= -1; //50% of the time we will reverse the angle to up/down
+			if (rand() % 2 == 1) {
+				movement_angle *= -1; //50% of the time we will reverse the angle to up/down
+			}
+		}
+
+		//See if we're touching the RIGHT paddle
+		if (isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
+		{
+			movement_direction = 0;
+			movement_angle = rand() % angle_variant + angle_variant;
+
+			if (rand() % 2 == 1) {
+				movement_angle *= -1; //50% of the time we will reverse the angle to up/down
+			}
+		}
+
+		//See if we're touching the TOP of the window
+		if (hasHitEdge("Top") || hasHitEdge("Bottom"))
+		{
+			movement_angle *= -1; //Swap angle on touch of top or bottom
+		}
+
+		//Movement direction - 0 = left, 1 = right
+		if (movement_direction == 0) {
+			//Set X position
+			x_pos -= movement_speed * (us.delta_time.count() / 1000.f);
+		}
+		else
+		{
+			//Set X position
+			x_pos += movement_speed * (us.delta_time.count() / 1000.f);
+		}
+
+		//Apply movement angle
+		y_pos += movement_angle * (us.delta_time.count() / 1000.f);
+
+		//Update X position of ball
+		ball1->xPos(x_pos);
+
+		//Update Y position of ball
+		ball1->yPos(y_pos);
+
+		//See if we're touching the LEFT of the window
+		if (hasHitEdge("Left"))
+		{
+			//Update points 
+			player_2_points += 1;
+
+			//Reset ball position
+			ball1->xPos((game_width / 2) - (ball_size / 2));
+			ball1->yPos((game_height / 2) - (ball_size / 2));
+
+			//Reset angle
+			movement_angle = 0;
+		}
+
+		//See if we're touching the RIGHT of the window
+		if (hasHitEdge("Right"))
+		{
+			//Update points 
+			player_1_points += 1;
+
+			//Reset ball position
+			ball1->xPos((game_width / 2) - (ball_size / 2));
+			ball1->yPos((game_height / 2) - (ball_size / 2));
+
+			//Reset angle
+			movement_angle = 0;
 		}
 	}
-
-	//See if we're touching the RIGHT paddle
-	if (isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
+	else 
 	{
-		movement_direction = 0;
-		movement_angle = rand() % angle_variant + angle_variant; 
-
-		if (rand() % 2 == 1) {
-			movement_angle *= -1; //50% of the time we will reverse the angle to up/down
-		}
-	}
-
-	//See if we're touching the TOP of the window
-	if (hasHitEdge("Top") || hasHitEdge("Bottom"))
-	{
-		movement_angle *= -1; //Swap angle on touch of top or bottom
-	}
-
-	//Movement direction - 0 = left, 1 = right
-	if (movement_direction == 0) {
-		//Set X position
-		x_pos -= movement_speed * (us.delta_time.count() / 1000.f);
-	}
-	else
-	{
-		//Set X position
-		x_pos += movement_speed * (us.delta_time.count() / 1000.f);
-	}
-
-	//Apply movement angle
-	y_pos += movement_angle * (us.delta_time.count() / 1000.f);
-
-	//Update X position of ball
-	ball1->xPos(x_pos);
-
-	//Update Y position of ball
-	ball1->yPos(y_pos);
-
-	//See if we're touching the LEFT of the window
-	if (hasHitEdge("Left"))
-	{
-		//Update points 
-		player_2_points += 1;
-
-		//Reset ball position
+		//Keep ball reset
 		ball1->xPos((game_width / 2) - (ball_size / 2));
 		ball1->yPos((game_height / 2) - (ball_size / 2));
-
-		//Reset angle
-		movement_angle = 0;
-	}
-
-	//See if we're touching the RIGHT of the window
-	if (hasHitEdge("Right"))
-	{
-		//Update points 
-		player_1_points += 1;
-
-		//Reset ball position
-		ball1->xPos((game_width / 2) - (ball_size / 2));
-		ball1->yPos((game_height / 2) - (ball_size / 2));
-
-		//Reset angle
-		movement_angle = 0;
 	}
 }
 
@@ -296,18 +356,38 @@ void Pong::render(const ASGE::GameTime &)
 	//Set default font
 	renderer->setFont(0);
 
-	//Render paddle 1
-	renderer->renderSprite(*paddle1);
+	//Only render game if we're out of the menu
+	if (is_in_menu == false) {
+		//Render paddle 1
+		renderer->renderSprite(*paddle1);
 
-	//Render paddle 2
-	renderer->renderSprite(*paddle2);
+		//Render paddle 2
+		renderer->renderSprite(*paddle2);
 
-	//Render ball 1
-	renderer->renderSprite(*ball1);
+		//Render ball 1
+		renderer->renderSprite(*ball1);
 
-	//Points
-	renderer->renderText(std::to_string(player_1_points).c_str(), 850, 25, 1.0, ASGE::COLOURS::DARKORANGE);
-	renderer->renderText(std::to_string(player_2_points).c_str(), 850, 55, 1.0, ASGE::COLOURS::DARKORANGE);
+		//Points
+		renderer->renderText(std::to_string(player_1_points).c_str(), 850, 25, 1.0, ASGE::COLOURS::DARKORANGE);
+		renderer->renderText(std::to_string(player_2_points).c_str(), 850, 55, 1.0, ASGE::COLOURS::DARKORANGE);
+	}
+	else 
+	{
+		//Render menu title
+		renderer->renderSprite(*menuTitle);
+
+		//Option 1 - freeplay
+		renderer->renderText(menu_option == 0 ? ">FREE PLAY" : " FREE PLAY", (game_width / 2), (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::DARKORANGE);
+
+		//Option 2 - timed 
+		renderer->renderText(menu_option == 1 ? ">TIMED GAMEPLAY" : " TIMED GAMEPLAY", (game_width / 2), (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::DARKORANGE);
+
+		//Option 3 - first to 5
+		renderer->renderText(menu_option == 2 ? ">FIRST TO 5" : " FIRST TO 5", (game_width / 2), (game_height / 3) * 2, 1.0, ASGE::COLOURS::DARKORANGE);
+
+		//Debug
+		renderer->renderText(std::to_string(menu_option).c_str(), 850, 55, 1.0, ASGE::COLOURS::DARKORANGE);
+	}
 }
 
 /**
