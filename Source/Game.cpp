@@ -150,12 +150,6 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 	//Get key
 	auto key = static_cast<const ASGE::KeyEvent*>(data.get());
 
-	//Quit game on press of ESC
-	if (key->key == ASGE::KEYS::KEY_ESCAPE)
-	{
-		signalExit();
-	}
-
 	if (player_has_won) 
 	{
 		//Winning screen currently showing, disable all other controls
@@ -163,89 +157,124 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		{
 			player_has_won = false;
 		}
+
+		if (game_over)
+		{
+			player_has_won = false;
+		}
 	}
 	else
 	{
-		//Change menu controls
-		if (is_in_menu) {
-			/* MENU */
-			//Go down on press of down
-			if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-			{
-				if (menu_option == 0) {
-					menu_option = 1;
-				}
-				if (menu_option == 1) {
-					menu_option = 2;
-				}
-			}
-			//Go up on press of up
-			if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
-			{
-				if (menu_option == 2) {
-					menu_option = 1;
-				}
-				if (menu_option == 1) {
-					menu_option = 0;
-				}
-			}
-			//Handle menu selections
+		if (game_over) 
+		{
+			//Game over screen showing, disable other controls
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
-				//Free play
-				if (menu_option == 0)
-				{
-					is_in_menu = false;
-					bool gamestate_freeplay = true;
-					bool gamestate_timedgameplay = false;
-					bool gamestate_firsttofive = false;
-				}
-				//Timed gameplay
-				if (menu_option == 1)
-				{
-					is_in_menu = false;
-					bool gamestate_freeplay = false;
-					bool gamestate_timedgameplay = true;
-					bool gamestate_firsttofive = false;
-				}
-				//First to 5
-				if (menu_option == 2)
-				{
-					is_in_menu = false;
-					bool gamestate_freeplay = false;
-					bool gamestate_timedgameplay = false;
-					bool gamestate_firsttofive = true;
-				}
+				/* SOMETHING NOT WORKING HERE */
+				game_over = false;
+				is_in_menu = true; //send back to menu
 			}
 		}
 		else
 		{
-			/* LEFT PADDLE */
-			//Move up
-			if (key->key == ASGE::KEYS::KEY_W)
-			{
-				//Update Y position of paddle
-				paddle1->yPos(paddle1->yPos() - 10);
-			}
-			//Move Down
-			if (key->key == ASGE::KEYS::KEY_S)
-			{
-				//Update Y position of paddle
-				paddle1->yPos(paddle1->yPos() + 10);
-			}
+			//Change menu controls
+			if (is_in_menu) {
+				/* MENU */
+				//Go down on press of down
+				if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+				{
+					if (menu_option < 6 && menu_option >= 0)
+					{
+						menu_option += 5;
+					}
+				}
+				//Go up on press of up
+				if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+				{
+					if (menu_option <= 10 && menu_option > 0)
+					{
+						menu_option -= 5;
+					}
+				}
+				//Handle menu selections
+				if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
+				{
+					//Free play
+					if (menu_option == 0)
+					{
+						is_in_menu = false;
+						gamestate_freeplay = true;
+						gamestate_timedgameplay = false;
+						gamestate_firsttofive = false;
+					}
+					//Timed gameplay
+					if (menu_option == 5)
+					{
+						is_in_menu = false;
+						gamestate_freeplay = false;
+						gamestate_timedgameplay = true;
+						gamestate_firsttofive = false;
+					}
+					//First to 5
+					if (menu_option == 10)
+					{
+						is_in_menu = false;
+						gamestate_freeplay = false;
+						gamestate_timedgameplay = false;
+						gamestate_firsttofive = true;
+					}
+				}
 
-			/* RIGHT PADDLE */
-			//Move up
-			if (key->key == ASGE::KEYS::KEY_UP)
-			{
-				//Update Y position of paddle
-				paddle2->yPos(paddle2->yPos() - 10);
+				//Quit on ESC
+				if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
+				{
+					if (!is_paused) 
+					{
+						signalExit();
+					}
+					else 
+					{
+						is_in_menu = false;
+						is_paused = false;
+					}
+				}
 			}
-			//Move Down
-			if (key->key == ASGE::KEYS::KEY_DOWN)
+			else
 			{
-				//Update Y position of paddle
-				paddle2->yPos(paddle2->yPos() + 10);
+				/* LEFT PADDLE */
+				//Move up
+				if (key->key == ASGE::KEYS::KEY_W)
+				{
+					//Update Y position of paddle
+					paddle1->yPos(paddle1->yPos() - 10);
+				}
+				//Move Down
+				if (key->key == ASGE::KEYS::KEY_S)
+				{
+					//Update Y position of paddle
+					paddle1->yPos(paddle1->yPos() + 10);
+				}
+
+				/* RIGHT PADDLE */
+				//Move up
+				if (key->key == ASGE::KEYS::KEY_UP)
+				{
+					//Update Y position of paddle
+					paddle2->yPos(paddle2->yPos() - 10);
+				}
+				//Move Down
+				if (key->key == ASGE::KEYS::KEY_DOWN)
+				{
+					//Update Y position of paddle
+					paddle2->yPos(paddle2->yPos() + 10);
+				}
+
+				//Pause on ESC
+				if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
+				{
+					is_in_menu = true;
+					is_paused = true;
+				}
 			}
 		}
 	}
@@ -261,6 +290,30 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 */
 void Pong::update(const ASGE::GameTime & us)
 {
+	//Update global game timer (if in-game)
+	if (is_in_menu == false && player_has_won == false)
+	{
+		game_timer += (us.delta_time.count() / 1000.f);
+	}
+
+	//Timed game mode
+	if (gamestate_timedgameplay)
+	{
+		if (game_timer > 60)
+		{
+			game_over = true;
+		}
+	}
+
+	//First to five game mode
+	if (gamestate_firsttofive)
+	{
+		if (player_1_points == 5 || player_2_points == 5)
+		{
+			game_over = true;
+		}
+	}
+
 	//Ball move speed
 	int movement_speed = speed_base;
 
@@ -328,9 +381,17 @@ void Pong::update(const ASGE::GameTime & us)
 	}
 	else 
 	{
-		//Keep ball reset
-		ball1->xPos((game_width / 2) - (ball_size / 2));
-		ball1->yPos((game_height / 2) - (ball_size / 2));
+		if (is_paused) {
+			//Freeze ball on pause
+			ball1->xPos(ball1->xPos());
+			ball1->yPos(ball1->yPos());
+		}
+		else
+		{
+			//Keep ball reset
+			ball1->xPos((game_width / 2) - (ball_size / 2));
+			ball1->yPos((game_height / 2) - (ball_size / 2));
+		}
 	}
 }
 
@@ -347,43 +408,89 @@ void Pong::render(const ASGE::GameTime &)
 	//Set default font
 	renderer->setFont(0);
 
-	//Only render game if we're out of the menu
-	if (is_in_menu == false) {
-		//Render paddle 1
-		renderer->renderSprite(*paddle1);
-
-		//Render paddle 2
-		renderer->renderSprite(*paddle2);
-
-		//Render ball 1
-		renderer->renderSprite(*ball1);
-
-		//Points
-		renderer->renderText(std::to_string(player_1_points).c_str(), 850, 25, 1.0, ASGE::COLOURS::DARKORANGE);
-		renderer->renderText(std::to_string(player_2_points).c_str(), 850, 55, 1.0, ASGE::COLOURS::DARKORANGE);
-	}
-	else 
+	if (game_over)
 	{
-		//Render menu title
-		renderer->renderSprite(*menuTitle);
+		//Win string
+		std::string winner_string = "";
+		if (player_1_points > player_2_points) {
+			winner_string = "Player 1 wins the game!"; //P1 wins
+		}
+		if (player_1_points < player_2_points) {
+			winner_string = "Player 2 wins the game!"; //P2 wins
+		}
+		if (player_1_points == player_2_points) {
+			winner_string = "No player won the game!"; //Draw
+		}
 
-		//Option 1 - freeplay
-		renderer->renderText(menu_option == 0 ? ">FREE PLAY" : " FREE PLAY", (game_width / 2), (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::DARKORANGE);
-
-		//Option 2 - timed 
-		renderer->renderText(menu_option == 1 ? ">TIMED GAMEPLAY" : " TIMED GAMEPLAY", (game_width / 2), (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::DARKORANGE);
-
-		//Option 3 - first to 5
-		renderer->renderText(menu_option == 2 ? ">FIRST TO 5" : " FIRST TO 5", (game_width / 2), (game_height / 3) * 2, 1.0, ASGE::COLOURS::DARKORANGE);
-
-		//Debug
-		renderer->renderText(std::to_string(menu_option).c_str(), 850, 55, 1.0, ASGE::COLOURS::DARKORANGE);
-	}
-
-	if (player_has_won) {
 		//Render round win screen
-		renderer->renderText((winner_name + " wins a point!").c_str(), (game_width / 2) - 150, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
+		renderer->renderText((winner_string).c_str(), (game_width / 2) - 160, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
 		renderer->renderText("Press ENTER key to continue.", (game_width / 2) - 135, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
+		
+		//Clear player win state
+		player_has_won = false;
+	}
+	else
+	{
+		//Only render game if we're out of the menu
+		if (is_in_menu == false)
+		{
+			//Render paddle 1
+			renderer->renderSprite(*paddle1);
+
+			//Render paddle 2
+			renderer->renderSprite(*paddle2);
+
+			//Render ball 1
+			renderer->renderSprite(*ball1);
+
+			//Points
+			renderer->renderText(("Player 1 Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, 50, 1.0, ASGE::COLOURS::WHITE);
+			renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, 80, 1.0, ASGE::COLOURS::WHITE);
+
+			//First to 5
+			if (gamestate_firsttofive) 
+			{
+				renderer->renderText("Game Mode: First to Five", 50, 65, 1.0, ASGE::COLOURS::WHITE);
+			}
+			//Freemode
+			if (gamestate_freeplay)
+			{
+				renderer->renderText("Game Mode: Free Play", 50, 65, 1.0, ASGE::COLOURS::WHITE);
+			}
+			//Timed gameplay
+			if (gamestate_timedgameplay)
+			{
+				renderer->renderText("Game Mode: Timed Gameplay", 50, 65, 1.0, ASGE::COLOURS::WHITE);
+			}
+		}
+		else
+		{
+			//Render menu title
+			renderer->renderSprite(*menuTitle);
+
+			if (is_paused)
+			{
+				renderer->renderText("GAME PAUSED", (game_width / 2) - 85, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
+				renderer->renderText("Press the ESC key to continue.", (game_width / 2) - 150, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
+			}
+			else
+			{
+				//Option 1 - freeplay
+				renderer->renderText(menu_option == 0 ? ">FREE PLAY" : " FREE PLAY", (game_width / 2), (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::DARKORANGE);
+
+				//Option 2 - timed 
+				renderer->renderText(menu_option == 5 ? ">TIMED GAMEPLAY" : " TIMED GAMEPLAY", (game_width / 2), (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::DARKORANGE);
+
+				//Option 3 - first to 5
+				renderer->renderText(menu_option == 10 ? ">FIRST TO 5" : " FIRST TO 5", (game_width / 2), (game_height / 3) * 2, 1.0, ASGE::COLOURS::DARKORANGE);
+			}
+		}
+
+		if (player_has_won) {
+			//Render round win screen
+			renderer->renderText((winner_name + " wins a point!").c_str(), (game_width / 2) - 150, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
+			renderer->renderText("Press ENTER key to continue.", (game_width / 2) - 135, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
+		}
 	}
 }
 
@@ -537,7 +644,7 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 	if (hit_below_bottom == false) 
 	{
 		distance_to_middle_from_middle = ball_middle_y - paddle_middle_y; //work out distance to middle of paddle from above
-		return_angle = distance_to_middle_from_middle * 2; //use distance * 2 for angle
+		return_angle = distance_to_middle_from_middle * 2.5; //use distance * 2 for angle
 		if (include_reverses) {
 			return_angle *= -1; //reverse the direction up/down
 		}
@@ -545,7 +652,7 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 	else 
 	{
 		distance_to_middle_from_middle = paddle_middle_y - ball_middle_y; //work out distance to middle of paddle from below
-		return_angle = distance_to_middle_from_middle * 2; //use distance * 2 for angle
+		return_angle = distance_to_middle_from_middle * 2.5; //use distance * 2 for angle
 	}
 
 	//Return the angle

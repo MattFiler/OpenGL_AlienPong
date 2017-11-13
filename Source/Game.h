@@ -65,5 +65,8 @@ private:
 	bool gamestate_freeplay = false;
 	bool gamestate_timedgameplay = false;
 	bool gamestate_firsttofive = false;
+	bool game_over = false;
+	float game_timer = 0;
+	bool is_paused = false;
 };
 
