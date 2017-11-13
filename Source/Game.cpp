@@ -156,86 +156,97 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		signalExit();
 	}
 
-	//Change menu controls
-	if (is_in_menu) {
-		/* MENU */
-		//Go down on press of down
-		if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-		{
-			if (menu_option == 0) {
-				menu_option = 1;
-			}
-			if (menu_option == 1) {
-				menu_option = 2;
-			}
-		}
-		//Go up on press of up
-		if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
-		{
-			if (menu_option == 2) {
-				menu_option = 1;
-			}
-			if (menu_option == 1) {
-				menu_option = 0;
-			}
-		}
-		//Handle menu selections
+	if (player_has_won) 
+	{
+		//Winning screen currently showing, disable all other controls
 		if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			//Free play
-			if (menu_option == 0)
-			{
-				is_in_menu = false;
-				bool gamestate_freeplay = true;
-				bool gamestate_timedgameplay = false;
-				bool gamestate_firsttofive = false;
-			}
-			//Timed gameplay
-			if (menu_option == 1)
-			{
-				is_in_menu = false;
-				bool gamestate_freeplay = false;
-				bool gamestate_timedgameplay = true;
-				bool gamestate_firsttofive = false;
-			}
-			//First to 5
-			if (menu_option == 2)
-			{
-				is_in_menu = false;
-				bool gamestate_freeplay = false;
-				bool gamestate_timedgameplay = false;
-				bool gamestate_firsttofive = true;
-			}
+			player_has_won = false;
 		}
 	}
-	else 
+	else
 	{
-		/* LEFT PADDLE */
-		//Move up
-		if (key->key == ASGE::KEYS::KEY_W)
-		{
-			//Update Y position of paddle
-			paddle1->yPos(paddle1->yPos() - 10);
+		//Change menu controls
+		if (is_in_menu) {
+			/* MENU */
+			//Go down on press of down
+			if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+			{
+				if (menu_option == 0) {
+					menu_option = 1;
+				}
+				if (menu_option == 1) {
+					menu_option = 2;
+				}
+			}
+			//Go up on press of up
+			if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+			{
+				if (menu_option == 2) {
+					menu_option = 1;
+				}
+				if (menu_option == 1) {
+					menu_option = 0;
+				}
+			}
+			//Handle menu selections
+			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
+			{
+				//Free play
+				if (menu_option == 0)
+				{
+					is_in_menu = false;
+					bool gamestate_freeplay = true;
+					bool gamestate_timedgameplay = false;
+					bool gamestate_firsttofive = false;
+				}
+				//Timed gameplay
+				if (menu_option == 1)
+				{
+					is_in_menu = false;
+					bool gamestate_freeplay = false;
+					bool gamestate_timedgameplay = true;
+					bool gamestate_firsttofive = false;
+				}
+				//First to 5
+				if (menu_option == 2)
+				{
+					is_in_menu = false;
+					bool gamestate_freeplay = false;
+					bool gamestate_timedgameplay = false;
+					bool gamestate_firsttofive = true;
+				}
+			}
 		}
-		//Move Down
-		if (key->key == ASGE::KEYS::KEY_S)
+		else
 		{
-			//Update Y position of paddle
-			paddle1->yPos(paddle1->yPos() + 10);
-		}
+			/* LEFT PADDLE */
+			//Move up
+			if (key->key == ASGE::KEYS::KEY_W)
+			{
+				//Update Y position of paddle
+				paddle1->yPos(paddle1->yPos() - 10);
+			}
+			//Move Down
+			if (key->key == ASGE::KEYS::KEY_S)
+			{
+				//Update Y position of paddle
+				paddle1->yPos(paddle1->yPos() + 10);
+			}
 
-		/* RIGHT PADDLE */
-		//Move up
-		if (key->key == ASGE::KEYS::KEY_UP)
-		{
-			//Update Y position of paddle
-			paddle2->yPos(paddle2->yPos() - 10);
-		}
-		//Move Down
-		if (key->key == ASGE::KEYS::KEY_DOWN)
-		{
-			//Update Y position of paddle
-			paddle2->yPos(paddle2->yPos() + 10);
+			/* RIGHT PADDLE */
+			//Move up
+			if (key->key == ASGE::KEYS::KEY_UP)
+			{
+				//Update Y position of paddle
+				paddle2->yPos(paddle2->yPos() - 10);
+			}
+			//Move Down
+			if (key->key == ASGE::KEYS::KEY_DOWN)
+			{
+				//Update Y position of paddle
+				paddle2->yPos(paddle2->yPos() + 10);
+			}
 		}
 	}
 }
@@ -263,24 +274,16 @@ void Pong::update(const ASGE::GameTime & us)
 		if (isTouchingPaddle(paddle1, x_pos, y_pos, "LeftPaddle"))
 		{
 			movement_direction = 1;
-			movement_angle = rand() % angle_variant + angle_base;
-			movement_angle_raw = rand() % angle_variant + angle_base;
-
-			if (rand() % 2 == 1) {
-				movement_angle *= -1; //50% of the time we will reverse the angle to up/down
-			}
+			movement_angle = calculateReturnAngle(paddle1, true);
+			movement_angle_raw = calculateReturnAngle(paddle1, false);
 		}
 
 		//See if we're touching the RIGHT paddle
 		if (isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
 		{
 			movement_direction = 0;
-			movement_angle = rand() % angle_variant + angle_variant;
-			movement_angle_raw = rand() % angle_variant + angle_base;
-
-			if (rand() % 2 == 1) {
-				movement_angle *= -1; //50% of the time we will reverse the angle to up/down
-			}
+			movement_angle = calculateReturnAngle(paddle2, true);
+			movement_angle_raw = calculateReturnAngle(paddle2, false);
 		}
 
 		//See if we're touching the TOP of the window
@@ -312,29 +315,15 @@ void Pong::update(const ASGE::GameTime & us)
 		//See if we're touching the LEFT of the window
 		if (hasHitEdge("Left"))
 		{
-			//Update points 
-			player_2_points += 1;
-
-			//Reset ball position
-			ball1->xPos((game_width / 2) - (ball_size / 2));
-			ball1->yPos((game_height / 2) - (ball_size / 2));
-
-			//Reset angle
-			movement_angle = 0;
+			//Player 2 wins
+			handleWin("p2");
 		}
 
 		//See if we're touching the RIGHT of the window
 		if (hasHitEdge("Right"))
 		{
-			//Update points 
-			player_1_points += 1;
-
-			//Reset ball position
-			ball1->xPos((game_width / 2) - (ball_size / 2));
-			ball1->yPos((game_height / 2) - (ball_size / 2));
-
-			//Reset angle
-			movement_angle = 0;
+			//Player 1 wins
+			handleWin("p1");
 		}
 	}
 	else 
@@ -389,6 +378,12 @@ void Pong::render(const ASGE::GameTime &)
 
 		//Debug
 		renderer->renderText(std::to_string(menu_option).c_str(), 850, 55, 1.0, ASGE::COLOURS::DARKORANGE);
+	}
+
+	if (player_has_won) {
+		//Render round win screen
+		renderer->renderText((winner_name + " wins a point!").c_str(), (game_width / 2) - 150, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
+		renderer->renderText("Press ENTER key to continue.", (game_width / 2) - 135, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
 	}
 }
 
@@ -509,4 +504,85 @@ bool Pong::hasHitEdge(std::string edgeName) const
 	}
 
 	return hasHitEdge;
+}
+
+/**
+*   Calculate the angle to return the ball at
+*/
+int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses) const
+{
+	//Save Y vals
+	int paddle_bottom_y = paddle->yPos();
+	int paddle_middle_y = paddle_bottom_y + (paddle_height / 2);
+	int paddle_top_y = paddle_bottom_y + paddle_height;
+	int ball_bottom_y = ball1->yPos();
+	int ball_middle_y = ball_bottom_y + (ball_size / 2);
+	int ball_top_y = ball_bottom_y + ball_size;
+
+	//Values to set later
+	int distance_to_middle_from_middle = 0;
+	int return_angle = 0;
+	
+	//Check if we hit below (or on) the middle of the paddle
+	bool hit_below_bottom = false;
+	for (int i = 0; i < 11; i++) 
+	{
+		if (ball_bottom_y + i <= paddle_middle_y) 
+		{
+			hit_below_bottom = true;
+		}
+	}
+
+	//Vary directions based on hit location
+	if (hit_below_bottom == false) 
+	{
+		distance_to_middle_from_middle = ball_middle_y - paddle_middle_y; //work out distance to middle of paddle from above
+		return_angle = distance_to_middle_from_middle * 2; //use distance * 2 for angle
+		if (include_reverses) {
+			return_angle *= -1; //reverse the direction up/down
+		}
+	}
+	else 
+	{
+		distance_to_middle_from_middle = paddle_middle_y - ball_middle_y; //work out distance to middle of paddle from below
+		return_angle = distance_to_middle_from_middle * 2; //use distance * 2 for angle
+	}
+
+	//Return the angle
+	return return_angle;
+}
+
+/**
+*   Scripts for win
+*/
+void Pong::handleWin(std::string winner)
+{
+	if (winner == "p1")
+	{
+		//Update points 
+		player_1_points += 1;
+		winner_name = "Player 1";
+	}
+	else 
+	{
+		//Update points 
+		player_2_points += 1;
+		winner_name = "Player 2";
+	}
+
+	//Reset ball position
+	ball1->xPos((game_width / 2) - (ball_size / 2));
+	ball1->yPos((game_height / 2) - (ball_size / 2));
+
+	//Reset paddle positions
+	paddle1->xPos(100);
+	paddle1->yPos((game_height / 2) - (paddle_height / 2));
+	paddle2->xPos(game_width - 100);
+	paddle2->yPos((game_height / 2) - (paddle_height / 2));
+
+	//Reset angle
+	movement_angle = 0;
+
+	//Show win text
+	player_has_won = true;
 }

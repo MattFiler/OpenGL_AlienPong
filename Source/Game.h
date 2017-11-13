@@ -24,6 +24,8 @@ private:
 	virtual void render(const ASGE::GameTime &) override;
 	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const;
 	bool hasHitEdge(std::string edgeName) const;
+	int calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses) const;
+	void handleWin(std::string winner);
 
 	bool exit = false;                  /**< Exit boolean. If true the game loop will exit. */
 
@@ -47,7 +49,7 @@ private:
 	//Angle/speed settings
 	int angle_variant = 140;
 	int angle_base = 25;
-	int speed_base = 300;
+	int speed_base = 600;
 
 	//Score
 	int player_1_points = 0;
@@ -56,6 +58,8 @@ private:
 	//Menu
 	bool is_in_menu = true;
 	int menu_option = 0;
+	bool player_has_won = false;
+	std::string winner_name = "Player 2";
 
 	//Gamestates
 	bool gamestate_freeplay = false;
