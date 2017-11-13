@@ -264,6 +264,7 @@ void Pong::update(const ASGE::GameTime & us)
 		{
 			movement_direction = 1;
 			movement_angle = rand() % angle_variant + angle_base;
+			movement_angle_raw = rand() % angle_variant + angle_base;
 
 			if (rand() % 2 == 1) {
 				movement_angle *= -1; //50% of the time we will reverse the angle to up/down
@@ -275,6 +276,7 @@ void Pong::update(const ASGE::GameTime & us)
 		{
 			movement_direction = 0;
 			movement_angle = rand() % angle_variant + angle_variant;
+			movement_angle_raw = rand() % angle_variant + angle_base;
 
 			if (rand() % 2 == 1) {
 				movement_angle *= -1; //50% of the time we will reverse the angle to up/down
@@ -290,12 +292,12 @@ void Pong::update(const ASGE::GameTime & us)
 		//Movement direction - 0 = left, 1 = right
 		if (movement_direction == 0) {
 			//Set X position
-			x_pos -= movement_speed * (us.delta_time.count() / 1000.f);
+			x_pos -= (movement_speed - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 		}
 		else
 		{
 			//Set X position
-			x_pos += movement_speed * (us.delta_time.count() / 1000.f);
+			x_pos += (movement_speed - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 		}
 
 		//Apply movement angle

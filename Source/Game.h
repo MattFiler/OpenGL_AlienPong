@@ -42,6 +42,7 @@ private:
 	//Movement direction: left = 0, right = 1.
 	int movement_direction = 1;
 	int movement_angle = 0;
+	int movement_angle_raw = 0;
 
 	//Angle/speed settings
 	int angle_variant = 140;
