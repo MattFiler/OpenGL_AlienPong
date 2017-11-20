@@ -506,16 +506,17 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 	float targetX = sprite->xPos(); //Get the X value our ball needs to hit
 	if (spriteName == "LeftPaddle") {
 		targetX = sprite->xPos() + paddle_width; //Adjust X position for left paddle
+
+		if (int(x) <= int(targetX)) {
+			hitX = true; //Hit
+		}
 	}
 	if (spriteName == "RightPaddle") {
 		targetX = sprite->xPos() - ball_size; //Adjust X position for right paddle
-	}
 
-	//See if we hit any X, this will encounter issues if we're using V-Sync
-	if (int(x) == int(targetX) - 1 ||
-		int(x) == int(targetX) ||
-		int(x) == int(targetX) + 1) {
-		hitX = true; //Hit
+		if (int(x) >= int(targetX)) {
+			hitX = true; //Hit
+		}
 	}
 	
 	float ballY = y; //Get the Y value of our ball
