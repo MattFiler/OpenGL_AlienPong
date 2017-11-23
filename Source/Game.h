@@ -6,6 +6,18 @@ struct GameFont;
 
 /**
 *  Pong. An OpenGL Game based on ASGE.
+
+
+TODO:
+	Implement vector class
+	Implement point line checker to account for frame lag
+	Implement new menu system
+		Reset menu index on tab & handle change in options
+		In-game overlays
+		Faked loading bar?
+		Jixellation.ttf font import
+
+
 */
 
 class Pong :
@@ -34,7 +46,12 @@ private:
 	ASGE::Sprite* paddle1 = nullptr;    /**< Sprite Object. Paddle 1. */
 	ASGE::Sprite* paddle2 = nullptr;    /**< Sprite Object. Paddle 2. */
 	ASGE::Sprite* ball1 = nullptr;      /**< Sprite Object. Ball. */
-	ASGE::Sprite* menuTitle = nullptr;  /**< Sprite Object. Menu text. */
+	
+	//Menu backgrounds and overlays
+	ASGE::Sprite* menu_background = nullptr;  //Menu background
+	ASGE::Sprite* menu_overlay_loading = nullptr; //Menu loading overlay
+	ASGE::Sprite* menu_overlay_twoPlayer = nullptr; //Menu TwoPlayer overlay
+	ASGE::Sprite* menu_overlay_onePlayer = nullptr; //Menu OnePlayer overlay
 
 	//Paddle and ball sizes
 	int paddle_height = 150;
@@ -67,6 +84,7 @@ private:
 	bool player_has_won = false;
 	std::string winner_name = "SOMEONE";
 	int number_of_menu_options = 6;
+	bool show_twoplayer_overlay = false;
 
 	//Gamestates
 	bool gamestate_freeplay = false;
@@ -78,6 +96,7 @@ private:
 	int cpu_speed_refresh_rate = 3;
 	bool game_over = false;
 	float game_timer = 0;
+	float global_game_timer = 0;
 	bool is_paused = false;
 };
 

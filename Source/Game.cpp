@@ -56,11 +56,32 @@ Pong::~Pong()
 		ball1 = nullptr;
 	}
 
-	//Menu text
-	if (menuTitle)
+	//Menu background
+	if (menu_background)
 	{
-		delete menuTitle;
-		menuTitle = nullptr;
+		delete menu_background;
+		menu_background = nullptr;
+	}
+
+	//Menu loading
+	if (menu_overlay_loading)
+	{
+		delete menu_overlay_loading;
+		menu_overlay_loading = nullptr;
+	}
+
+	//Menu overlay 2 player
+	if (menu_overlay_twoPlayer)
+	{
+		delete menu_overlay_twoPlayer;
+		menu_overlay_twoPlayer = nullptr;
+	}
+
+	//Menu overlay 1 player
+	if (menu_overlay_onePlayer)
+	{
+		delete menu_overlay_onePlayer;
+		menu_overlay_onePlayer = nullptr;
 	}
 }
 
@@ -84,7 +105,7 @@ bool Pong::init()
 	renderer->setSpriteMode(ASGE::SpriteSortMode::IMMEDIATE);
 
 	//Change window title
-	renderer->setWindowTitle("Pong");
+	renderer->setWindowTitle("Pong Terminal");
 
 	//Change window background colour
 	renderer->setClearColour(ASGE::COLOURS::BLACK);
@@ -119,13 +140,37 @@ bool Pong::init()
 	ball1->xPos((game_width / 2) - (ball_size / 2));
 	ball1->yPos((game_height / 2) - (ball_size / 2));
 
-	//Create Title
-	menuTitle = renderer->createRawSprite();
-	menuTitle->loadTexture(".\\Resources\\Textures\\main_logo.png");
-	menuTitle->width(300);
-	menuTitle->height(149);
-	menuTitle->xPos((game_width / 2) - (300 / 2));
-	menuTitle->yPos(((game_height / 2)/2) - (149 / 2));
+	//Menu background
+	menu_background = renderer->createRawSprite();
+	menu_background->loadTexture(".\\Resources\\Textures\\MENU\\background.jpg");
+	menu_background->width(game_width);
+	menu_background->height(game_height);
+	menu_background->xPos(0);
+	menu_background->yPos(0);
+
+	//Loading overlay
+	menu_overlay_loading = renderer->createRawSprite();
+	menu_overlay_loading->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading.png");
+	menu_overlay_loading->width(game_width);
+	menu_overlay_loading->height(game_height);
+	menu_overlay_loading->xPos(0);
+	menu_overlay_loading->yPos(0);
+
+	//Two Player overlay
+	menu_overlay_twoPlayer = renderer->createRawSprite();
+	menu_overlay_twoPlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_twoplayer.png");
+	menu_overlay_twoPlayer->width(game_width);
+	menu_overlay_twoPlayer->height(game_height);
+	menu_overlay_twoPlayer->xPos(0);
+	menu_overlay_twoPlayer->yPos(0);
+
+	//Two Player overlay
+	menu_overlay_onePlayer = renderer->createRawSprite();
+	menu_overlay_onePlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_oneplayer.png");
+	menu_overlay_onePlayer->width(game_width);
+	menu_overlay_onePlayer->height(game_height);
+	menu_overlay_onePlayer->xPos(0);
+	menu_overlay_onePlayer->yPos(0);
 
 	//Handle inputs
 	key_callback_id = inputs->addCallbackFnc(
@@ -174,13 +219,23 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			left_paddle_moving = false;
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
-				//Reset values
+				//Reset points
 				player_1_points = 0;
 				player_2_points = 0;
-				menu_option = 0;
 
+				//Open and reset menu
+				is_in_menu = true;
+				menu_option = 0;
+				player_has_won = false;
+
+				//Reset gamestates
+				gamestate_freeplay = false;
+				gamestate_timedgameplay = false;
+				gamestate_firsttofive = false;
+				gamestate_vscpu = false;
 				game_over = false;
-				is_in_menu = true; //send back to menu
+				game_timer = 0;
+				is_paused = false;
 			}
 		}
 		else
@@ -191,6 +246,18 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				left_paddle_moving = false;
 
 				/* MENU */
+				//Swap two/one player menu on tab
+				if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED) 
+				{
+					if (show_twoplayer_overlay) 
+					{
+						show_twoplayer_overlay = false;
+					}
+					else 
+					{
+						show_twoplayer_overlay = true;
+					}
+				}
 				//Go down on press of down
 				if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 				{
@@ -210,6 +277,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				//Handle menu selections
 				if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 				{
+					//Reset points
+					game_timer = 0;
+					player_1_points = 0;
+					player_2_points = 0;
+
 					//Free play
 					if (menu_option == 0)
 					{
@@ -351,28 +423,7 @@ void Pong::update(const ASGE::GameTime & us)
 	{
 		game_timer += (us.delta_time.count() / 1000.f);
 	}
-
-	//Timed game mode
-	if (gamestate_timedgameplay)
-	{
-		if (game_timer > 60)
-		{
-			right_paddle_moving = false;
-			left_paddle_moving = false;
-			game_over = true;
-		}
-	}
-
-	//First to five game mode
-	if (gamestate_firsttofive)
-	{
-		if (player_1_points == 5 || player_2_points == 5)
-		{
-			right_paddle_moving = false;
-			left_paddle_moving = false;
-			game_over = true;
-		}
-	}
+	global_game_timer += (us.delta_time.count() / 1000.f);
 
 	//Ball move speed
 	int movement_speed = speed_base;
@@ -531,6 +582,28 @@ void Pong::update(const ASGE::GameTime & us)
 			ball1->yPos((game_height / 2) - (ball_size / 2));
 		}
 	}
+
+	//Timed game mode
+	if (gamestate_timedgameplay)
+	{
+		if (game_timer > 60)
+		{
+			right_paddle_moving = false;
+			left_paddle_moving = false;
+			game_over = true;
+		}
+	}
+
+	//First to five game mode
+	if (gamestate_firsttofive)
+	{
+		if (player_1_points == 5 || player_2_points == 5)
+		{
+			right_paddle_moving = false;
+			left_paddle_moving = false;
+			game_over = true;
+		}
+	}
 }
 
 
@@ -546,6 +619,9 @@ void Pong::render(const ASGE::GameTime &)
 	//Set default font
 	renderer->setFont(0);
 
+	//Render background
+	renderer->renderSprite(*menu_background);
+
 	//DEBUG OUTPUT
 	//renderer->renderText((winner_name).c_str(), 70, 70, 1.0, ASGE::COLOURS::WHITE);
 
@@ -553,6 +629,10 @@ void Pong::render(const ASGE::GameTime &)
 	{
 		//Win string
 		std::string winner_string = "";
+		if (player_1_points == player_2_points)
+		{
+			winner_string = "  The game was a draw!"; //Draw
+		}
 		if (player_1_points > player_2_points)
 		{
 			if (gamestate_vscpu)
@@ -574,10 +654,6 @@ void Pong::render(const ASGE::GameTime &)
 			{
 				winner_string = "Player 2 wins the game!"; //P2 wins
 			}
-		}
-		if (player_1_points == player_2_points) 
-		{
-			winner_string = "  The game was a draw!"; //Draw
 		}
 
 		//Render round win screen
@@ -637,8 +713,6 @@ void Pong::render(const ASGE::GameTime &)
 		}
 		else
 		{
-			//Render menu title
-			renderer->renderSprite(*menuTitle);
 
 			if (is_paused)
 			{
@@ -647,23 +721,38 @@ void Pong::render(const ASGE::GameTime &)
 			}
 			else
 			{
-				//Option 1 - freeplay
-				renderer->renderText(menu_option == 0 ? ">VS PLAYER" : " VS PLAYER", (game_width / 2) - (107/2), (game_height / 3) * 2 - 150, 1.0, ASGE::COLOURS::WHITE);
+				if (int(global_game_timer) < 3) 
+				{
+					//Render loading screen for first few seconds
+					renderer->renderSprite(*menu_overlay_loading);
+				}
+				else
+				{
+					if (show_twoplayer_overlay) 
+					{
+						//Render TWO PLAYER
+						renderer->renderSprite(*menu_overlay_twoPlayer);
 
-				//Option 2 - timed 
-				renderer->renderText(menu_option == 5 ? ">VS PLAYER TIMED" : " VS PLAYER TIMED", (game_width / 2) - (173/2), (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::WHITE);
+						//Option 1 - VS CPU 
+						renderer->renderText(menu_option == 15 ? ">VS CPU" : " VS CPU", (game_width / 2) - (74 / 2), (game_height / 3) * 2 + 50, 1.0, ASGE::COLOURS::WHITE);
+						//Option 2 - VS CPU timed
+						renderer->renderText(menu_option == 20 ? ">VS CPU TIMED" : " VS CPU TIMED", (game_width / 2) - (140 / 2), (game_height / 3) * 2 + 100, 1.0, ASGE::COLOURS::WHITE);
+						//Option 3 - VS CPU first to 5
+						renderer->renderText(menu_option == 25 ? ">VS CPU SCORE" : " VS CPU SCORE", (game_width / 2) - (140 / 2), (game_height / 3) * 2 + 150, 1.0, ASGE::COLOURS::WHITE);
+					} 
+					else
+					{
+						//Render ONE PLAYER
+						renderer->renderSprite(*menu_overlay_onePlayer);
 
-				//Option 3 - first to 5
-				renderer->renderText(menu_option == 10 ? ">VS PLAYER SCORE" : " VS PLAYER SCORE", (game_width / 2) - (173/2), (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::WHITE);
-
-				//Option 4 - VS CPU 
-				renderer->renderText(menu_option == 15 ? ">VS CPU" : " VS CPU", (game_width / 2) - (74/2), (game_height / 3) * 2 + 50, 1.0, ASGE::COLOURS::WHITE);
-
-				//Option 5 - VS CPU timed
-				renderer->renderText(menu_option == 20 ? ">VS CPU TIMED" : " VS CPU TIMED", (game_width / 2) - (140/2), (game_height / 3) * 2 + 100, 1.0, ASGE::COLOURS::WHITE);
-
-				//Option 6 - VS CPU first to 5
-				renderer->renderText(menu_option == 25 ? ">VS CPU SCORE" : " VS CPU SCORE", (game_width / 2) - (140/2), (game_height / 3) * 2 + 150, 1.0, ASGE::COLOURS::WHITE);
+						//Option 1 - freeplay
+						renderer->renderText(menu_option == 0 ? ">VS PLAYER" : " VS PLAYER", (game_width / 2) - (107 / 2), (game_height / 3) * 2 - 150, 1.0, ASGE::COLOURS::WHITE);
+						//Option 2 - timed 
+						renderer->renderText(menu_option == 5 ? ">VS PLAYER TIMED" : " VS PLAYER TIMED", (game_width / 2) - (173 / 2), (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::WHITE);
+						//Option 3 - first to 5
+						renderer->renderText(menu_option == 10 ? ">VS PLAYER SCORE" : " VS PLAYER SCORE", (game_width / 2) - (173 / 2), (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::WHITE);
+					}
+				}
 			}
 		}
 
