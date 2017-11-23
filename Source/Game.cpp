@@ -213,7 +213,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						gamestate_freeplay = true;
 						gamestate_timedgameplay = false;
 						gamestate_firsttofive = false;
-						gamestate_superspeed = false;
+						gamestate_vscpu = false;
 					}
 					//Timed gameplay
 					if (menu_option == 5)
@@ -222,7 +222,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						gamestate_freeplay = false;
 						gamestate_timedgameplay = true;
 						gamestate_firsttofive = false;
-						gamestate_superspeed = false;
+						gamestate_vscpu = false;
 					}
 					//First to 5
 					if (menu_option == 10)
@@ -231,17 +231,16 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						gamestate_freeplay = false;
 						gamestate_timedgameplay = false;
 						gamestate_firsttofive = true;
-						gamestate_superspeed = false;
+						gamestate_vscpu = false;
 					}
-					//Super Speed - modify core game speed var
+					//VS CPU
 					if (menu_option == 15)
 					{
 						is_in_menu = false;
 						gamestate_freeplay = false;
 						gamestate_timedgameplay = false;
 						gamestate_firsttofive = false;
-						gamestate_superspeed = true;
-						speed_base *= 2; //Game runs 2X faster (paddle and ball speed)
+						gamestate_vscpu = true;
 					}
 				}
 
@@ -282,23 +281,26 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				}
 
 				/* RIGHT PADDLE */
-				//Move up
-				if (key->key == ASGE::KEYS::KEY_UP)
+				if (!gamestate_vscpu) 
 				{
-					right_paddle_moving = true;
-					right_paddle_moving_up = true;
-				}
-				//Move Down
-				if (key->key == ASGE::KEYS::KEY_DOWN)
-				{
-					right_paddle_moving = true;
-					right_paddle_moving_up = false;
-				}
-				//Stop moving
-				if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED ||
-					key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					right_paddle_moving = false;
+					//Move up
+					if (key->key == ASGE::KEYS::KEY_UP)
+					{
+						right_paddle_moving = true;
+						right_paddle_moving_up = true;
+					}
+					//Move Down
+					if (key->key == ASGE::KEYS::KEY_DOWN)
+					{
+						right_paddle_moving = true;
+						right_paddle_moving_up = false;
+					}
+					//Stop moving
+					if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED ||
+						key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+					{
+						right_paddle_moving = false;
+					}
 				}
 
 				//Pause on ESC
@@ -358,8 +360,8 @@ void Pong::update(const ASGE::GameTime & us)
 	auto y_pos = ball1->yPos();
 
 	//Only run game scripts if out of menu
-	if (is_in_menu == false) {
-
+	if (is_in_menu == false) 
+	{
 		/* BALL COLLISION DETECTION */
 
 		//See if we're touching the LEFT paddle
@@ -384,6 +386,7 @@ void Pong::update(const ASGE::GameTime & us)
 			movement_angle *= -1; //Swap angle on touch of top or bottom
 		}
 
+
 		/* BALL MOVEMENT */
 
 		//Movement direction - 0 = left, 1 = right
@@ -407,6 +410,7 @@ void Pong::update(const ASGE::GameTime & us)
 		//Update Y position of ball
 		ball1->yPos(y_pos);
 
+
 		/* HANDLE WINS */
 
 		//See if we're touching the LEFT of the window
@@ -423,20 +427,55 @@ void Pong::update(const ASGE::GameTime & us)
 			handleWin("p1");
 		}
 
+
+		/* CPU PLAYER */
+
+		if (gamestate_vscpu)
+		{
+			if (ball1->yPos() > (paddle2->yPos() + (ball_size * 3)) && ball1->yPos() < (paddle2->yPos() + paddle_height - (ball_size * 3)))
+			{
+				right_paddle_moving = false;
+			}
+			else
+			{
+				//Ball is out of paddle range, move to it
+				right_paddle_moving = true;
+				if (ball1->yPos() > paddle2->yPos())
+				{
+					right_paddle_moving_up = false;
+				}
+				if (ball1->yPos() < (paddle2->yPos() + paddle_height - (ball_size * 3)))
+				{
+					right_paddle_moving_up = true;
+				}
+			}
+		}
+
+
 		/* PADDLE MOVEMENT */
 
 		//Right Paddle
 		if (right_paddle_moving) 
 		{
+			//Bespoke speed modifier for CPU movement (if human player, we default to 2)
+			if (int(game_timer) % cpu_speed_refresh_rate == 0 && gamestate_vscpu)
+			{
+				if (cpu_speed_modifier_check != int(game_timer)) 
+				{
+					cpu_speed_modifier = (rand() % 3) + 2.5;
+					cpu_speed_modifier_check = int(game_timer);
+				}
+			}
+
 			if (right_paddle_moving_up) 
 			{
 				//Update Y position of paddle UP
-				paddle2->yPos(paddle2->yPos() - (movement_speed / 2)  * (us.delta_time.count() / 1000.f));
+				paddle2->yPos(paddle2->yPos() - (movement_speed / cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 			}
 			else
 			{
 				//Update Y position of paddle DOWN
-				paddle2->yPos(paddle2->yPos() + (movement_speed / 2)  * (us.delta_time.count() / 1000.f));
+				paddle2->yPos(paddle2->yPos() + (movement_speed / cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 			}
 		}
 
@@ -457,7 +496,8 @@ void Pong::update(const ASGE::GameTime & us)
 	}
 	else 
 	{
-		if (is_paused) {
+		if (is_paused) 
+		{
 			//Freeze ball on pause
 			ball1->xPos(ball1->xPos());
 			ball1->yPos(ball1->yPos());
@@ -485,20 +525,23 @@ void Pong::render(const ASGE::GameTime &)
 	renderer->setFont(0);
 
 	//DEBUG OUTPUT
-	//renderer->renderText(std::to_string(menu_option).c_str(), 50, 65, 1.0, ASGE::COLOURS::WHITE);
+	//renderer->renderText(std::to_string(cpu_speed_modifier).c_str(), 10, 10, 1.0, ASGE::COLOURS::WHITE);
 
 	if (game_over)
 	{
 		//Win string
 		std::string winner_string = "";
-		if (player_1_points > player_2_points) {
+		if (player_1_points > player_2_points)
+		{
 			winner_string = "Player 1 wins the game!"; //P1 wins
 		}
-		if (player_1_points < player_2_points) {
+		if (player_1_points < player_2_points) 
+		{
 			winner_string = "Player 2 wins the game!"; //P2 wins
 		}
-		if (player_1_points == player_2_points) {
-			winner_string = "No player won the game!"; //Draw
+		if (player_1_points == player_2_points) 
+		{
+			winner_string = "  The game was a draw!"; //Draw
 		}
 
 		//Render round win screen
@@ -542,10 +585,10 @@ void Pong::render(const ASGE::GameTime &)
 				renderer->renderText("Game Mode: Timed Gameplay", 50, 50, 1.0, ASGE::COLOURS::WHITE);
 				renderer->renderText((std::to_string(int((60 - game_timer)+0.5)) + " Seconds Remaining").c_str(), 171, 80, 1.0, ASGE::COLOURS::WHITE);
 			}
-			//Super speed
-			if (gamestate_superspeed)
+			//VS CPU
+			if (gamestate_vscpu)
 			{
-				renderer->renderText("Game Mode: Super Speed", 50, 65, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText("Game Mode: VS CPU", 50, 65, 1.0, ASGE::COLOURS::WHITE);
 			}
 		}
 		else
@@ -569,12 +612,13 @@ void Pong::render(const ASGE::GameTime &)
 				//Option 3 - first to 5
 				renderer->renderText(menu_option == 10 ? ">FIRST TO 5" : " FIRST TO 5", (game_width / 2) - 54, (game_height / 3) * 2, 1.0, ASGE::COLOURS::WHITE);
 
-				//Option 4 - super speed (DISABLED DUE TO HIT DETECTION ISSUES)
-				//renderer->renderText(menu_option == 15 ? ">SUPER SPEED" : " SUPER SPEED", (game_width / 2) - 59, (game_height / 3) * 2 + 50, 1.0, ASGE::COLOURS::WHITE);
+				//Option 4 - VS CPU 
+				renderer->renderText(menu_option == 15 ? ">VS CPU" : " VS CPU", (game_width / 2) - 32, (game_height / 3) * 2 + 50, 1.0, ASGE::COLOURS::WHITE);
 			}
 		}
 
-		if (player_has_won) {
+		if (player_has_won) 
+		{
 			//Render round win screen
 			renderer->renderText((winner_name + " wins a point!").c_str(), (game_width / 2) - 150, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
 			renderer->renderText("Press ENTER key to continue.", (game_width / 2) - 135, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
@@ -601,7 +645,7 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 	*/
 	if (ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + paddle_width))
 	{
-		if (y > sprite->yPos() && y < (sprite->yPos() + paddle_height))
+		if (y > (sprite->yPos() - ball_size) && y < (sprite->yPos() + paddle_height))
 		{
 			return true;
 		}
@@ -690,7 +734,8 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 	{
 		distance_to_middle_from_middle = ball_middle_y - paddle_middle_y; //work out distance to middle of paddle from above
 		return_angle = distance_to_middle_from_middle * 2.5; //use distance * 2 for angle
-		if (include_reverses) {
+		if (include_reverses)
+		{
 			return_angle *= -1; //reverse the direction up/down
 		}
 	}

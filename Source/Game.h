@@ -65,14 +65,17 @@ private:
 	bool is_in_menu = true;
 	int menu_option = 0;
 	bool player_has_won = false;
-	std::string winner_name = "Player 2";
-	int number_of_menu_options = 3;
+	std::string winner_name = "SOMEONE";
+	int number_of_menu_options = 4;
 
 	//Gamestates
 	bool gamestate_freeplay = false;
 	bool gamestate_timedgameplay = false;
 	bool gamestate_firsttofive = false;
-	bool gamestate_superspeed = false;
+	bool gamestate_vscpu = false;
+	int cpu_speed_modifier = 2;
+	int cpu_speed_modifier_check = 0;
+	int cpu_speed_refresh_rate = 3;
 	bool game_over = false;
 	float game_timer = 0;
 	bool is_paused = false;
