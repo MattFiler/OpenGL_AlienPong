@@ -8,7 +8,7 @@ struct GameFont;
 *  Pong. An OpenGL Game based on ASGE.
 */
 
-class Pong:
+class Pong :
 	public ASGE::OGLGame
 {
 public:
@@ -36,10 +36,16 @@ private:
 	ASGE::Sprite* ball1 = nullptr;      /**< Sprite Object. Ball. */
 	ASGE::Sprite* menuTitle = nullptr;  /**< Sprite Object. Menu text. */
 
-    //Paddle and ball sizes
+	//Paddle and ball sizes
 	int paddle_height = 150;
 	int paddle_width = 10;
 	int ball_size = 10;
+
+	//Paddle controls
+	bool right_paddle_moving = false;
+	bool right_paddle_moving_up = false;
+	bool left_paddle_moving = false;
+	bool left_paddle_moving_up = false;
 
 	//Movement direction: left = 0, right = 1.
 	int movement_direction = 1;
@@ -49,7 +55,7 @@ private:
 	//Angle/speed settings
 	int angle_variant = 140;
 	int angle_base = 25;
-	int speed_base = 600;
+	int speed_base = 600; 
 
 	//Score
 	int player_1_points = 0;
@@ -60,11 +66,13 @@ private:
 	int menu_option = 0;
 	bool player_has_won = false;
 	std::string winner_name = "Player 2";
+	int number_of_menu_options = 3;
 
 	//Gamestates
 	bool gamestate_freeplay = false;
 	bool gamestate_timedgameplay = false;
 	bool gamestate_firsttofive = false;
+	bool gamestate_superspeed = false;
 	bool game_over = false;
 	float game_timer = 0;
 	bool is_paused = false;

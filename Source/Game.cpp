@@ -153,6 +153,8 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 	if (player_has_won) 
 	{
 		//Winning screen currently showing, disable all other controls
+		right_paddle_moving = false;
+		left_paddle_moving = false;
 		if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
 			player_has_won = false;
@@ -168,6 +170,8 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		if (game_over) 
 		{
 			//Game over screen showing, disable other controls
+			right_paddle_moving = false;
+			left_paddle_moving = false;
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				/* SOMETHING NOT WORKING HERE */
@@ -179,11 +183,14 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		{
 			//Change menu controls
 			if (is_in_menu) {
+				right_paddle_moving = false;
+				left_paddle_moving = false;
+
 				/* MENU */
 				//Go down on press of down
 				if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 				{
-					if (menu_option < 6 && menu_option >= 0)
+					if (menu_option < (((number_of_menu_options - 2) * 5) + 1) && menu_option >= 0)
 					{
 						menu_option += 5;
 					}
@@ -191,7 +198,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				//Go up on press of up
 				if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
 				{
-					if (menu_option <= 10 && menu_option > 0)
+					if (menu_option <= ((number_of_menu_options - 1) * 5) && menu_option > 0)
 					{
 						menu_option -= 5;
 					}
@@ -206,6 +213,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						gamestate_freeplay = true;
 						gamestate_timedgameplay = false;
 						gamestate_firsttofive = false;
+						gamestate_superspeed = false;
 					}
 					//Timed gameplay
 					if (menu_option == 5)
@@ -214,6 +222,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						gamestate_freeplay = false;
 						gamestate_timedgameplay = true;
 						gamestate_firsttofive = false;
+						gamestate_superspeed = false;
 					}
 					//First to 5
 					if (menu_option == 10)
@@ -222,6 +231,17 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						gamestate_freeplay = false;
 						gamestate_timedgameplay = false;
 						gamestate_firsttofive = true;
+						gamestate_superspeed = false;
+					}
+					//Super Speed - modify core game speed var
+					if (menu_option == 15)
+					{
+						is_in_menu = false;
+						gamestate_freeplay = false;
+						gamestate_timedgameplay = false;
+						gamestate_firsttofive = false;
+						gamestate_superspeed = true;
+						speed_base *= 2; //Game runs 2X faster (paddle and ball speed)
 					}
 				}
 
@@ -245,28 +265,40 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				//Move up
 				if (key->key == ASGE::KEYS::KEY_W)
 				{
-					//Update Y position of paddle
-					paddle1->yPos(paddle1->yPos() - 10);
+					left_paddle_moving = true;
+					left_paddle_moving_up = true;
 				}
 				//Move Down
 				if (key->key == ASGE::KEYS::KEY_S)
 				{
-					//Update Y position of paddle
-					paddle1->yPos(paddle1->yPos() + 10);
+					left_paddle_moving = true;
+					left_paddle_moving_up = false;
+				}
+				//Stop moving
+				if (key->key == ASGE::KEYS::KEY_W && key->action == ASGE::KEYS::KEY_RELEASED ||
+					key->key == ASGE::KEYS::KEY_S && key->action == ASGE::KEYS::KEY_RELEASED)
+				{
+					left_paddle_moving = false;
 				}
 
 				/* RIGHT PADDLE */
 				//Move up
 				if (key->key == ASGE::KEYS::KEY_UP)
 				{
-					//Update Y position of paddle
-					paddle2->yPos(paddle2->yPos() - 10);
+					right_paddle_moving = true;
+					right_paddle_moving_up = true;
 				}
 				//Move Down
 				if (key->key == ASGE::KEYS::KEY_DOWN)
 				{
-					//Update Y position of paddle
-					paddle2->yPos(paddle2->yPos() + 10);
+					right_paddle_moving = true;
+					right_paddle_moving_up = false;
+				}
+				//Stop moving
+				if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED ||
+					key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+				{
+					right_paddle_moving = false;
 				}
 
 				//Pause on ESC
@@ -301,6 +333,8 @@ void Pong::update(const ASGE::GameTime & us)
 	{
 		if (game_timer > 60)
 		{
+			right_paddle_moving = false;
+			left_paddle_moving = false;
 			game_over = true;
 		}
 	}
@@ -310,6 +344,8 @@ void Pong::update(const ASGE::GameTime & us)
 	{
 		if (player_1_points == 5 || player_2_points == 5)
 		{
+			right_paddle_moving = false;
+			left_paddle_moving = false;
 			game_over = true;
 		}
 	}
@@ -323,6 +359,9 @@ void Pong::update(const ASGE::GameTime & us)
 
 	//Only run game scripts if out of menu
 	if (is_in_menu == false) {
+
+		/* BALL COLLISION DETECTION */
+
 		//See if we're touching the LEFT paddle
 		if (isTouchingPaddle(paddle1, x_pos, y_pos, "LeftPaddle"))
 		{
@@ -345,8 +384,11 @@ void Pong::update(const ASGE::GameTime & us)
 			movement_angle *= -1; //Swap angle on touch of top or bottom
 		}
 
+		/* BALL MOVEMENT */
+
 		//Movement direction - 0 = left, 1 = right
-		if (movement_direction == 0) {
+		if (movement_direction == 0) 
+		{
 			//Set X position
 			x_pos -= (movement_speed - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 		}
@@ -365,6 +407,8 @@ void Pong::update(const ASGE::GameTime & us)
 		//Update Y position of ball
 		ball1->yPos(y_pos);
 
+		/* HANDLE WINS */
+
 		//See if we're touching the LEFT of the window
 		if (hasHitEdge("Left"))
 		{
@@ -377,6 +421,38 @@ void Pong::update(const ASGE::GameTime & us)
 		{
 			//Player 1 wins
 			handleWin("p1");
+		}
+
+		/* PADDLE MOVEMENT */
+
+		//Right Paddle
+		if (right_paddle_moving) 
+		{
+			if (right_paddle_moving_up) 
+			{
+				//Update Y position of paddle UP
+				paddle2->yPos(paddle2->yPos() - (movement_speed / 2)  * (us.delta_time.count() / 1000.f));
+			}
+			else
+			{
+				//Update Y position of paddle DOWN
+				paddle2->yPos(paddle2->yPos() + (movement_speed / 2)  * (us.delta_time.count() / 1000.f));
+			}
+		}
+
+		//Left Paddle
+		if (left_paddle_moving)
+		{
+			if (left_paddle_moving_up)
+			{
+				//Update Y position of paddle UP
+				paddle1->yPos(paddle1->yPos() - (movement_speed / 2)  * (us.delta_time.count() / 1000.f));
+			}
+			else
+			{
+				//Update Y position of paddle DOWN
+				paddle1->yPos(paddle1->yPos() + (movement_speed / 2)  * (us.delta_time.count() / 1000.f));
+			}
 		}
 	}
 	else 
@@ -407,6 +483,9 @@ void Pong::render(const ASGE::GameTime &)
 {
 	//Set default font
 	renderer->setFont(0);
+
+	//DEBUG OUTPUT
+	//renderer->renderText(std::to_string(menu_option).c_str(), 50, 65, 1.0, ASGE::COLOURS::WHITE);
 
 	if (game_over)
 	{
@@ -460,7 +539,13 @@ void Pong::render(const ASGE::GameTime &)
 			//Timed gameplay
 			if (gamestate_timedgameplay)
 			{
-				renderer->renderText("Game Mode: Timed Gameplay", 50, 65, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText("Game Mode: Timed Gameplay", 50, 50, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText((std::to_string(int((60 - game_timer)+0.5)) + " Seconds Remaining").c_str(), 171, 80, 1.0, ASGE::COLOURS::WHITE);
+			}
+			//Super speed
+			if (gamestate_superspeed)
+			{
+				renderer->renderText("Game Mode: Super Speed", 50, 65, 1.0, ASGE::COLOURS::WHITE);
 			}
 		}
 		else
@@ -476,13 +561,16 @@ void Pong::render(const ASGE::GameTime &)
 			else
 			{
 				//Option 1 - freeplay
-				renderer->renderText(menu_option == 0 ? ">FREE PLAY" : " FREE PLAY", (game_width / 2), (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::DARKORANGE);
+				renderer->renderText(menu_option == 0 ? ">FREE PLAY" : " FREE PLAY", (game_width / 2) - 49, (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::WHITE);
 
 				//Option 2 - timed 
-				renderer->renderText(menu_option == 5 ? ">TIMED GAMEPLAY" : " TIMED GAMEPLAY", (game_width / 2), (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::DARKORANGE);
+				renderer->renderText(menu_option == 5 ? ">TIMED GAMEPLAY" : " TIMED GAMEPLAY", (game_width / 2) - 76, (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::WHITE);
 
 				//Option 3 - first to 5
-				renderer->renderText(menu_option == 10 ? ">FIRST TO 5" : " FIRST TO 5", (game_width / 2), (game_height / 3) * 2, 1.0, ASGE::COLOURS::DARKORANGE);
+				renderer->renderText(menu_option == 10 ? ">FIRST TO 5" : " FIRST TO 5", (game_width / 2) - 54, (game_height / 3) * 2, 1.0, ASGE::COLOURS::WHITE);
+
+				//Option 4 - super speed (DISABLED DUE TO HIT DETECTION ISSUES)
+				//renderer->renderText(menu_option == 15 ? ">SUPER SPEED" : " SUPER SPEED", (game_width / 2) - 59, (game_height / 3) * 2 + 50, 1.0, ASGE::COLOURS::WHITE);
 			}
 		}
 
@@ -499,48 +587,31 @@ void Pong::render(const ASGE::GameTime &)
 */
 bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const
 {
-	//Has hit?
-	bool hitX = false;
-	bool hitY = false;
-
-	float targetX = sprite->xPos(); //Get the X value our ball needs to hit
-	if (spriteName == "LeftPaddle") {
-		targetX = sprite->xPos() + paddle_width; //Adjust X position for left paddle
-
-		if (int(x) <= int(targetX)) {
-			hitX = true; //Hit
-		}
-	}
-	if (spriteName == "RightPaddle") {
-		targetX = sprite->xPos() - ball_size; //Adjust X position for right paddle
-
-		if (int(x) >= int(targetX)) {
-			hitX = true; //Hit
-		}
-	}
-	
-	float ballY = y; //Get the Y value of our ball
-
-	//See if we hit any Y
-	for (int i = 0; i < (paddle_height + 1); i++) { //loop for whole height of paddle
-		for (int b = 0; b < ball_size; b++) { //loop for whole size of ball
-			if (int(sprite->yPos() + i) == int(ballY) - 1||
-				int(sprite->yPos() + i) == int(ballY) ||
-				int(sprite->yPos() + i) == int(ballY) + 1) {
-				hitY = true; //Hit
-			}
-		}
-	}
-
-	//Only return HIT if we matched X and Y
-	if (hitX && hitY)
+	//Auto-correct ball's X position for right paddle
+	float ball_x_pos = x; 
+	if (spriteName == "RightPaddle") 
 	{
-		return true;
+		ball_x_pos += ball_size;
 	}
-	else
+
+	//See if we hit any area on the paddle
+	/*
+		TODO: When using vectors, calculate path between the two vectors and see if it intersects the paddle.
+		Should solve the lag issue when frames skip and the ball hit isn't registered.
+	*/
+	if (ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + paddle_width))
 	{
-		return false;
+		if (y > sprite->yPos() && y < (sprite->yPos() + paddle_height))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
+
+	return false;
 }
 
 /**
@@ -548,70 +619,43 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 */
 bool Pong::hasHitEdge(std::string edgeName) const
 {
-	//Has hit?
-	bool hasHitEdge = false;
-
-	//Set sizes/positions
-	int xPosToHit = 0;
-	int yPosToHit = 0;
-	int ballXPosition = ball1->xPos();
-	int ballYPosition = ball1->yPos();
-	if (edgeName == "Right") 
-	{
-		xPosToHit = game_width;
-	}
-	if (edgeName == "Bottom")
-	{
-		yPosToHit = game_height;
-	}
-	if (edgeName == "Left")
-	{
-		ballXPosition += ball_size; 
-	}
-
 	//Touching left?
 	if (edgeName == "Left")
 	{
-		if (ballXPosition <= xPosToHit)
+		if (ball1->xPos() - ball_size <= 0)
 		{
-			hasHitEdge = true; //Hit
+			return true; //Hit
 		}
 	}
 
 	//Touching right?
 	if (edgeName == "Right")
 	{
-		if (ballXPosition >= xPosToHit)
+		if (ball1->xPos() >= game_width)
 		{
-			hasHitEdge = true; //Hit
+			return true; //Hit
 		}
 	}
 
 	//Touching top?
 	if (edgeName == "Top")
 	{
-		for (int i = 0; i < ball_size; i++)
+		if (ball1->yPos() <= 0)
 		{
-			if (ballYPosition + i <= yPosToHit)
-			{
-				hasHitEdge = true; //Hit
-			}
+			return true; //Hit
 		}
 	}
 
 	//Touching bottom?
 	if (edgeName == "Bottom")
 	{
-		for (int i = 0; i < ball_size; i++)
+		if (ball1->yPos() + ball_size >= game_height)
 		{
-			if (ballYPosition + i >= yPosToHit)
-			{
-				hasHitEdge = true; //Hit
-			}
+			return true; //Hit
 		}
 	}
 
-	return hasHitEdge;
+	return false;
 }
 
 /**
@@ -690,6 +734,10 @@ void Pong::handleWin(std::string winner)
 
 	//Reset angle
 	movement_angle = 0;
+
+	//Try stop paddle moving ASAP!
+	right_paddle_moving = false;
+	left_paddle_moving = false;
 
 	//Show win text
 	player_has_won = true;
