@@ -66,7 +66,7 @@ private:
 	int menu_option = 0;
 	bool player_has_won = false;
 	std::string winner_name = "SOMEONE";
-	int number_of_menu_options = 4;
+	int number_of_menu_options = 6;
 
 	//Gamestates
 	bool gamestate_freeplay = false;

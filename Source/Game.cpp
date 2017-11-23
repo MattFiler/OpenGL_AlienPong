@@ -242,6 +242,24 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						gamestate_firsttofive = false;
 						gamestate_vscpu = true;
 					}
+					//VS CPU timed
+					if (menu_option == 20)
+					{
+						is_in_menu = false;
+						gamestate_freeplay = false;
+						gamestate_timedgameplay = true;
+						gamestate_firsttofive = false;
+						gamestate_vscpu = true;
+					}
+					//VS CPU first to 5
+					if (menu_option == 25)
+					{
+						is_in_menu = false;
+						gamestate_freeplay = false;
+						gamestate_timedgameplay = false;
+						gamestate_firsttofive = true;
+						gamestate_vscpu = true;
+					}
 				}
 
 				//Quit on ESC
@@ -533,11 +551,25 @@ void Pong::render(const ASGE::GameTime &)
 		std::string winner_string = "";
 		if (player_1_points > player_2_points)
 		{
-			winner_string = "Player 1 wins the game!"; //P1 wins
+			if (gamestate_vscpu)
+			{
+				winner_string = "   You won the game!"; //Human wins
+			}
+			else
+			{
+				winner_string = "Player 1 wins the game!"; //P1 wins
+			}
 		}
 		if (player_1_points < player_2_points) 
 		{
-			winner_string = "Player 2 wins the game!"; //P2 wins
+			if (gamestate_vscpu) 
+			{
+				winner_string = "Computer wins the game!"; //CPU wins
+			} 
+			else
+			{
+				winner_string = "Player 2 wins the game!"; //P2 wins
+			}
 		}
 		if (player_1_points == player_2_points) 
 		{
@@ -566,8 +598,16 @@ void Pong::render(const ASGE::GameTime &)
 			renderer->renderSprite(*ball1);
 
 			//Points
-			renderer->renderText(("Player 1 Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, 50, 1.0, ASGE::COLOURS::WHITE);
-			renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, 80, 1.0, ASGE::COLOURS::WHITE);
+			if (gamestate_vscpu) 
+			{
+				renderer->renderText(("Player Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, 50, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("CPU Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, 80, 1.0, ASGE::COLOURS::WHITE);
+			}
+			else
+			{
+				renderer->renderText(("Player 1 Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, 50, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, 80, 1.0, ASGE::COLOURS::WHITE);
+			}
 
 			//First to 5
 			if (gamestate_firsttofive) 
@@ -577,7 +617,7 @@ void Pong::render(const ASGE::GameTime &)
 			//Freemode
 			if (gamestate_freeplay)
 			{
-				renderer->renderText("Game Mode: Free Play", 50, 65, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText("Game Mode: VS Player", 50, 65, 1.0, ASGE::COLOURS::WHITE);
 			}
 			//Timed gameplay
 			if (gamestate_timedgameplay)
@@ -586,7 +626,7 @@ void Pong::render(const ASGE::GameTime &)
 				renderer->renderText((std::to_string(int((60 - game_timer)+0.5)) + " Seconds Remaining").c_str(), 171, 80, 1.0, ASGE::COLOURS::WHITE);
 			}
 			//VS CPU
-			if (gamestate_vscpu)
+			if (gamestate_vscpu && !gamestate_timedgameplay && !gamestate_firsttofive)
 			{
 				renderer->renderText("Game Mode: VS CPU", 50, 65, 1.0, ASGE::COLOURS::WHITE);
 			}
@@ -604,16 +644,22 @@ void Pong::render(const ASGE::GameTime &)
 			else
 			{
 				//Option 1 - freeplay
-				renderer->renderText(menu_option == 0 ? ">FREE PLAY" : " FREE PLAY", (game_width / 2) - 49, (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(menu_option == 0 ? ">VS PLAYER" : " VS PLAYER", (game_width / 2) - (107/2), (game_height / 3) * 2 - 150, 1.0, ASGE::COLOURS::WHITE);
 
 				//Option 2 - timed 
-				renderer->renderText(menu_option == 5 ? ">TIMED GAMEPLAY" : " TIMED GAMEPLAY", (game_width / 2) - 76, (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(menu_option == 5 ? ">VS PLAYER TIMED" : " VS PLAYER TIMED", (game_width / 2) - (173/2), (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::WHITE);
 
 				//Option 3 - first to 5
-				renderer->renderText(menu_option == 10 ? ">FIRST TO 5" : " FIRST TO 5", (game_width / 2) - 54, (game_height / 3) * 2, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(menu_option == 10 ? ">VS PLAYER SCORE" : " VS PLAYER SCORE", (game_width / 2) - (173/2), (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::WHITE);
 
 				//Option 4 - VS CPU 
-				renderer->renderText(menu_option == 15 ? ">VS CPU" : " VS CPU", (game_width / 2) - 32, (game_height / 3) * 2 + 50, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(menu_option == 15 ? ">VS CPU" : " VS CPU", (game_width / 2) - (74/2), (game_height / 3) * 2 + 50, 1.0, ASGE::COLOURS::WHITE);
+
+				//Option 5 - VS CPU timed
+				renderer->renderText(menu_option == 20 ? ">VS CPU TIMED" : " VS CPU TIMED", (game_width / 2) - (140/2), (game_height / 3) * 2 + 100, 1.0, ASGE::COLOURS::WHITE);
+
+				//Option 6 - VS CPU first to 5
+				renderer->renderText(menu_option == 25 ? ">VS CPU SCORE" : " VS CPU SCORE", (game_width / 2) - (140/2), (game_height / 3) * 2 + 150, 1.0, ASGE::COLOURS::WHITE);
 			}
 		}
 
@@ -758,13 +804,27 @@ void Pong::handleWin(std::string winner)
 	{
 		//Update points 
 		player_1_points += 1;
-		winner_name = "Player 1";
+		if (gamestate_vscpu)
+		{
+			winner_name = " Player";
+		}
+		else
+		{
+			winner_name = "Player 1";
+		}
 	}
 	else 
 	{
 		//Update points 
 		player_2_points += 1;
-		winner_name = "Player 2";
+		if (gamestate_vscpu)
+		{
+			winner_name = "  CPU";
+		}
+		else
+		{
+			winner_name = "Player 2";
+		}
 	}
 
 	//Reset ball position
