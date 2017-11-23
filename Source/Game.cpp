@@ -174,7 +174,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			left_paddle_moving = false;
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
-				/* SOMETHING NOT WORKING HERE */
+				//Reset values
+				player_1_points = 0;
+				player_2_points = 0;
+				menu_option = 0;
+
 				game_over = false;
 				is_in_menu = true; //send back to menu
 			}
@@ -543,7 +547,7 @@ void Pong::render(const ASGE::GameTime &)
 	renderer->setFont(0);
 
 	//DEBUG OUTPUT
-	//renderer->renderText(std::to_string(cpu_speed_modifier).c_str(), 10, 10, 1.0, ASGE::COLOURS::WHITE);
+	//renderer->renderText((winner_name).c_str(), 70, 70, 1.0, ASGE::COLOURS::WHITE);
 
 	if (game_over)
 	{
@@ -663,7 +667,7 @@ void Pong::render(const ASGE::GameTime &)
 			}
 		}
 
-		if (player_has_won) 
+		if (player_has_won && !game_over)
 		{
 			//Render round win screen
 			renderer->renderText((winner_name + " wins a point!").c_str(), (game_width / 2) - 150, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
