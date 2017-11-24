@@ -179,7 +179,7 @@ bool Pong::init()
 
 	//Two Player overlay
 	menu_overlay_twoPlayer = renderer->createRawSprite();
-	menu_overlay_twoPlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_twoplayer.png");
+	menu_overlay_twoPlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_oneplayer.png");
 	menu_overlay_twoPlayer->width(game_width);
 	menu_overlay_twoPlayer->height(game_height);
 	menu_overlay_twoPlayer->xPos(0);
@@ -187,7 +187,7 @@ bool Pong::init()
 
 	//One Player overlay
 	menu_overlay_onePlayer = renderer->createRawSprite();
-	menu_overlay_onePlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_oneplayer.png");
+	menu_overlay_onePlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_twoplayer.png");
 	menu_overlay_onePlayer->width(game_width);
 	menu_overlay_onePlayer->height(game_height);
 	menu_overlay_onePlayer->xPos(0);
@@ -272,6 +272,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				is_in_menu = true;
 				menu_option = 0;
 				player_has_won = false;
+				show_twoplayer_overlay = false;
 
 				//Reset gamestates
 				gamestate_freeplay = false;
