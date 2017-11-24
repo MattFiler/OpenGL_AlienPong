@@ -52,6 +52,9 @@ private:
 	ASGE::Sprite* menu_overlay_loading = nullptr; //Menu loading overlay
 	ASGE::Sprite* menu_overlay_twoPlayer = nullptr; //Menu TwoPlayer overlay
 	ASGE::Sprite* menu_overlay_onePlayer = nullptr; //Menu OnePlayer overlay
+	ASGE::Sprite* menu_overlay_mode_regular = nullptr; //in-game MODE overlay regular
+	ASGE::Sprite* menu_overlay_mode_timed = nullptr; //in-game MODE overlay timed
+	ASGE::Sprite* menu_overlay_mode_score = nullptr; //in-game MODE overlay score
 
 	//Paddle and ball sizes
 	int paddle_height = 150;
@@ -83,7 +86,7 @@ private:
 	int menu_option = 0;
 	bool player_has_won = false;
 	std::string winner_name = "SOMEONE";
-	int number_of_menu_options = 6;
+	bool is_in_loadscreen = true;
 	bool show_twoplayer_overlay = false;
 
 	//Gamestates

@@ -83,6 +83,27 @@ Pong::~Pong()
 		delete menu_overlay_onePlayer;
 		menu_overlay_onePlayer = nullptr;
 	}
+
+	//overlay MODE: Regular
+	if (menu_overlay_mode_regular)
+	{
+		delete menu_overlay_mode_regular;
+		menu_overlay_mode_regular = nullptr;
+	}
+
+	//overlay MODE: Timed
+	if (menu_overlay_mode_timed)
+	{
+		delete menu_overlay_mode_timed;
+		menu_overlay_mode_timed = nullptr;
+	}
+
+	//overlay MODE: Score
+	if (menu_overlay_mode_score)
+	{
+		delete menu_overlay_mode_score;
+		menu_overlay_mode_score = nullptr;
+	}
 }
 
 
@@ -111,7 +132,7 @@ bool Pong::init()
 	renderer->setClearColour(ASGE::COLOURS::BLACK);
 
 	//Enable FPS count
-	toggleFPS();
+	//toggleFPS();
 
 	//Disable threads
 	inputs->use_threads = false;
@@ -164,13 +185,37 @@ bool Pong::init()
 	menu_overlay_twoPlayer->xPos(0);
 	menu_overlay_twoPlayer->yPos(0);
 
-	//Two Player overlay
+	//One Player overlay
 	menu_overlay_onePlayer = renderer->createRawSprite();
 	menu_overlay_onePlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_oneplayer.png");
 	menu_overlay_onePlayer->width(game_width);
 	menu_overlay_onePlayer->height(game_height);
 	menu_overlay_onePlayer->xPos(0);
 	menu_overlay_onePlayer->yPos(0);
+
+	//overlay MODE: Regular
+	menu_overlay_mode_regular = renderer->createRawSprite();
+	menu_overlay_mode_regular->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_regular.png");
+	menu_overlay_mode_regular->width(game_width);
+	menu_overlay_mode_regular->height(game_height);
+	menu_overlay_mode_regular->xPos(0);
+	menu_overlay_mode_regular->yPos(0);
+
+	//overlay MODE: Timed
+	menu_overlay_mode_timed = renderer->createRawSprite();
+	menu_overlay_mode_timed->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_timed.png");
+	menu_overlay_mode_timed->width(game_width);
+	menu_overlay_mode_timed->height(game_height);
+	menu_overlay_mode_timed->xPos(0);
+	menu_overlay_mode_timed->yPos(0);
+
+	//overlay MODE: First to 5
+	menu_overlay_mode_score = renderer->createRawSprite();
+	menu_overlay_mode_score->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_points.png");
+	menu_overlay_mode_score->width(game_width);
+	menu_overlay_mode_score->height(game_height);
+	menu_overlay_mode_score->xPos(0);
+	menu_overlay_mode_score->yPos(0);
 
 	//Handle inputs
 	key_callback_id = inputs->addCallbackFnc(
@@ -241,7 +286,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		else
 		{
 			//Change menu controls
-			if (is_in_menu) {
+			if (is_in_menu && !is_in_loadscreen) {
 				right_paddle_moving = false;
 				left_paddle_moving = false;
 
@@ -252,26 +297,50 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 					if (show_twoplayer_overlay) 
 					{
 						show_twoplayer_overlay = false;
+						menu_option = 0;
 					}
 					else 
 					{
 						show_twoplayer_overlay = true;
+						menu_option = 15;
 					}
 				}
-				//Go down on press of down
-				if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+				if (show_twoplayer_overlay)
 				{
-					if (menu_option < (((number_of_menu_options - 2) * 5) + 1) && menu_option >= 0)
+					//Go down on press of down
+					if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 					{
-						menu_option += 5;
+						if (menu_option != 25)
+						{
+							menu_option += 5;
+						}
+					}
+					//Go up on press of up
+					if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+					{
+						if (menu_option != 15)
+						{
+							menu_option -= 5;
+						}
 					}
 				}
-				//Go up on press of up
-				if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+				else
 				{
-					if (menu_option <= ((number_of_menu_options - 1) * 5) && menu_option > 0)
+					//Go down on press of down
+					if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 					{
-						menu_option -= 5;
+						if (menu_option != 10)
+						{
+							menu_option += 5;
+						}
+					}
+					//Go up on press of up
+					if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+					{
+						if (menu_option != 0)
+						{
+							menu_option -= 5;
+						}
 					}
 				}
 				//Handle menu selections
@@ -313,7 +382,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 					if (menu_option == 15)
 					{
 						is_in_menu = false;
-						gamestate_freeplay = false;
+						gamestate_freeplay = true;
 						gamestate_timedgameplay = false;
 						gamestate_firsttofive = false;
 						gamestate_vscpu = true;
@@ -622,8 +691,22 @@ void Pong::render(const ASGE::GameTime &)
 	//Render background
 	renderer->renderSprite(*menu_background);
 
+	//Mode overlays
+	if (gamestate_freeplay)
+	{
+		renderer->renderSprite(*menu_overlay_mode_regular); //MODE OVERLAY: regular
+	}
+	if (gamestate_firsttofive)
+	{
+		renderer->renderSprite(*menu_overlay_mode_score); //MODE OVERLAY: score
+	}
+	if (gamestate_timedgameplay)
+	{
+		renderer->renderSprite(*menu_overlay_mode_timed); //MODE OVERLAY: timed
+	}
+
 	//DEBUG OUTPUT
-	//renderer->renderText((winner_name).c_str(), 70, 70, 1.0, ASGE::COLOURS::WHITE);
+	//renderer->renderText(std::to_string(menu_option).c_str(), 70, 70, 1.0, ASGE::COLOURS::WHITE);
 
 	if (game_over)
 	{
@@ -680,42 +763,26 @@ void Pong::render(const ASGE::GameTime &)
 			//Points
 			if (gamestate_vscpu) 
 			{
-				renderer->renderText(("Player Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, 50, 1.0, ASGE::COLOURS::WHITE);
-				renderer->renderText(("CPU Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, 80, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("Player Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, game_height - 80, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("CPU Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, game_height - 50, 1.0, ASGE::COLOURS::WHITE);
 			}
 			else
 			{
-				renderer->renderText(("Player 1 Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, 50, 1.0, ASGE::COLOURS::WHITE);
-				renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, 80, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("Player 1 Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, game_height - 80, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, game_height - 50, 1.0, ASGE::COLOURS::WHITE);
 			}
 
-			//First to 5
-			if (gamestate_firsttofive) 
-			{
-				renderer->renderText("Game Mode: First to Five", 50, 65, 1.0, ASGE::COLOURS::WHITE);
-			}
-			//Freemode
-			if (gamestate_freeplay)
-			{
-				renderer->renderText("Game Mode: VS Player", 50, 65, 1.0, ASGE::COLOURS::WHITE);
-			}
-			//Timed gameplay
+			//Timer
 			if (gamestate_timedgameplay)
 			{
-				renderer->renderText("Game Mode: Timed Gameplay", 50, 50, 1.0, ASGE::COLOURS::WHITE);
-				renderer->renderText((std::to_string(int((60 - game_timer)+0.5)) + " Seconds Remaining").c_str(), 171, 80, 1.0, ASGE::COLOURS::WHITE);
-			}
-			//VS CPU
-			if (gamestate_vscpu && !gamestate_timedgameplay && !gamestate_firsttofive)
-			{
-				renderer->renderText("Game Mode: VS CPU", 50, 65, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText((std::to_string(int((60 - game_timer)+0.5)) + " Seconds Remaining").c_str(), 50, game_height - 50, 1.0, ASGE::COLOURS::WHITE); 
 			}
 		}
 		else
 		{
-
 			if (is_paused)
 			{
+				//Game is paused
 				renderer->renderText("GAME PAUSED", (game_width / 2) - 85, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
 				renderer->renderText("Press the ESC key to continue.", (game_width / 2) - 150, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
 			}
@@ -728,17 +795,18 @@ void Pong::render(const ASGE::GameTime &)
 				}
 				else
 				{
+					is_in_loadscreen = false;
 					if (show_twoplayer_overlay) 
 					{
 						//Render TWO PLAYER
 						renderer->renderSprite(*menu_overlay_twoPlayer);
 
 						//Option 1 - VS CPU 
-						renderer->renderText(menu_option == 15 ? ">VS CPU" : " VS CPU", (game_width / 2) - (74 / 2), (game_height / 3) * 2 + 50, 1.0, ASGE::COLOURS::WHITE);
+						renderer->renderText(menu_option == 15 ? "> PLAY - Player VS CPU" : "  PLAY - Player VS CPU", (game_width / 2) - 190, (game_height / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
 						//Option 2 - VS CPU timed
-						renderer->renderText(menu_option == 20 ? ">VS CPU TIMED" : " VS CPU TIMED", (game_width / 2) - (140 / 2), (game_height / 3) * 2 + 100, 1.0, ASGE::COLOURS::WHITE);
+						renderer->renderText(menu_option == 20 ? "> PLAY - Best of 60 seconds" : "  PLAY - Best of 60 seconds", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
 						//Option 3 - VS CPU first to 5
-						renderer->renderText(menu_option == 25 ? ">VS CPU SCORE" : " VS CPU SCORE", (game_width / 2) - (140 / 2), (game_height / 3) * 2 + 150, 1.0, ASGE::COLOURS::WHITE);
+						renderer->renderText(menu_option == 25 ? "> PLAY - First to 5" : "  PLAY - First to 5", (game_width / 2) - 190, (game_height / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
 					} 
 					else
 					{
@@ -746,11 +814,11 @@ void Pong::render(const ASGE::GameTime &)
 						renderer->renderSprite(*menu_overlay_onePlayer);
 
 						//Option 1 - freeplay
-						renderer->renderText(menu_option == 0 ? ">VS PLAYER" : " VS PLAYER", (game_width / 2) - (107 / 2), (game_height / 3) * 2 - 150, 1.0, ASGE::COLOURS::WHITE);
+						renderer->renderText(menu_option == 0 ? "> PLAY - Player VS Player" : "  PLAY - Player VS Player", (game_width / 2) - 190, (game_height / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
 						//Option 2 - timed 
-						renderer->renderText(menu_option == 5 ? ">VS PLAYER TIMED" : " VS PLAYER TIMED", (game_width / 2) - (173 / 2), (game_height / 3) * 2 - 100, 1.0, ASGE::COLOURS::WHITE);
+						renderer->renderText(menu_option == 5 ? "> PLAY - Best of 60 seconds" : "  PLAY - Best of 60 seconds", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
 						//Option 3 - first to 5
-						renderer->renderText(menu_option == 10 ? ">VS PLAYER SCORE" : " VS PLAYER SCORE", (game_width / 2) - (173 / 2), (game_height / 3) * 2 - 50, 1.0, ASGE::COLOURS::WHITE);
+						renderer->renderText(menu_option == 10 ? "> PLAY - First to 5" : "  PLAY - First to 5", (game_width / 2) - 190, (game_height / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
 					}
 				}
 			}
