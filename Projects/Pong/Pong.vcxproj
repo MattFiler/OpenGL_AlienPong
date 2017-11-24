@@ -92,12 +92,13 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\GameFont.cpp" />
     <ClCompile Include="..\..\Source\main.cpp" />
+    <ClCompile Include="Game_setup.cpp" />
     <ClInclude Include="..\..\Source\Constants.h" />
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameFont.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Game.cpp" />
+    <ClCompile Include="..\..\Source\Game_core.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

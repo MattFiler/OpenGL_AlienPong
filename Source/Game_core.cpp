@@ -9,223 +9,6 @@
 
 
 /**
-*   @brief   Default Constructor.
-*/
-Pong::Pong()
-{
-	//Change Resolution
-	game_width = 1024;
-	game_height = 768;
-}
-
-
-/**
-*   @brief   Destructor.
-*   @details Remove any non-managed memory and callbacks.
-*/
-Pong::~Pong()
-{
-	//Input callbacks
-	this->inputs->unregisterCallback(key_callback_id);
-
-	//Font reset
-	for (auto& font : GameFont::fonts)
-	{
-		delete font;
-		font = nullptr;
-	}
-
-	//Paddle 1 reset
-	if (paddle1)
-	{
-		delete paddle1;
-		paddle1 = nullptr;
-	}
-
-	//Paddle 2 reset
-	if (paddle2)
-	{
-		delete paddle2;
-		paddle2 = nullptr;
-	}
-
-	//Ball 1 reset
-	if (ball1)
-	{
-		delete ball1;
-		ball1 = nullptr;
-	}
-
-	//Menu background
-	if (menu_background)
-	{
-		delete menu_background;
-		menu_background = nullptr;
-	}
-
-	//Menu loading
-	if (menu_overlay_loading)
-	{
-		delete menu_overlay_loading;
-		menu_overlay_loading = nullptr;
-	}
-
-	//Menu overlay 2 player
-	if (menu_overlay_twoPlayer)
-	{
-		delete menu_overlay_twoPlayer;
-		menu_overlay_twoPlayer = nullptr;
-	}
-
-	//Menu overlay 1 player
-	if (menu_overlay_onePlayer)
-	{
-		delete menu_overlay_onePlayer;
-		menu_overlay_onePlayer = nullptr;
-	}
-
-	//overlay MODE: Regular
-	if (menu_overlay_mode_regular)
-	{
-		delete menu_overlay_mode_regular;
-		menu_overlay_mode_regular = nullptr;
-	}
-
-	//overlay MODE: Timed
-	if (menu_overlay_mode_timed)
-	{
-		delete menu_overlay_mode_timed;
-		menu_overlay_mode_timed = nullptr;
-	}
-
-	//overlay MODE: Score
-	if (menu_overlay_mode_score)
-	{
-		delete menu_overlay_mode_score;
-		menu_overlay_mode_score = nullptr;
-	}
-}
-
-
-/**
-*   @brief   Initialises the game.
-*   @details The game window is created and all assets required to
-			 run the game are loaded. The keyHandler callback should also
-			 be set in the initialise function. 
-*   @return  True if the game initialised correctly.
-*/
-bool Pong::init()
-{
-	//Check graphics API has been initialised
-	if (!initAPI())
-	{
-		return false;
-	}
-
-	//Disable sprite batching
-	renderer->setSpriteMode(ASGE::SpriteSortMode::IMMEDIATE);
-
-	//Change window title
-	renderer->setWindowTitle("Pong Terminal");
-
-	//Change window background colour
-	renderer->setClearColour(ASGE::COLOURS::BLACK);
-
-	//Enable FPS count
-	//toggleFPS();
-
-	//Disable threads
-	inputs->use_threads = false;
-
-	//Create paddle 1
-	paddle1 = renderer->createRawSprite();
-	paddle1->loadTexture(".\\Resources\\Textures\\whitepixel.jpg");
-	paddle1->width(paddle_width);
-	paddle1->height(paddle_height);
-	paddle1->xPos(100);
-	paddle1->yPos((game_height / 2) - (paddle_height / 2));
-
-	//Create paddle 2
-	paddle2 = renderer->createRawSprite();
-	paddle2->loadTexture(".\\Resources\\Textures\\whitepixel.jpg");
-	paddle2->width(paddle_width);
-	paddle2->height(paddle_height);
-	paddle2->xPos(game_width - 100);
-	paddle2->yPos((game_height / 2) - (paddle_height / 2));
-
-	//Create ball
-	ball1 = renderer->createRawSprite();
-	ball1->loadTexture(".\\Resources\\Textures\\whitepixel.jpg");
-	ball1->width(ball_size);
-	ball1->height(ball_size);
-	ball1->xPos((game_width / 2) - (ball_size / 2));
-	ball1->yPos((game_height / 2) - (ball_size / 2));
-
-	//Menu background
-	menu_background = renderer->createRawSprite();
-	menu_background->loadTexture(".\\Resources\\Textures\\MENU\\background.jpg");
-	menu_background->width(game_width);
-	menu_background->height(game_height);
-	menu_background->xPos(0);
-	menu_background->yPos(0);
-
-	//Loading overlay
-	menu_overlay_loading = renderer->createRawSprite();
-	menu_overlay_loading->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading.png");
-	menu_overlay_loading->width(game_width);
-	menu_overlay_loading->height(game_height);
-	menu_overlay_loading->xPos(0);
-	menu_overlay_loading->yPos(0);
-
-	//Two Player overlay
-	menu_overlay_twoPlayer = renderer->createRawSprite();
-	menu_overlay_twoPlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_oneplayer.png");
-	menu_overlay_twoPlayer->width(game_width);
-	menu_overlay_twoPlayer->height(game_height);
-	menu_overlay_twoPlayer->xPos(0);
-	menu_overlay_twoPlayer->yPos(0);
-
-	//One Player overlay
-	menu_overlay_onePlayer = renderer->createRawSprite();
-	menu_overlay_onePlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_twoplayer.png");
-	menu_overlay_onePlayer->width(game_width);
-	menu_overlay_onePlayer->height(game_height);
-	menu_overlay_onePlayer->xPos(0);
-	menu_overlay_onePlayer->yPos(0);
-
-	//overlay MODE: Regular
-	menu_overlay_mode_regular = renderer->createRawSprite();
-	menu_overlay_mode_regular->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_regular.png");
-	menu_overlay_mode_regular->width(game_width);
-	menu_overlay_mode_regular->height(game_height);
-	menu_overlay_mode_regular->xPos(0);
-	menu_overlay_mode_regular->yPos(0);
-
-	//overlay MODE: Timed
-	menu_overlay_mode_timed = renderer->createRawSprite();
-	menu_overlay_mode_timed->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_timed.png");
-	menu_overlay_mode_timed->width(game_width);
-	menu_overlay_mode_timed->height(game_height);
-	menu_overlay_mode_timed->xPos(0);
-	menu_overlay_mode_timed->yPos(0);
-
-	//overlay MODE: First to 5
-	menu_overlay_mode_score = renderer->createRawSprite();
-	menu_overlay_mode_score->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_points.png");
-	menu_overlay_mode_score->width(game_width);
-	menu_overlay_mode_score->height(game_height);
-	menu_overlay_mode_score->xPos(0);
-	menu_overlay_mode_score->yPos(0);
-
-	//Handle inputs
-	key_callback_id = inputs->addCallbackFnc(
-		ASGE::E_KEY, &Pong::keyHandler, this);
-	
-	return true;
-}
-
-
-/**
 *   @brief   Processes any key inputs
 *   @details This function is added as a callback to handle the game's 
 			 keyboard input. For this assignment, calls to this function 
@@ -711,38 +494,33 @@ void Pong::render(const ASGE::GameTime &)
 
 	if (game_over)
 	{
-		//Win string
-		std::string winner_string = "";
+		//Render win message
 		if (player_1_points == player_2_points)
 		{
-			winner_string = "  The game was a draw!"; //Draw
+			renderer->renderSprite(*menu_overlay_win_draw); //Draw
 		}
 		if (player_1_points > player_2_points)
 		{
 			if (gamestate_vscpu)
 			{
-				winner_string = "   You won the game!"; //Human wins
+				renderer->renderSprite(*menu_overlay_win_player); //Human wins
 			}
 			else
 			{
-				winner_string = "Player 1 wins the game!"; //P1 wins
+				renderer->renderSprite(*menu_overlay_win_p1); //P1 wins
 			}
 		}
 		if (player_1_points < player_2_points) 
 		{
 			if (gamestate_vscpu) 
 			{
-				winner_string = "Computer wins the game!"; //CPU wins
+				renderer->renderSprite(*menu_overlay_win_cpu); //CPU wins
 			} 
 			else
 			{
-				winner_string = "Player 2 wins the game!"; //P2 wins
+				renderer->renderSprite(*menu_overlay_win_p2); //P2 wins
 			}
 		}
-
-		//Render round win screen
-		renderer->renderText((winner_string).c_str(), (game_width / 2) - 160, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
-		renderer->renderText("Press ENTER key to continue.", (game_width / 2) - 135, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
 		
 		//Clear player win state
 		player_has_won = false;
@@ -784,15 +562,34 @@ void Pong::render(const ASGE::GameTime &)
 			if (is_paused)
 			{
 				//Game is paused
-				renderer->renderText("GAME PAUSED", (game_width / 2) - 85, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
-				renderer->renderText("Press the ESC key to continue.", (game_width / 2) - 150, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderSprite(*menu_overlay_paused);
 			}
 			else
 			{
+				//Render loading screen for first few seconds
 				if (int(global_game_timer) < 3) 
 				{
-					//Render loading screen for first few seconds
-					renderer->renderSprite(*menu_overlay_loading);
+					float stage_0 = 0.3;
+					float stage_1 = 0.7;
+					float stage_2 = 1.2;
+					float stage_3 = 1.6;
+					float stage_4 = 2.1;
+					float stage_5 = 2.5;
+					float stage_6 = 2.8;
+					if (global_game_timer < stage_0)
+						renderer->renderSprite(*menu_overlay_loading);
+					if (global_game_timer < stage_1 && global_game_timer >= stage_0)
+						renderer->renderSprite(*menu_overlay_loading_s0);
+					if (global_game_timer < stage_2 && global_game_timer >= stage_1)
+						renderer->renderSprite(*menu_overlay_loading_s1);
+					if (global_game_timer < stage_3 && global_game_timer >= stage_2)
+						renderer->renderSprite(*menu_overlay_loading_s2);
+					if (global_game_timer < stage_4 && global_game_timer >= stage_3)
+						renderer->renderSprite(*menu_overlay_loading_s3);
+					if (global_game_timer < stage_5 && global_game_timer >= stage_4)
+						renderer->renderSprite(*menu_overlay_loading_s4);
+					if ((global_game_timer < stage_6 && global_game_timer >= stage_5) || global_game_timer >= stage_6)
+						renderer->renderSprite(*menu_overlay_loading_s5);
 				}
 				else
 				{
@@ -828,8 +625,28 @@ void Pong::render(const ASGE::GameTime &)
 		if (player_has_won && !game_over)
 		{
 			//Render round win screen
-			renderer->renderText((winner_name + " wins a point!").c_str(), (game_width / 2) - 150, (game_height / 2) - 50, 1.4, ASGE::COLOURS::WHITE);
-			renderer->renderText("Press ENTER key to continue.", (game_width / 2) - 135, (game_height / 2) - 20, 1.0, ASGE::COLOURS::WHITE);
+			switch (winner_id) 
+			{
+				case 1: {
+					renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
+					break;
+				}
+				case 2: {
+					renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
+					break;
+				}
+				case 3: {
+					renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
+					break;
+				}
+				case 4: {
+					renderer->renderSprite(*menu_overlay_score_player); //Player scored
+					break;
+				}
+				default: {
+					break;
+				}
+			}
 		}
 	}
 }
@@ -968,11 +785,11 @@ void Pong::handleWin(std::string winner)
 		player_1_points += 1;
 		if (gamestate_vscpu)
 		{
-			winner_name = " Player";
+			winner_id = 4;
 		}
 		else
 		{
-			winner_name = "Player 1";
+			winner_id = 1;
 		}
 	}
 	else 
@@ -981,11 +798,11 @@ void Pong::handleWin(std::string winner)
 		player_2_points += 1;
 		if (gamestate_vscpu)
 		{
-			winner_name = "  CPU";
+			winner_id = 3;
 		}
 		else
 		{
-			winner_name = "Player 2";
+			winner_id = 2;
 		}
 	}
 
