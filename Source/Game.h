@@ -145,6 +145,7 @@ private:
 	float game_timer = 0;
 	float global_game_timer = 0;
 	bool is_paused = false;
+	bool freeze_ball = true;
 
 	//Audio checks
 	bool has_performed_startup_sound = false;

@@ -44,6 +44,10 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		left_paddle_moving = false;
 		if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
+			//Play SFX
+			PlaySound(TEXT("../../Resources/Audio/BEEP_011.wav"), NULL, SND_ASYNC);
+
+			//Return to game
 			player_has_won = false;
 			effect_has_finished_cycle = false;
 		}
@@ -81,6 +85,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				game_over = false;
 				game_timer = 0;
 				is_paused = false;
+				freeze_ball = true;
 
 				//Reset Misc
 				cpu_speed_modifier = 2;
@@ -210,6 +215,13 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						game_timer = 0;
 						player_1_points = 0;
 						player_2_points = 0;
+						freeze_ball = false;
+
+						//Reset paddle positions
+						paddle1->xPos(100);
+						paddle1->yPos((game_height / 2) - (paddle_height / 2));
+						paddle2->xPos(game_width - 100);
+						paddle2->yPos((game_height / 2) - (paddle_height / 2));
 
 						//Free play
 						if (menu_option == 0)
@@ -273,13 +285,19 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				{
 					if (!is_paused) 
 					{
+						//Quit game
 						signalExit();
 					}
 					else 
 					{
+						//Play SFX
+						PlaySound(TEXT("../../Resources/Audio/BEEP_011.wav"), NULL, SND_ASYNC);
+
+						//Un-pause
 						is_in_menu = false;
 						is_paused = false;
 						effect_has_finished_cycle = false;
+						freeze_ball = false;
 					}
 				}
 
@@ -288,6 +306,9 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				{
 					if (is_paused)
 					{
+						//Play SFX
+						PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
+
 						//Reset points
 						player_1_points = 0;
 						player_2_points = 0;
@@ -307,10 +328,24 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						game_over = false;
 						game_timer = 0;
 						is_paused = false;
+						freeze_ball = true;
 
 						//Reset Misc
 						cpu_speed_modifier = 2;
 						effect_has_finished_cycle = false;
+
+						//Reset ball position
+						ball1->xPos((game_width / 2) - (ball_size / 2));
+						ball1->yPos((game_height / 2) - (ball_size / 2));
+
+						//Reset paddle positions
+						paddle1->xPos(100);
+						paddle1->yPos((game_height / 2) - (paddle_height / 2));
+						paddle2->xPos(game_width - 100);
+						paddle2->yPos((game_height / 2) - (paddle_height / 2));
+
+						//Reset angle
+						movement_angle = 0;
 					}
 				}
 			}
@@ -398,7 +433,7 @@ void Pong::update(const ASGE::GameTime & us)
 	auto y_pos = ball1->yPos();
 
 	//Only run game scripts if out of menu
-	if (is_in_menu == false) 
+	if (is_in_menu == false && player_has_won == false) 
 	{
 		/* BALL COLLISION DETECTION */
 
@@ -442,11 +477,20 @@ void Pong::update(const ASGE::GameTime & us)
 		//Apply movement angle
 		y_pos += movement_angle * (us.delta_time.count() / 1000.f);
 
-		//Update X position of ball
-		ball1->xPos(x_pos);
+		if (!freeze_ball) 
+		{
+			//Update X position of ball
+			ball1->xPos(x_pos);
 
-		//Update Y position of ball
-		ball1->yPos(y_pos);
+			//Update Y position of ball
+			ball1->yPos(y_pos);
+		}
+		else
+		{
+			//Freeze ball if requested
+			ball1->xPos(ball1->xPos());
+			ball1->yPos(ball1->yPos());
+		}
 
 
 		/* HANDLE WINS */
@@ -537,8 +581,7 @@ void Pong::update(const ASGE::GameTime & us)
 		if (is_paused) 
 		{
 			//Freeze ball on pause
-			ball1->xPos(ball1->xPos());
-			ball1->yPos(ball1->yPos());
+			freeze_ball = true;
 		}
 		else
 		{
@@ -556,6 +599,7 @@ void Pong::update(const ASGE::GameTime & us)
 			right_paddle_moving = false;
 			left_paddle_moving = false;
 			game_over = true;
+			freeze_ball = true;
 		}
 	}
 
@@ -567,6 +611,7 @@ void Pong::update(const ASGE::GameTime & us)
 			right_paddle_moving = false;
 			left_paddle_moving = false;
 			game_over = true;
+			freeze_ball = true;
 		}
 	}
 }
@@ -592,7 +637,8 @@ void Pong::render(const ASGE::GameTime &)
 		((time_effect_started + effect_time_in_seconds) < global_game_timer && is_performing_effect) //Is in time range for performing effect?
 		) 
 	{
-		if (!effect_has_finished_cycle) {
+		if (!effect_has_finished_cycle) 
+		{
 			if (is_performing_effect == false)
 			{
 				time_effect_started = global_game_timer; //Log start time (if not already performing)
@@ -832,27 +878,32 @@ void Pong::render(const ASGE::GameTime &)
 			//Render round win screen
 			switch (winner_id) 
 			{
-				case 1: {
+				case 1: 
+				{
 					renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
 					has_requested_effect = true;
 					break;
 				}
-				case 2: {
+				case 2: 
+				{
 					renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
 					has_requested_effect = true;
 					break;
 				}
-				case 3: {
+				case 3: 
+				{
 					renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
 					has_requested_effect = true;
 					break;
 				}
-				case 4: {
+				case 4: 
+				{
 					renderer->renderSprite(*menu_overlay_score_player); //Player scored
 					has_requested_effect = true;
 					break;
 				}
-				default: {
+				default: 
+				{
 					break;
 				}
 			}
@@ -885,7 +936,7 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 		if (y > (sprite->yPos() - ball_size) && y < (sprite->yPos() + paddle_height))
 		{
 			//Play SFX
-			PlaySound(TEXT("../../Resources/Audio/BEEP_021.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("../../Resources/Audio/BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 			return true;
 		}
 		else
