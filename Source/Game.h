@@ -4,21 +4,26 @@
 
 struct GameFont;
 
-/**
-*  Pong. An OpenGL Game based on ASGE.
+
+/*
+
+//////// PONG - Created by Matt Filer ////////
+//////////////// GAME HEADER /////////////////
+
+*/
 
 
+
+/*
 TODO:
 	Implement vector class
 	Implement point line checker to account for frame lag
 	Implement new menu system
-		Reset menu index on tab & handle change in options
-		In-game overlays
-		Faked loading bar?
 		Jixellation.ttf font import
-
-
+		Scoreboard
 */
+
+
 
 class Pong :
 	public ASGE::OGLGame
@@ -65,7 +70,9 @@ private:
 
 	ASGE::Sprite* menu_overlay_twoPlayer = nullptr; //Menu TwoPlayer overlay
 	ASGE::Sprite* menu_overlay_onePlayer = nullptr; //Menu OnePlayer overlay
-
+	ASGE::Sprite* menu_overlay_controls = nullptr; //Menu controls overlay
+	ASGE::Sprite* menu_overlay_scoreboard = nullptr; //Menu scores overlay
+	 
 	ASGE::Sprite* menu_overlay_mode_regular = nullptr; //in-game MODE overlay regular
 	ASGE::Sprite* menu_overlay_mode_timed = nullptr; //in-game MODE overlay timed
 	ASGE::Sprite* menu_overlay_mode_score = nullptr; //in-game MODE overlay score
@@ -116,7 +123,8 @@ private:
 	bool player_has_won = false;
 	int winner_id = 0;
 	bool is_in_loadscreen = true;
-	bool show_twoplayer_overlay = false;
+	bool swap_tabs = false;
+	bool showing_first_menu = true;
 
 	//Custom FX
 	bool is_performing_effect = false;
@@ -140,5 +148,11 @@ private:
 
 	//Audio checks
 	bool has_performed_startup_sound = false;
+
+	//Scores
+	int scoreboard_score_p1 = 0;
+	int scoreboard_score_p2 = 0;
+	int scoreboard_score_player = 0;
+	int scoreboard_score_cpu = 0;
 };
 

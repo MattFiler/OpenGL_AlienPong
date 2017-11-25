@@ -177,6 +177,20 @@ Pong::~Pong()
 		menu_overlay_onePlayer = nullptr;
 	}
 
+	//Menu overlay controls
+	if (menu_overlay_controls)
+	{
+		delete menu_overlay_controls;
+		menu_overlay_controls = nullptr;
+	}
+
+	//Menu overlay scores
+	if (menu_overlay_scoreboard)
+	{
+		delete menu_overlay_scoreboard;
+		menu_overlay_scoreboard = nullptr;
+	}
+
 	//overlay MODE: Regular
 	if (menu_overlay_mode_regular)
 	{
@@ -421,6 +435,18 @@ bool Pong::init()
 	menu_overlay_onePlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_twoplayer.png");
 	menu_overlay_onePlayer->width(game_width);
 	menu_overlay_onePlayer->height(game_height);
+
+	//Controls overlay
+	menu_overlay_controls = renderer->createRawSprite();
+	menu_overlay_controls->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_controls.png");
+	menu_overlay_controls->width(game_width);
+	menu_overlay_controls->height(game_height);
+
+	//Scoreboard overlay
+	menu_overlay_scoreboard = renderer->createRawSprite();
+	menu_overlay_scoreboard->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_scores.png");
+	menu_overlay_scoreboard->width(game_width);
+	menu_overlay_scoreboard->height(game_height);
 
 	//overlay MODE: Regular
 	menu_overlay_mode_regular = renderer->createRawSprite();
