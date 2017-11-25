@@ -67,7 +67,8 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				game_timer = 0;
 				is_paused = false;
 
-				//Reset FX var
+				//Reset Misc
+				cpu_speed_modifier = 2;
 				effect_has_finished_cycle = false;
 			}
 		}

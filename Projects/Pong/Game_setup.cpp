@@ -56,18 +56,18 @@ Pong::~Pong()
 		ball1 = nullptr;
 	}
 
+	//Monitor Overlay
+	if (monitor_overlay)
+	{
+		delete monitor_overlay;
+		monitor_overlay = nullptr;
+	}
+
 	//Menu background
 	if (menu_background)
 	{
 		delete menu_background;
 		menu_background = nullptr;
-	}
-
-	//Menu background flicker
-	if (monitor_overlay)
-	{
-		delete monitor_overlay;
-		monitor_overlay = nullptr;
 	}
 
 	//Menu background s00
