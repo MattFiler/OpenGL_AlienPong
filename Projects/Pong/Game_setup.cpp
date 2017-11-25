@@ -63,6 +63,13 @@ Pong::~Pong()
 		menu_background = nullptr;
 	}
 
+	//Menu background flicker
+	if (monitor_overlay)
+	{
+		delete monitor_overlay;
+		monitor_overlay = nullptr;
+	}
+
 	//Menu background s00
 	if (menu_background_s00)
 	{
@@ -310,6 +317,12 @@ bool Pong::init()
 	ball1->yPos((game_height / 2) - (ball_size / 2));
 
 
+	//Monitor overlay
+	monitor_overlay = renderer->createRawSprite();
+	monitor_overlay->loadTexture(".\\Resources\\Textures\\MENU\\overlay_monitor_effect.png");
+	monitor_overlay->width(game_width);
+	monitor_overlay->height(game_height);
+
 	//Menu background
 	menu_background = renderer->createRawSprite();
 	menu_background->loadTexture(".\\Resources\\Textures\\MENU\\background.jpg");
@@ -318,31 +331,31 @@ bool Pong::init()
 
 	//Menu background state 00
 	menu_background_s00 = renderer->createRawSprite();
-	menu_background_s00->loadTexture(".\\Resources\\Textures\\MENU\\background_state00.jpg");
+	menu_background_s00->loadTexture(".\\Resources\\Textures\\MENU\\background_static00.jpg");
 	menu_background_s00->width(game_width);
 	menu_background_s00->height(game_height);
 
 	//Menu background state 01
 	menu_background_s01 = renderer->createRawSprite();
-	menu_background_s01->loadTexture(".\\Resources\\Textures\\MENU\\background_state01.jpg");
+	menu_background_s01->loadTexture(".\\Resources\\Textures\\MENU\\background_static01.jpg");
 	menu_background_s01->width(game_width);
 	menu_background_s01->height(game_height);
 
 	//Menu background state 02
 	menu_background_s02 = renderer->createRawSprite();
-	menu_background_s02->loadTexture(".\\Resources\\Textures\\MENU\\background_state02.jpg");
+	menu_background_s02->loadTexture(".\\Resources\\Textures\\MENU\\background_static02.jpg");
 	menu_background_s02->width(game_width);
 	menu_background_s02->height(game_height);
 
 	//Menu background state 03
 	menu_background_s03 = renderer->createRawSprite();
-	menu_background_s03->loadTexture(".\\Resources\\Textures\\MENU\\background_state03.jpg");
+	menu_background_s03->loadTexture(".\\Resources\\Textures\\MENU\\background_static03.jpg");
 	menu_background_s03->width(game_width);
 	menu_background_s03->height(game_height);
 
 	//Menu background state 04
 	menu_background_s04 = renderer->createRawSprite();
-	menu_background_s04->loadTexture(".\\Resources\\Textures\\MENU\\background_state04.jpg");
+	menu_background_s04->loadTexture(".\\Resources\\Textures\\MENU\\background_static04.jpg");
 	menu_background_s04->width(game_width);
 	menu_background_s04->height(game_height);
 

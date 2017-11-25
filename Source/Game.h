@@ -72,6 +72,8 @@ private:
 
 	ASGE::Sprite* menu_overlay_paused = nullptr; //in-game PAUSE screen
 
+	ASGE::Sprite* monitor_overlay = nullptr;  //monitor overlay effect
+
 	ASGE::Sprite* menu_overlay_win_p1 = nullptr; //in-game WIN screen - P1
 	ASGE::Sprite* menu_overlay_win_p2 = nullptr; //in-game WIN screen - P2
 	ASGE::Sprite* menu_overlay_win_player = nullptr; //in-game WIN screen - PLAYER
@@ -115,6 +117,13 @@ private:
 	int winner_id = 0;
 	bool is_in_loadscreen = true;
 	bool show_twoplayer_overlay = false;
+
+	//Custom FX
+	bool is_performing_effect = false;
+	bool has_requested_effect = false;
+	float time_effect_started = 0.0;
+	float effect_time_in_seconds = 0.07;
+	bool effect_has_finished_cycle = false;
 
 	//Gamestates
 	bool gamestate_freeplay = false;

@@ -31,6 +31,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
 			player_has_won = false;
+			effect_has_finished_cycle = false;
 		}
 
 		if (game_over)
@@ -65,6 +66,9 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				game_over = false;
 				game_timer = 0;
 				is_paused = false;
+
+				//Reset FX var
+				effect_has_finished_cycle = false;
 			}
 		}
 		else
@@ -202,6 +206,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 					{
 						is_in_menu = false;
 						is_paused = false;
+						effect_has_finished_cycle = false;
 					}
 				}
 			}
@@ -475,6 +480,50 @@ void Pong::render(const ASGE::GameTime &)
 	//Render background
 	renderer->renderSprite(*menu_background);
 
+	//Render FX
+	if (has_requested_effect || //Has requested effect?
+		((time_effect_started + effect_time_in_seconds) < global_game_timer && is_performing_effect) //Is in time range for performing effect?
+		) 
+	{
+		if (!effect_has_finished_cycle) {
+			if (is_performing_effect == false)
+			{
+				time_effect_started = global_game_timer; //Log start time (if not already performing)
+			}
+			is_performing_effect = false;
+
+			//Run animation
+			if (global_game_timer - time_effect_started < 0.01)
+			{
+				renderer->renderSprite(*menu_background_s00);
+				is_performing_effect = true;
+			}
+			if (global_game_timer - time_effect_started < 0.03 && global_game_timer - time_effect_started >= 0.01)
+			{
+				renderer->renderSprite(*menu_background_s01);
+				is_performing_effect = true;
+			}
+			if (global_game_timer - time_effect_started < 0.04 && global_game_timer - time_effect_started >= 0.03)
+			{
+				renderer->renderSprite(*menu_background_s02);
+				is_performing_effect = true;
+			}
+			if (global_game_timer - time_effect_started < 0.06 && global_game_timer - time_effect_started >= 0.04)
+			{
+				renderer->renderSprite(*menu_background_s03);
+				is_performing_effect = true;
+			}
+			if (global_game_timer - time_effect_started < 0.07 && global_game_timer - time_effect_started >= 0.06)
+			{
+				renderer->renderSprite(*menu_background_s04);
+				is_performing_effect = true;
+				effect_has_finished_cycle = true;
+			}
+
+			has_requested_effect = false; //Clear request
+		}
+	}
+
 	//Mode overlays
 	if (gamestate_freeplay)
 	{
@@ -490,7 +539,7 @@ void Pong::render(const ASGE::GameTime &)
 	}
 
 	//DEBUG OUTPUT
-	//renderer->renderText(std::to_string(menu_option).c_str(), 70, 70, 1.0, ASGE::COLOURS::WHITE);
+	//renderer->renderText(std::to_string(time_effect_started).c_str(), 70, 70, 1.0, ASGE::COLOURS::WHITE);
 
 	if (game_over)
 	{
@@ -504,10 +553,12 @@ void Pong::render(const ASGE::GameTime &)
 			if (gamestate_vscpu)
 			{
 				renderer->renderSprite(*menu_overlay_win_player); //Human wins
+				has_requested_effect = true;
 			}
 			else
 			{
 				renderer->renderSprite(*menu_overlay_win_p1); //P1 wins
+				has_requested_effect = true;
 			}
 		}
 		if (player_1_points < player_2_points) 
@@ -515,10 +566,12 @@ void Pong::render(const ASGE::GameTime &)
 			if (gamestate_vscpu) 
 			{
 				renderer->renderSprite(*menu_overlay_win_cpu); //CPU wins
+				has_requested_effect = true;
 			} 
 			else
 			{
 				renderer->renderSprite(*menu_overlay_win_p2); //P2 wins
+				has_requested_effect = true;
 			}
 		}
 		
@@ -563,6 +616,7 @@ void Pong::render(const ASGE::GameTime &)
 			{
 				//Game is paused
 				renderer->renderSprite(*menu_overlay_paused);
+				has_requested_effect = true;
 			}
 			else
 			{
@@ -577,7 +631,10 @@ void Pong::render(const ASGE::GameTime &)
 					float stage_5 = 2.5;
 					float stage_6 = 2.8;
 					if (global_game_timer < stage_0)
+					{
 						renderer->renderSprite(*menu_overlay_loading);
+						has_requested_effect = true;
+					}
 					if (global_game_timer < stage_1 && global_game_timer >= stage_0)
 						renderer->renderSprite(*menu_overlay_loading_s0);
 					if (global_game_timer < stage_2 && global_game_timer >= stage_1)
@@ -589,7 +646,10 @@ void Pong::render(const ASGE::GameTime &)
 					if (global_game_timer < stage_5 && global_game_timer >= stage_4)
 						renderer->renderSprite(*menu_overlay_loading_s4);
 					if ((global_game_timer < stage_6 && global_game_timer >= stage_5) || global_game_timer >= stage_6)
+					{
 						renderer->renderSprite(*menu_overlay_loading_s5);
+						effect_has_finished_cycle = false;
+					}
 				}
 				else
 				{
@@ -629,18 +689,22 @@ void Pong::render(const ASGE::GameTime &)
 			{
 				case 1: {
 					renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
+					has_requested_effect = true;
 					break;
 				}
 				case 2: {
 					renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
+					has_requested_effect = true;
 					break;
 				}
 				case 3: {
 					renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
+					has_requested_effect = true;
 					break;
 				}
 				case 4: {
 					renderer->renderSprite(*menu_overlay_score_player); //Player scored
+					has_requested_effect = true;
 					break;
 				}
 				default: {
@@ -649,6 +713,9 @@ void Pong::render(const ASGE::GameTime &)
 			}
 		}
 	}
+
+	//Render monitor overlay - ALWAYS ON TOP
+	renderer->renderSprite(*monitor_overlay);
 }
 
 /**
