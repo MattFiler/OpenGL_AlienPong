@@ -10,7 +10,7 @@
     <ClCompile Include="..\..\Source\Game_core.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Game_setup.cpp">
+    <ClCompile Include="..\..\Source\Game_setup.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

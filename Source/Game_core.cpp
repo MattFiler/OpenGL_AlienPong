@@ -7,6 +7,19 @@
 #include "Game.h"
 #include "GameFont.h"
 
+#ifdef _WIN32
+	#include <windows.h>
+	#include <mmsystem.h>
+#endif
+
+/*
+
+//////// PONG - Created by Matt Filer ////////
+///////////// CORE GAME SCRIPTS //////////////
+
+*/
+
+
 
 /**
 *   @brief   Processes any key inputs
@@ -75,7 +88,8 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		else
 		{
 			//Change menu controls
-			if (is_in_menu && !is_in_loadscreen) {
+			if (is_in_menu && !is_in_loadscreen) 
+			{
 				right_paddle_moving = false;
 				left_paddle_moving = false;
 
@@ -83,6 +97,10 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				//Swap two/one player menu on tab
 				if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED) 
 				{
+					//Play SFX
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+
+					//Update screen vars
 					if (show_twoplayer_overlay) 
 					{
 						show_twoplayer_overlay = false;
@@ -102,6 +120,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						if (menu_option != 25)
 						{
 							menu_option += 5;
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+						}
+						else
+						{
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 						}
 					}
 					//Go up on press of up
@@ -110,6 +133,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						if (menu_option != 15)
 						{
 							menu_option -= 5;
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+						}
+						else
+						{
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 						}
 					}
 				}
@@ -121,6 +149,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						if (menu_option != 10)
 						{
 							menu_option += 5;
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+						}
+						else
+						{
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 						}
 					}
 					//Go up on press of up
@@ -129,12 +162,20 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						if (menu_option != 0)
 						{
 							menu_option -= 5;
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+						}
+						else
+						{
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 						}
 					}
 				}
 				//Handle menu selections
 				if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 				{
+					//Play SFX
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+
 					//Reset points
 					game_timer = 0;
 					player_1_points = 0;
@@ -261,6 +302,9 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				{
 					is_in_menu = true;
 					is_paused = true;
+
+					//Play SFX
+					PlaySound(TEXT("../../Resources/Audio/BEEP_005.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 				}
 			}
 		}
@@ -481,7 +525,7 @@ void Pong::render(const ASGE::GameTime &)
 	//Render background
 	renderer->renderSprite(*menu_background);
 
-	//Render FX
+	//Render FX (if requested and not currently performing/performed)
 	if (has_requested_effect || //Has requested effect?
 		((time_effect_started + effect_time_in_seconds) < global_game_timer && is_performing_effect) //Is in time range for performing effect?
 		) 
@@ -527,20 +571,11 @@ void Pong::render(const ASGE::GameTime &)
 
 	//Mode overlays
 	if (gamestate_freeplay)
-	{
 		renderer->renderSprite(*menu_overlay_mode_regular); //MODE OVERLAY: regular
-	}
 	if (gamestate_firsttofive)
-	{
 		renderer->renderSprite(*menu_overlay_mode_score); //MODE OVERLAY: score
-	}
 	if (gamestate_timedgameplay)
-	{
 		renderer->renderSprite(*menu_overlay_mode_timed); //MODE OVERLAY: timed
-	}
-
-	//DEBUG OUTPUT
-	//renderer->renderText(std::to_string(time_effect_started).c_str(), 70, 70, 1.0, ASGE::COLOURS::WHITE);
 
 	if (game_over)
 	{
@@ -593,7 +628,7 @@ void Pong::render(const ASGE::GameTime &)
 			//Render ball 1
 			renderer->renderSprite(*ball1);
 
-			//Points
+			//Render Points
 			if (gamestate_vscpu) 
 			{
 				renderer->renderText(("Player Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, game_height - 80, 1.0, ASGE::COLOURS::WHITE);
@@ -605,7 +640,7 @@ void Pong::render(const ASGE::GameTime &)
 				renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, game_height - 50, 1.0, ASGE::COLOURS::WHITE);
 			}
 
-			//Timer
+			//Render Timer
 			if (gamestate_timedgameplay)
 			{
 				renderer->renderText((std::to_string(int((60 - game_timer)+0.5)) + " Seconds Remaining").c_str(), 50, game_height - 50, 1.0, ASGE::COLOURS::WHITE); 
@@ -622,8 +657,9 @@ void Pong::render(const ASGE::GameTime &)
 			else
 			{
 				//Render loading screen for first few seconds
-				if (int(global_game_timer) < 3) 
+				if (int(global_game_timer) < 3.2) 
 				{
+					//Speed
 					float stage_0 = 0.3;
 					float stage_1 = 0.7;
 					float stage_2 = 1.2;
@@ -631,6 +667,15 @@ void Pong::render(const ASGE::GameTime &)
 					float stage_4 = 2.1;
 					float stage_5 = 2.5;
 					float stage_6 = 2.8;
+
+					//Play SFX
+					if (!has_performed_startup_sound) {
+						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+						//PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_BG_Loop.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC | SND_NOSTOP);
+						has_performed_startup_sound = true;
+					}
+
+					//Animation
 					if (global_game_timer < stage_0)
 					{
 						renderer->renderSprite(*menu_overlay_loading);
@@ -654,6 +699,7 @@ void Pong::render(const ASGE::GameTime &)
 				}
 				else
 				{
+					//Main menu
 					is_in_loadscreen = false;
 					if (show_twoplayer_overlay) 
 					{
@@ -740,6 +786,8 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 	{
 		if (y > (sprite->yPos() - ball_size) && y < (sprite->yPos() + paddle_height))
 		{
+			//Play SFX
+			PlaySound(TEXT("../../Resources/Audio/BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 			return true;
 		}
 		else
@@ -873,6 +921,9 @@ void Pong::handleWin(std::string winner)
 			winner_id = 2;
 		}
 	}
+
+	//Play SFX
+	PlaySound(TEXT("../../Resources/Audio/BEEP_016.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 
 	//Reset ball position
 	ball1->xPos((game_width / 2) - (ball_size / 2));
