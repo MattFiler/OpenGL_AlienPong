@@ -201,7 +201,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				//Handle menu selections
 				if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 				{
-					if (showing_first_menu == false)
+					if (showing_first_menu == false && is_paused == false)
 					{
 						//Play SFX
 						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
@@ -783,11 +783,11 @@ void Pong::render(const ASGE::GameTime &)
 							renderer->renderSprite(*menu_overlay_twoPlayer);
 
 							//Option 1 - VS CPU 
-							renderer->renderText(menu_option == 15 ? "> PLAY - Player VS CPU" : "  PLAY - Player VS CPU", (game_width / 2) - 190, (game_height / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
+							renderer->renderText(menu_option == 15 ? "> PLAY VS CPU - Infinite" : "  PLAY VS CPU - Infinite", (game_width / 2) - 190, (game_height / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
 							//Option 2 - VS CPU timed
-							renderer->renderText(menu_option == 20 ? "> PLAY - Best of 60 seconds" : "  PLAY - Best of 60 seconds", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
+							renderer->renderText(menu_option == 20 ? "> PLAY VS CPU - Best of 60 seconds" : "  PLAY VS CPU - Best of 60 seconds", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
 							//Option 3 - VS CPU first to 5
-							renderer->renderText(menu_option == 25 ? "> PLAY - First to 5" : "  PLAY - First to 5", (game_width / 2) - 190, (game_height / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
+							renderer->renderText(menu_option == 25 ? "> PLAY VS CPU - First to 5" : "  PLAY VS CPU - First to 5", (game_width / 2) - 190, (game_height / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
 						}
 					} 
 					else
@@ -816,11 +816,11 @@ void Pong::render(const ASGE::GameTime &)
 							renderer->renderSprite(*menu_overlay_onePlayer);
 
 							//Option 1 - freeplay
-							renderer->renderText(menu_option == 0 ? "> PLAY - Player VS Player" : "  PLAY - Player VS Player", (game_width / 2) - 190, (game_height / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
+							renderer->renderText(menu_option == 0 ? "> PLAY VS PLAYER - Infinite" : "  PLAY VS PLAYER - Infinite", (game_width / 2) - 190, (game_height / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
 							//Option 2 - timed 
-							renderer->renderText(menu_option == 5 ? "> PLAY - Best of 60 seconds" : "  PLAY - Best of 60 seconds", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
+							renderer->renderText(menu_option == 5 ? "> PLAY VS PLAYER - Best of 60 seconds" : "  PLAY VS PLAYER - Best of 60 seconds", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
 							//Option 3 - first to 5
-							renderer->renderText(menu_option == 10 ? "> PLAY - First to 5" : "  PLAY - First to 5", (game_width / 2) - 190, (game_height / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
+							renderer->renderText(menu_option == 10 ? "> PLAY VS PLAYER - First to 5" : "  PLAY VS PLAYER - First to 5", (game_width / 2) - 190, (game_height / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
 						}
 					}
 				}
