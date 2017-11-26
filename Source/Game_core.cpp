@@ -37,9 +37,12 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 	//Get key
 	auto key = static_cast<const ASGE::KeyEvent*>(data.get());
 
-	if (player_has_won) 
+	/*
+	Key handlers for "player has scored" screen
+	*/
+	if (gamestate == PLAYER_HAS_WON)
 	{
-		//Winning screen currently showing, disable all other controls
+		//Disable all other controls
 		right_paddle_moving = false;
 		left_paddle_moving = false;
 		if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
@@ -48,369 +51,295 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			PlaySound(TEXT("../../Resources/Audio/BEEP_011.wav"), NULL, SND_ASYNC);
 
 			//Return to game
-			player_has_won = false;
+			gamestate = IS_PLAYING;
 			effect_has_finished_cycle = false;
 		}
+	}
 
-		if (game_over)
+	/*
+	Key handlers for game over screen
+	*/
+	if (gamestate == IS_GAME_OVER) 
+	{
+		//Disable other controls
+		right_paddle_moving = false;
+		left_paddle_moving = false;
+		if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			player_has_won = false;
+			//Reset game and return to menu
+			resetGame();
 		}
 	}
-	else
+
+	/*
+	Key handlers for main menu
+	*/
+	if (gamestate == IS_IN_MENU)
 	{
-		if (game_over) 
+		//Force stop paddles
+		right_paddle_moving = false;
+		left_paddle_moving = false;
+
+		//Swap current menu group
+		if (key->key == ASGE::KEYS::KEY_Q && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			//Game over screen showing, disable other controls
-			right_paddle_moving = false;
-			left_paddle_moving = false;
-			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
+			//Play SFX
+			PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
+
+			//Update display
+			if (menu_page == MENU_PAGE_1)
 			{
-				//Reset points
-				player_1_points = 0;
-				player_2_points = 0;
-
-				//Open and reset menu
-				is_in_menu = true;
-				menu_option = 0;
-				player_has_won = false;
-				swap_tabs = false;
-				showing_first_menu = true;
-
-				//Reset gamestates
-				gamestate_freeplay = false;
-				gamestate_timedgameplay = false;
-				gamestate_firsttofive = false;
-				gamestate_vscpu = false;
-				game_over = false;
-				game_timer = 0;
-				is_paused = false;
-				freeze_ball = true;
-
-				//Reset Misc
-				cpu_speed_modifier = 2;
-				effect_has_finished_cycle = false;
-			}
-		}
-		else
-		{
-			//Change menu controls
-			if (is_in_menu && !is_in_loadscreen) 
-			{
-				right_paddle_moving = false;
-				left_paddle_moving = false;
-
-				if (!is_paused) {
-					/* MENU */
-					//Swap current menu
-					if (key->key == ASGE::KEYS::KEY_Q && key->action == ASGE::KEYS::KEY_RELEASED)
-					{
-						//Play SFX
-						PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
-
-						//Update display
-						if (showing_first_menu)
-						{
-							showing_first_menu = false;
-							swap_tabs = false;
-							menu_option = 0;
-						}
-						else
-						{
-							showing_first_menu = true;
-							swap_tabs = false;
-							menu_option = 0;
-						}
-					}
-					//Swap top/bottom tabs on current menu
-					if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED)
-					{
-						//Play SFX
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
-
-						//Update screen vars
-						if (swap_tabs)
-						{
-							swap_tabs = false;
-							menu_option = 0;
-						}
-						else
-						{
-							swap_tabs = true;
-							menu_option = 15;
-						}
-					}
-					if (swap_tabs)
-					{
-						if (showing_first_menu == false)
-						{
-							//Go down on press of down
-							if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-							{
-								if (menu_option != 25)
-								{
-									menu_option += 5;
-									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-								}
-								else
-								{
-									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-								}
-							}
-							//Go up on press of up
-							if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
-							{
-								if (menu_option != 15)
-								{
-									menu_option -= 5;
-									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-								}
-								else
-								{
-									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-								}
-							}
-						}
-					}
-					else
-					{
-						if (showing_first_menu == false)
-						{
-							//Go down on press of down
-							if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-							{
-								if (menu_option != 10)
-								{
-									menu_option += 5;
-									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-								}
-								else
-								{
-									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-								}
-							}
-							//Go up on press of up
-							if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
-							{
-								if (menu_option != 0)
-								{
-									menu_option -= 5;
-									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-								}
-								else
-								{
-									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-								}
-							}
-						}
-					}
-					//Handle menu selections
-					if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
-					{
-						if (showing_first_menu == false && is_paused == false)
-						{
-							//Play SFX
-							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
-
-							//Reset points
-							game_timer = 0;
-							player_1_points = 0;
-							player_2_points = 0;
-							freeze_ball = false;
-
-							//Reset paddle positions
-							paddle1->xPos(100);
-							paddle1->yPos((game_height / 2) - (paddle_height / 2));
-							paddle2->xPos(game_width - 100);
-							paddle2->yPos((game_height / 2) - (paddle_height / 2));
-
-							//Reset angle & direction
-							movement_angle = 0;
-							movement_angle_raw = 0;
-							movement_direction = 1;
-
-							//Free play
-							if (menu_option == 0)
-							{
-								is_in_menu = false;
-								gamestate_freeplay = true;
-								gamestate_timedgameplay = false;
-								gamestate_firsttofive = false;
-								gamestate_vscpu = false;
-							}
-							//Timed gameplay
-							if (menu_option == 5)
-							{
-								is_in_menu = false;
-								gamestate_freeplay = false;
-								gamestate_timedgameplay = true;
-								gamestate_firsttofive = false;
-								gamestate_vscpu = false;
-							}
-							//First to 5
-							if (menu_option == 10)
-							{
-								is_in_menu = false;
-								gamestate_freeplay = false;
-								gamestate_timedgameplay = false;
-								gamestate_firsttofive = true;
-								gamestate_vscpu = false;
-							}
-							//VS CPU
-							if (menu_option == 15)
-							{
-								is_in_menu = false;
-								gamestate_freeplay = true;
-								gamestate_timedgameplay = false;
-								gamestate_firsttofive = false;
-								gamestate_vscpu = true;
-							}
-							//VS CPU timed
-							if (menu_option == 20)
-							{
-								is_in_menu = false;
-								gamestate_freeplay = false;
-								gamestate_timedgameplay = true;
-								gamestate_firsttofive = false;
-								gamestate_vscpu = true;
-							}
-							//VS CPU first to 5
-							if (menu_option == 25)
-							{
-								is_in_menu = false;
-								gamestate_freeplay = false;
-								gamestate_timedgameplay = false;
-								gamestate_firsttofive = true;
-								gamestate_vscpu = true;
-							}
-						}
-					}
-				}
-
-				//Quit on ESC
-				if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					if (!is_paused) 
-					{
-						//Quit game
-						signalExit();
-					}
-					else 
-					{
-						//Play SFX
-						PlaySound(TEXT("../../Resources/Audio/BEEP_011.wav"), NULL, SND_ASYNC);
-
-						//Un-pause
-						is_in_menu = false;
-						is_paused = false;
-						effect_has_finished_cycle = false;
-						freeze_ball = false;
-					}
-				}
-
-				//Return to menu on pause if M pressed
-				if (key->key == ASGE::KEYS::KEY_M && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					if (is_paused)
-					{
-						//Play SFX
-						PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
-
-						//Reset points
-						player_1_points = 0;
-						player_2_points = 0;
-
-						//Open and reset menu
-						is_in_menu = true;
-						menu_option = 0;
-						player_has_won = false;
-						swap_tabs = false;
-						showing_first_menu = true;
-
-						//Reset gamestates
-						gamestate_freeplay = false;
-						gamestate_timedgameplay = false;
-						gamestate_firsttofive = false;
-						gamestate_vscpu = false;
-						game_over = false;
-						game_timer = 0;
-						is_paused = false;
-						freeze_ball = true;
-
-						//Reset Misc
-						cpu_speed_modifier = 2;
-						effect_has_finished_cycle = false;
-
-						//Reset ball position
-						ball1->xPos((game_width / 2) - (ball_size / 2));
-						ball1->yPos((game_height / 2) - (ball_size / 2));
-
-						//Reset paddle positions
-						paddle1->xPos(100);
-						paddle1->yPos((game_height / 2) - (paddle_height / 2));
-						paddle2->xPos(game_width - 100);
-						paddle2->yPos((game_height / 2) - (paddle_height / 2));
-
-						//Reset angle
-						movement_angle = 0;
-					}
-				}
+				menu_page = MENU_PAGE_2;
+				menu_tab = MENU_TAB_1;
+				menu_option = MENU_OPTION_PVP_INFINITE;
 			}
 			else
 			{
-				/* LEFT PADDLE */
-				//Move up
-				if (key->key == ASGE::KEYS::KEY_W)
-				{
-					left_paddle_moving = true;
-					left_paddle_moving_up = true;
-				}
-				//Move Down
-				if (key->key == ASGE::KEYS::KEY_S)
-				{
-					left_paddle_moving = true;
-					left_paddle_moving_up = false;
-				}
-				//Stop moving
-				if (key->key == ASGE::KEYS::KEY_W && key->action == ASGE::KEYS::KEY_RELEASED ||
-					key->key == ASGE::KEYS::KEY_S && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					left_paddle_moving = false;
-				}
+				menu_page = MENU_PAGE_1;
+				menu_tab = MENU_TAB_1;
+				menu_option = MENU_OPTION_PVP_INFINITE;
+			}
+		}
 
-				/* RIGHT PADDLE */
-				if (!gamestate_vscpu) 
+		//Swap top/bottom tabs on current menu group
+		if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			//Play SFX
+			PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
+
+			//Update screen vars
+			if (menu_tab == MENU_TAB_1)
+			{
+				menu_tab = MENU_TAB_2;
+				menu_option = MENU_OPTION_CPU_INFINITE;
+			}
+			else
+			{
+				menu_tab = MENU_TAB_1;
+				menu_option = MENU_OPTION_PVP_INFINITE;
+			}
+		}
+
+		//Swap menu selections within current tab
+		if (menu_page == MENU_PAGE_2 && menu_tab == MENU_TAB_1) //Page 2, Tab 1
+		{
+			//Go down on press of down
+			if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+			{
+				if (menu_option != 10)
 				{
-					//Move up
-					if (key->key == ASGE::KEYS::KEY_UP)
-					{
-						right_paddle_moving = true;
-						right_paddle_moving_up = true;
-					}
-					//Move Down
-					if (key->key == ASGE::KEYS::KEY_DOWN)
-					{
-						right_paddle_moving = true;
-						right_paddle_moving_up = false;
-					}
-					//Stop moving
-					if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED ||
-						key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-					{
-						right_paddle_moving = false;
-					}
+					menu_option += 5;
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 				}
-
-				//Pause on ESC
-				if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
+				else
 				{
-					is_in_menu = true;
-					is_paused = true;
-
-					//Play SFX
-					PlaySound(TEXT("../../Resources/Audio/BEEP_005.wav"), NULL, SND_ASYNC);
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
 				}
 			}
+			//Go up on press of up
+			if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+			{
+				if (menu_option != 0)
+				{
+					menu_option -= 5;
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+				}
+				else
+				{
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+				}
+			}
+		}
+		if (menu_page == MENU_PAGE_2 && menu_tab == MENU_TAB_2) //Page 2, Tab 2
+		{
+			//Go down on press of down
+			if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+			{
+				if (menu_option != 25)
+				{
+					menu_option += 5;
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+				}
+				else
+				{
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+				}
+			}
+			//Go up on press of up
+			if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+			{
+				if (menu_option != 15)
+				{
+					menu_option -= 5;
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+				}
+				else
+				{
+					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+				}
+			}
+		}
+
+		//Handle menu selections
+		if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			if (gamestate == IS_IN_MENU && menu_page == MENU_PAGE_2)
+			{
+				//Play SFX
+				PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
+
+				//Reset points & states
+				game_timer = 0;
+				player_1_points = 0;
+				player_2_points = 0;
+				freeze_ball = false;
+
+				//Reset paddle positions
+				paddle1->xPos(100);
+				paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
+				paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
+				paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
+
+				//Reset angle & direction
+				movement_angle = 0;
+				movement_angle_raw = 0;
+				ball_direction = RIGHT;
+
+				//Selected infinite mode
+				if (menu_option == 0)
+				{
+					gamestate = IS_PLAYING;
+					gamemode = GAMEMODE_INFINITE;
+					is_against_cpu = false;
+				}
+				//Selected timed mode
+				if (menu_option == 5)
+				{
+					gamestate = IS_PLAYING;
+					gamemode = GAMEMODE_TIMED;
+					is_against_cpu = false;
+				}
+				//Selected score-based mode
+				if (menu_option == 10)
+				{
+					gamestate = IS_PLAYING;
+					gamemode = GAMEMODE_SCORE;
+					is_against_cpu = false;
+				}
+				//Selected VS CPU infinite mode
+				if (menu_option == 15)
+				{
+					gamestate = IS_PLAYING;
+					gamemode = GAMEMODE_INFINITE;
+					is_against_cpu = true;
+				}
+				//Selected VS CPU timed mode
+				if (menu_option == 20)
+				{
+					gamestate = IS_PLAYING;
+					gamemode = GAMEMODE_TIMED;
+					is_against_cpu = true;
+				}
+				//Selected VS CPU score-based mode
+				if (menu_option == 25)
+				{
+					gamestate = IS_PLAYING;
+					gamemode = GAMEMODE_SCORE;
+					is_against_cpu = true;
+				}
+			}
+		}
+
+		//Quit game on ESC when in main menu
+		if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			signalExit();
+		}
+	}
+
+	/*
+	Key handlers for pause screen
+	*/
+	if (gamestate == IS_PAUSED)
+	{
+		//Close pause menu and return to game
+		if (key->key == ASGE::KEYS::KEY_C && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			//Play SFX
+			PlaySound(TEXT("../../Resources/Audio/BEEP_011.wav"), NULL, SND_ASYNC);
+
+			//Un-pause
+			gamestate = IS_PLAYING;
+			effect_has_finished_cycle = false;
+			freeze_ball = false;
+		}
+
+		//Return to main menu
+		if (key->key == ASGE::KEYS::KEY_M && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			//Play SFX
+			PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
+
+			//Reset game and return to menu
+			resetGame();
+		}
+	}
+
+	/*
+	Key handlers for in-game
+	*/
+	if (gamestate == IS_PLAYING) 
+	{
+		/* LEFT PADDLE */
+		//Move up
+		if (key->key == ASGE::KEYS::KEY_W)
+		{
+			left_paddle_moving = true;
+			left_paddle_direction = UP;
+		}
+		//Move Down
+		if (key->key == ASGE::KEYS::KEY_S)
+		{
+			left_paddle_moving = true;
+			left_paddle_direction = DOWN;
+		}
+		//Stop moving
+		if (key->key == ASGE::KEYS::KEY_W && key->action == ASGE::KEYS::KEY_RELEASED ||
+			key->key == ASGE::KEYS::KEY_S && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			left_paddle_moving = false;
+		}
+
+		/* RIGHT PADDLE */
+		if (!is_against_cpu)
+		{
+			//Move up
+			if (key->key == ASGE::KEYS::KEY_UP)
+			{
+				right_paddle_moving = true;
+				right_paddle_direction = UP;
+			}
+			//Move Down
+			if (key->key == ASGE::KEYS::KEY_DOWN)
+			{
+				right_paddle_moving = true;
+				right_paddle_direction = DOWN;
+			}
+			//Stop moving
+			if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED ||
+				key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+			{
+				right_paddle_moving = false;
+			}
+		}
+
+		//Pause game on press of escape
+		if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
+		{
+			gamestate = IS_PAUSED;
+
+			//Play SFX
+			PlaySound(TEXT("../../Resources/Audio/BEEP_005.wav"), NULL, SND_ASYNC);
 		}
 	}
 }
@@ -425,65 +354,57 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 */
 void Pong::update(const ASGE::GameTime & us)
 {
-	//Update global game timer (if in-game)
-	if (is_in_menu == false && player_has_won == false)
+	//Update timers
+	if (gamestate == IS_PLAYING)
 	{
 		game_timer += (us.delta_time.count() / 1000.f);
 	}
 	global_game_timer += (us.delta_time.count() / 1000.f);
 
-	//Ball move speed
-	int movement_speed = speed_base;
-
 	//Get current ball position
 	auto x_pos = ball1->xPos();
 	auto y_pos = ball1->yPos();
 
-	//Only run game scripts if out of menu
-	if (is_in_menu == false && player_has_won == false) 
+	/*
+	In-game scripts
+	*/
+	if (gamestate == IS_PLAYING) 
 	{
 		/* BALL COLLISION DETECTION */
-
 		//See if we're touching the LEFT paddle
 		if (isTouchingPaddle(paddle1, x_pos, y_pos, "LeftPaddle"))
 		{
-			movement_direction = 1;
+			ball_direction = RIGHT;
 			movement_angle = calculateReturnAngle(paddle1, true);
 			movement_angle_raw = calculateReturnAngle(paddle1, false);
 		}
-
 		//See if we're touching the RIGHT paddle
 		if (isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
 		{
-			movement_direction = 0;
+			ball_direction = LEFT;
 			movement_angle = calculateReturnAngle(paddle2, true);
 			movement_angle_raw = calculateReturnAngle(paddle2, false);
 		}
-
 		//See if we're touching the TOP of the window
 		if (hasHitEdge("Top") || hasHitEdge("Bottom"))
 		{
 			movement_angle *= -1; //Swap angle on touch of top or bottom
 		}
 
-
 		/* BALL MOVEMENT */
-
-		//Movement direction - 0 = left, 1 = right
-		if (movement_direction == 0) 
+		//Movement direction
+		if (ball_direction == LEFT) 
 		{
 			//Set X position
-			x_pos -= (movement_speed - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
+			x_pos -= (DEFAULT_SPEED - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 		}
 		else
 		{
 			//Set X position
-			x_pos += (movement_speed - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
+			x_pos += (DEFAULT_SPEED - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 		}
-
 		//Apply movement angle
 		y_pos += movement_angle * (us.delta_time.count() / 1000.f);
-
 		if (!freeze_ball) 
 		{
 			//Update X position of ball
@@ -499,16 +420,13 @@ void Pong::update(const ASGE::GameTime & us)
 			ball1->yPos(ball1->yPos());
 		}
 
-
 		/* HANDLE WINS */
-
 		//See if we're touching the LEFT of the window
 		if (hasHitEdge("Left"))
 		{
 			//Player 2 wins
 			handleWin("p2");
 		}
-
 		//See if we're touching the RIGHT of the window
 		if (hasHitEdge("Right"))
 		{
@@ -516,12 +434,10 @@ void Pong::update(const ASGE::GameTime & us)
 			handleWin("p1");
 		}
 
-
 		/* CPU PLAYER */
-
-		if (gamestate_vscpu)
+		if (is_against_cpu)
 		{
-			if (ball1->yPos() > (paddle2->yPos() + (ball_size * 3)) && ball1->yPos() < (paddle2->yPos() + paddle_height - (ball_size * 3)))
+			if (ball1->yPos() > (paddle2->yPos() + (BALL_SIZE * 3)) && ball1->yPos() < (paddle2->yPos() + PADDLE_HEIGHT - (BALL_SIZE * 3)))
 			{
 				right_paddle_moving = false;
 			}
@@ -531,93 +447,98 @@ void Pong::update(const ASGE::GameTime & us)
 				right_paddle_moving = true;
 				if (ball1->yPos() > paddle2->yPos())
 				{
-					right_paddle_moving_up = false;
+					right_paddle_direction = DOWN;
 				}
-				if (ball1->yPos() < (paddle2->yPos() + paddle_height - (ball_size * 3)))
+				if (ball1->yPos() < (paddle2->yPos() + PADDLE_HEIGHT - (BALL_SIZE * 3)))
 				{
-					right_paddle_moving_up = true;
+					right_paddle_direction = UP;
 				}
 			}
 		}
 
-
 		/* PADDLE MOVEMENT */
-
+		//Left Paddle
+		if (left_paddle_moving)
+		{
+			if (left_paddle_direction == UP)
+			{
+				//Update Y position of paddle UP
+				paddle1->yPos(paddle1->yPos() - (DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
+			}
+			else
+			{
+				//Update Y position of paddle DOWN
+				paddle1->yPos(paddle1->yPos() + (DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
+			}
+		}
 		//Right Paddle
 		if (right_paddle_moving) 
 		{
 			//Bespoke speed modifier for CPU movement (if human player, we default to 2)
-			if (int(game_timer) % cpu_speed_refresh_rate == 0 && gamestate_vscpu)
+			if (int(game_timer) % CPU_MEDIUM_SPEED_REFRESH == 0 && is_against_cpu)
 			{
 				if (cpu_speed_modifier_check != int(game_timer)) 
 				{
-					cpu_speed_modifier = (rand() % 3) + 2.5;
+					cpu_speed_modifier = (rand() % 3) + CPU_MODIFIER_MEDIUM;
 					cpu_speed_modifier_check = int(game_timer);
 				}
 			}
-
-			if (right_paddle_moving_up) 
+			if (right_paddle_direction == UP) 
 			{
 				//Update Y position of paddle UP
-				paddle2->yPos(paddle2->yPos() - (movement_speed / cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+				paddle2->yPos(paddle2->yPos() - (DEFAULT_SPEED / cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 			}
 			else
 			{
 				//Update Y position of paddle DOWN
-				paddle2->yPos(paddle2->yPos() + (movement_speed / cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
-			}
-		}
-
-		//Left Paddle
-		if (left_paddle_moving)
-		{
-			if (left_paddle_moving_up)
-			{
-				//Update Y position of paddle UP
-				paddle1->yPos(paddle1->yPos() - (movement_speed / 2)  * (us.delta_time.count() / 1000.f));
-			}
-			else
-			{
-				//Update Y position of paddle DOWN
-				paddle1->yPos(paddle1->yPos() + (movement_speed / 2)  * (us.delta_time.count() / 1000.f));
+				paddle2->yPos(paddle2->yPos() + (DEFAULT_SPEED / cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 			}
 		}
 	}
-	else 
+
+	/*
+	Pause scripts
+	*/
+	if (gamestate == IS_PAUSED) 
 	{
-		if (is_paused) 
-		{
-			//Freeze ball on pause
-			freeze_ball = true;
-		}
-		else
-		{
-			//Keep ball reset
-			ball1->xPos((game_width / 2) - (ball_size / 2));
-			ball1->yPos((game_height / 2) - (ball_size / 2));
-		}
+		//Freeze ball on pause
+		freeze_ball = true;
 	}
 
-	//Timed game mode
-	if (gamestate_timedgameplay)
+	/*
+	Game over/game won scripts
+	*/
+	if (gamestate == PLAYER_HAS_WON || gamestate == IS_GAME_OVER)
+	{
+		//Keep ball reset
+		ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
+		ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
+	}
+
+	/*
+	Timed game mode scripts
+	*/
+	if (gamemode == GAMEMODE_TIMED)
 	{
 		if (game_timer > 60)
 		{
 			right_paddle_moving = false;
 			left_paddle_moving = false;
-			game_over = true;
+			gamestate = IS_GAME_OVER;
 			freeze_ball = true;
 		}
 	}
 
-	//First to five game mode
-	if (gamestate_firsttofive)
+	/*
+	Score-based game mode scripts
+	*/
+	if (gamemode == GAMEMODE_SCORE)
 	{
 		if (player_1_points == 5 || player_2_points == 5)
 		{
 			right_paddle_moving = false;
 			left_paddle_moving = false;
-			game_over = true;
+			gamestate = IS_GAME_OVER;
 			freeze_ball = true;
 		}
 	}
@@ -639,7 +560,9 @@ void Pong::render(const ASGE::GameTime &)
 	//Render background
 	renderer->renderSprite(*menu_background);
 
-	//Render FX (if requested and not currently performing/performed)
+	/*
+	Render FX if requested (and not already performing)
+	*/
 	if (has_requested_effect || //Has requested effect?
 		((time_effect_started + effect_time_in_seconds) < global_game_timer && is_performing_effect) //Is in time range for performing effect?
 		) 
@@ -684,24 +607,28 @@ void Pong::render(const ASGE::GameTime &)
 		}
 	}
 
-	//Mode overlays
-	if (gamestate_freeplay)
+	/*
+	Render overlays for each mode (as long as we're not in the menu)
+	*/
+	if (gamemode == GAMEMODE_INFINITE && gamestate != NO_GAMEMODE)
 		renderer->renderSprite(*menu_overlay_mode_regular); //MODE OVERLAY: regular
-	if (gamestate_firsttofive)
+	if (gamemode == GAMEMODE_SCORE && gamestate != NO_GAMEMODE)
 		renderer->renderSprite(*menu_overlay_mode_score); //MODE OVERLAY: score
-	if (gamestate_timedgameplay)
+	if (gamemode == GAMEMODE_TIMED && gamestate != NO_GAMEMODE)
 		renderer->renderSprite(*menu_overlay_mode_timed); //MODE OVERLAY: timed
 
-	if (game_over)
+	/*
+	Render game over screen
+	*/
+	if (gamestate == IS_GAME_OVER)
 	{
-		//Render win message
 		if (player_1_points == player_2_points)
 		{
 			renderer->renderSprite(*menu_overlay_win_draw); //Draw
 		}
 		if (player_1_points > player_2_points)
 		{
-			if (gamestate_vscpu)
+			if (is_against_cpu)
 			{
 				renderer->renderSprite(*menu_overlay_win_player); //Human wins
 				has_requested_effect = true;
@@ -714,7 +641,7 @@ void Pong::render(const ASGE::GameTime &)
 		}
 		if (player_1_points < player_2_points) 
 		{
-			if (gamestate_vscpu) 
+			if (is_against_cpu)
 			{
 				renderer->renderSprite(*menu_overlay_win_cpu); //CPU wins
 				has_requested_effect = true;
@@ -725,194 +652,206 @@ void Pong::render(const ASGE::GameTime &)
 				has_requested_effect = true;
 			}
 		}
-		
-		//Clear player win state
-		player_has_won = false;
 	}
-	else
+
+	/*
+	Render the main game
+	*/
+	if (gamestate == IS_PLAYING)
 	{
-		//Only render game if we're out of the menu
-		if (is_in_menu == false)
+		//Render paddle 1
+		renderer->renderSprite(*paddle1);
+
+		//Render paddle 2
+		renderer->renderSprite(*paddle2);
+
+		//Render ball 1
+		renderer->renderSprite(*ball1);
+
+		//Render Points
+		if (is_against_cpu)
 		{
-			//Render paddle 1
-			renderer->renderSprite(*paddle1);
+			renderer->renderText(("Player Score: " + std::to_string(player_1_points)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 80, 1.0, ASGE::COLOURS::WHITE);
+			renderer->renderText(("CPU Score: " + std::to_string(player_2_points)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
+		}
+		else
+		{
+			renderer->renderText(("Player 1 Score: " + std::to_string(player_1_points)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 80, 1.0, ASGE::COLOURS::WHITE);
+			renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
+		}
 
-			//Render paddle 2
-			renderer->renderSprite(*paddle2);
+		//Render Timer
+		if (gamemode == GAMEMODE_TIMED)
+		{
+			renderer->renderText((std::to_string(int((60 - game_timer) + 0.5)) + " Seconds Remaining").c_str(), 50, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
+		}
+	}
 
-			//Render ball 1
-			renderer->renderSprite(*ball1);
+	/*
+	Render pause screen
+	*/
+	if (gamestate == IS_PAUSED)
+	{
+		//Game is paused
+		renderer->renderSprite(*menu_overlay_paused);
+		has_requested_effect = true;
+	}
 
-			//Render Points
-			if (gamestate_vscpu) 
-			{
-				renderer->renderText(("Player Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, game_height - 80, 1.0, ASGE::COLOURS::WHITE);
-				renderer->renderText(("CPU Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, game_height - 50, 1.0, ASGE::COLOURS::WHITE);
+	/*
+	Render load screen on game start
+	*/
+	if (gamestate == IS_IN_LOADSCREEN)
+	{
+		//Render loading screen for first few seconds
+		if (int(global_game_timer) < 3.2)
+		{
+			//Speed
+			float stage_0 = 0.3;
+			float stage_1 = 0.7;
+			float stage_2 = 1.2;
+			float stage_3 = 1.6;
+			float stage_4 = 2.1;
+			float stage_5 = 2.5;
+			float stage_6 = 2.8;
+
+			//Play SFX
+			if (!has_performed_startup_sound) {
+				PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC);
+				//PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_BG_Loop.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+				has_performed_startup_sound = true;
 			}
-			else
-			{
-				renderer->renderText(("Player 1 Score: " + std::to_string(player_1_points)).c_str(), game_width - 50 - 195, game_height - 80, 1.0, ASGE::COLOURS::WHITE);
-				renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), game_width - 50 - 195, game_height - 50, 1.0, ASGE::COLOURS::WHITE);
-			}
 
-			//Render Timer
-			if (gamestate_timedgameplay)
+			//Animation
+			if (global_game_timer < stage_0)
 			{
-				renderer->renderText((std::to_string(int((60 - game_timer)+0.5)) + " Seconds Remaining").c_str(), 50, game_height - 50, 1.0, ASGE::COLOURS::WHITE); 
+				renderer->renderSprite(*menu_overlay_loading);
+				has_requested_effect = true;
+			}
+			if (global_game_timer < stage_1 && global_game_timer >= stage_0)
+				renderer->renderSprite(*menu_overlay_loading_s0);
+			if (global_game_timer < stage_2 && global_game_timer >= stage_1)
+				renderer->renderSprite(*menu_overlay_loading_s1);
+			if (global_game_timer < stage_3 && global_game_timer >= stage_2)
+				renderer->renderSprite(*menu_overlay_loading_s2);
+			if (global_game_timer < stage_4 && global_game_timer >= stage_3)
+				renderer->renderSprite(*menu_overlay_loading_s3);
+			if (global_game_timer < stage_5 && global_game_timer >= stage_4)
+				renderer->renderSprite(*menu_overlay_loading_s4);
+			if ((global_game_timer < stage_6 && global_game_timer >= stage_5) || global_game_timer >= stage_6)
+			{
+				renderer->renderSprite(*menu_overlay_loading_s5);
+				effect_has_finished_cycle = false;
 			}
 		}
 		else
 		{
-			if (is_paused)
+			gamestate = IS_IN_MENU; //Take us out of the animation
+		}
+	}
+
+	/*
+	Render main menu
+	*/
+	if (gamestate == IS_IN_MENU)
+	{
+		//Main menu
+		if (menu_tab == MENU_TAB_2)
+		{
+			if (menu_page == MENU_PAGE_1)
 			{
-				//Game is paused
-				renderer->renderSprite(*menu_overlay_paused);
-				has_requested_effect = true;
+				//Render SCOREBOARD
+				renderer->renderSprite(*menu_overlay_scoreboard);
+
+				//Scoreboard
+				renderer->renderText(" Scoreboard", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 1.1, ASGE::COLOURS::WHITE);
+				renderer->renderText(("  Player 1 Rounds Won:            " + std::to_string(scoreboard_score_p2)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("  Player 2 Rounds Won:            " + std::to_string(scoreboard_score_p1)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("  Human (VS CPU) Rounds Won:      " + std::to_string(scoreboard_score_player)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("  CPU Rounds Won:                 " + std::to_string(scoreboard_score_cpu)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 65, 1.0, ASGE::COLOURS::WHITE);
 			}
 			else
 			{
-				//Render loading screen for first few seconds
-				if (int(global_game_timer) < 3.2) 
-				{
-					//Speed
-					float stage_0 = 0.3;
-					float stage_1 = 0.7;
-					float stage_2 = 1.2;
-					float stage_3 = 1.6;
-					float stage_4 = 2.1;
-					float stage_5 = 2.5;
-					float stage_6 = 2.8;
+				//Render TWO PLAYER
+				renderer->renderSprite(*menu_overlay_twoPlayer);
 
-					//Play SFX
-					if (!has_performed_startup_sound) {
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC);
-						//PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_BG_Loop.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
-						has_performed_startup_sound = true;
-					}
-
-					//Animation
-					if (global_game_timer < stage_0)
-					{
-						renderer->renderSprite(*menu_overlay_loading);
-						has_requested_effect = true;
-					}
-					if (global_game_timer < stage_1 && global_game_timer >= stage_0)
-						renderer->renderSprite(*menu_overlay_loading_s0);
-					if (global_game_timer < stage_2 && global_game_timer >= stage_1)
-						renderer->renderSprite(*menu_overlay_loading_s1);
-					if (global_game_timer < stage_3 && global_game_timer >= stage_2)
-						renderer->renderSprite(*menu_overlay_loading_s2);
-					if (global_game_timer < stage_4 && global_game_timer >= stage_3)
-						renderer->renderSprite(*menu_overlay_loading_s3);
-					if (global_game_timer < stage_5 && global_game_timer >= stage_4)
-						renderer->renderSprite(*menu_overlay_loading_s4);
-					if ((global_game_timer < stage_6 && global_game_timer >= stage_5) || global_game_timer >= stage_6)
-					{
-						renderer->renderSprite(*menu_overlay_loading_s5);
-						effect_has_finished_cycle = false;
-					}
-				}
-				else
-				{
-					//Main menu
-					is_in_loadscreen = false;
-					if (swap_tabs) 
-					{
-						if (showing_first_menu)
-						{
-							//Render SCOREBOARD
-							renderer->renderSprite(*menu_overlay_scoreboard);
-
-							//Scoreboard
-							renderer->renderText(" Scoreboard", (game_width / 2) - 190, (game_height / 2) - 65, 1.1, ASGE::COLOURS::WHITE);
-							renderer->renderText(("  Player 1 Rounds Won:            " + std::to_string(scoreboard_score_p2)).c_str(), (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
-							renderer->renderText(("  Player 2 Rounds Won:            " + std::to_string(scoreboard_score_p1)).c_str(), (game_width / 2) - 190, (game_height / 2) + 5, 1.0, ASGE::COLOURS::WHITE);
-							renderer->renderText(("  Human (VS CPU) Rounds Won:      " + std::to_string(scoreboard_score_player)).c_str(), (game_width / 2) - 190, (game_height / 2) + 35, 1.0, ASGE::COLOURS::WHITE);
-							renderer->renderText(("  CPU Rounds Won:                 " + std::to_string(scoreboard_score_cpu)).c_str(), (game_width / 2) - 190, (game_height / 2) + 65, 1.0, ASGE::COLOURS::WHITE);
-						}
-						else
-						{
-							//Render TWO PLAYER
-							renderer->renderSprite(*menu_overlay_twoPlayer);
-
-							//Option 1 - VS CPU 
-							renderer->renderText(menu_option == 15 ? "> PLAY VS CPU - Infinite" : "  PLAY VS CPU - Infinite", (game_width / 2) - 190, (game_height / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
-							//Option 2 - VS CPU timed
-							renderer->renderText(menu_option == 20 ? "> PLAY VS CPU - Best of 60 seconds" : "  PLAY VS CPU - Best of 60 seconds", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
-							//Option 3 - VS CPU first to 5
-							renderer->renderText(menu_option == 25 ? "> PLAY VS CPU - First to 5" : "  PLAY VS CPU - First to 5", (game_width / 2) - 190, (game_height / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
-						}
-					} 
-					else
-					{
-						if (showing_first_menu)
-						{
-							//Render CONTROLS
-							renderer->renderSprite(*menu_overlay_controls);
-
-							//Menu controls
-							renderer->renderText(" Menu Controls", (game_width / 2) - 190, (game_height / 2) - 65, 1.1, ASGE::COLOURS::WHITE);
-							renderer->renderText("  Swap Primary Menu Groups:    Q", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
-							renderer->renderText("  Swap Secondary Menu Groups:  TAB", (game_width / 2) - 190, (game_height / 2) + 5, 1.0, ASGE::COLOURS::WHITE);
-							renderer->renderText("  Swap Menu Choices:           UP/DOWN ARROW", (game_width / 2) - 190, (game_height / 2) + 35, 1.0, ASGE::COLOURS::WHITE);
-
-							//In-game controls
-							renderer->renderText(" In-Game Controls", (game_width / 2) - 190, (game_height / 2) + 95, 1.1, ASGE::COLOURS::WHITE);
-							renderer->renderText("  Left Paddle Up:              W", (game_width / 2) - 190, (game_height / 2) + 135, 1.0, ASGE::COLOURS::WHITE);
-							renderer->renderText("  Left Paddle Down:            S", (game_width / 2) - 190, (game_height / 2) + 165, 1.0, ASGE::COLOURS::WHITE);
-							renderer->renderText("  Right Paddle Up:             UP ARROW", (game_width / 2) - 190, (game_height / 2) + 195, 1.0, ASGE::COLOURS::WHITE);
-							renderer->renderText("  Right Paddle Down:           DOWN ARROW", (game_width / 2) - 190, (game_height / 2) + 225, 1.0, ASGE::COLOURS::WHITE);
-						}
-						else
-						{
-							//Render ONE PLAYER
-							renderer->renderSprite(*menu_overlay_onePlayer);
-
-							//Option 1 - freeplay
-							renderer->renderText(menu_option == 0 ? "> PLAY VS PLAYER - Infinite" : "  PLAY VS PLAYER - Infinite", (game_width / 2) - 190, (game_height / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
-							//Option 2 - timed 
-							renderer->renderText(menu_option == 5 ? "> PLAY VS PLAYER - Best of 60 seconds" : "  PLAY VS PLAYER - Best of 60 seconds", (game_width / 2) - 190, (game_height / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
-							//Option 3 - first to 5
-							renderer->renderText(menu_option == 10 ? "> PLAY VS PLAYER - First to 5" : "  PLAY VS PLAYER - First to 5", (game_width / 2) - 190, (game_height / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
-						}
-					}
-				}
+				//Option 1 - VS CPU 
+				renderer->renderText(menu_option == MENU_OPTION_CPU_INFINITE ? "> PLAY VS CPU - Infinite" : "  PLAY VS CPU - Infinite", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
+				//Option 2 - VS CPU timed
+				renderer->renderText(menu_option == MENU_OPTION_CPU_TIMED ? "> PLAY VS CPU - Best of 60 seconds" : "  PLAY VS CPU - Best of 60 seconds", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
+				//Option 3 - VS CPU first to 5
+				renderer->renderText(menu_option == MENU_OPTION_CPU_SCORE ? "> PLAY VS CPU - First to 5" : "  PLAY VS CPU - First to 5", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
 			}
 		}
-
-		if (player_has_won && !game_over)
+		else
 		{
-			//Render round win screen
-			switch (winner_id) 
+			if (menu_page == MENU_PAGE_1)
 			{
-				case 1: 
-				{
-					renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
-					has_requested_effect = true;
-					break;
-				}
-				case 2: 
-				{
-					renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
-					has_requested_effect = true;
-					break;
-				}
-				case 3: 
-				{
-					renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
-					has_requested_effect = true;
-					break;
-				}
-				case 4: 
-				{
-					renderer->renderSprite(*menu_overlay_score_player); //Player scored
-					has_requested_effect = true;
-					break;
-				}
-				default: 
-				{
-					break;
-				}
+				//Render CONTROLS
+				renderer->renderSprite(*menu_overlay_controls);
+
+				//Menu controls
+				renderer->renderText(" Menu Controls", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 1.1, ASGE::COLOURS::WHITE);
+				renderer->renderText("  Swap Primary Menu Groups:    Q", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText("  Swap Secondary Menu Groups:  TAB", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText("  Swap Menu Choices:           UP/DOWN ARROW", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 1.0, ASGE::COLOURS::WHITE);
+
+				//In-game controls
+				renderer->renderText(" In-Game Controls", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 95, 1.1, ASGE::COLOURS::WHITE);
+				renderer->renderText("  Left Paddle Up:              W", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 135, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText("  Left Paddle Down:            S", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 165, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText("  Right Paddle Up:             UP ARROW", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 195, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText("  Right Paddle Down:           DOWN ARROW", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 225, 1.0, ASGE::COLOURS::WHITE);
+			}
+			else
+			{
+				//Render ONE PLAYER
+				renderer->renderSprite(*menu_overlay_onePlayer);
+
+				//Option 1 - freeplay
+				renderer->renderText(menu_option == MENU_OPTION_PVP_INFINITE ? "> PLAY VS PLAYER - Infinite" : "  PLAY VS PLAYER - Infinite", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 1.0, ASGE::COLOURS::WHITE);
+				//Option 2 - timed 
+				renderer->renderText(menu_option == MENU_OPTION_PVP_TIMED ? "> PLAY VS PLAYER - Best of 60 seconds" : "  PLAY VS PLAYER - Best of 60 seconds", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
+				//Option 3 - first to 5
+				renderer->renderText(menu_option == MENU_OPTION_PVP_SCORE ? "> PLAY VS PLAYER - First to 5" : "  PLAY VS PLAYER - First to 5", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 15, 1.0, ASGE::COLOURS::WHITE);
+			}
+		}
+	}
+
+	/*
+	Render played scored screen
+	*/
+	if (gamestate == PLAYER_HAS_WON)
+	{
+		//Render round win screen
+		switch (winner) 
+		{
+			case PLAYER_P1: 
+			{
+				renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
+				has_requested_effect = true;
+				break;
+			}
+			case PLAYER_P2:
+			{
+				renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
+				has_requested_effect = true;
+				break;
+			}
+			case PLAYER_CPU: 
+			{
+				renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
+				has_requested_effect = true;
+				break;
+			}
+			case PLAYER_HUMAN: 
+			{
+				renderer->renderSprite(*menu_overlay_score_player); //Player scored
+				has_requested_effect = true;
+				break;
+			}
+			default: 
+			{
+				break;
 			}
 		}
 	}
@@ -930,7 +869,7 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 	float ball_x_pos = x; 
 	if (spriteName == "RightPaddle") 
 	{
-		ball_x_pos += ball_size;
+		ball_x_pos += BALL_SIZE;
 	}
 
 	//See if we hit any area on the paddle
@@ -938,9 +877,9 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 		TODO: When using vectors, calculate path between the two vectors and see if it intersects the paddle.
 		Should solve the lag issue when frames skip and the ball hit isn't registered.
 	*/
-	if (ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + paddle_width))
+	if (ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + PADDLE_WIDTH))
 	{
-		if (y > (sprite->yPos() - ball_size) && y < (sprite->yPos() + paddle_height))
+		if (y > (sprite->yPos() - BALL_SIZE) && y < (sprite->yPos() + PADDLE_HEIGHT))
 		{
 			//Play SFX
 			PlaySound(TEXT("../../Resources/Audio/BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
@@ -963,7 +902,7 @@ bool Pong::hasHitEdge(std::string edgeName) const
 	//Touching left?
 	if (edgeName == "Left")
 	{
-		if (ball1->xPos() - ball_size <= 0)
+		if (ball1->xPos() - BALL_SIZE <= 0)
 		{
 			return true; //Hit
 		}
@@ -972,7 +911,7 @@ bool Pong::hasHitEdge(std::string edgeName) const
 	//Touching right?
 	if (edgeName == "Right")
 	{
-		if (ball1->xPos() >= game_width)
+		if (ball1->xPos() >= GAMEWINDOW_MAX_WIDTH)
 		{
 			return true; //Hit
 		}
@@ -990,7 +929,7 @@ bool Pong::hasHitEdge(std::string edgeName) const
 	//Touching bottom?
 	if (edgeName == "Bottom")
 	{
-		if (ball1->yPos() + ball_size >= game_height)
+		if (ball1->yPos() + BALL_SIZE >= GAMEWINDOW_MAX_HEIGHT)
 		{
 			return true; //Hit
 		}
@@ -1006,11 +945,11 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 {
 	//Save Y vals
 	int paddle_bottom_y = paddle->yPos();
-	int paddle_middle_y = paddle_bottom_y + (paddle_height / 2);
-	int paddle_top_y = paddle_bottom_y + paddle_height;
+	int paddle_middle_y = paddle_bottom_y + (PADDLE_HEIGHT / 2);
+	int paddle_top_y = paddle_bottom_y + PADDLE_HEIGHT;
 	int ball_bottom_y = ball1->yPos();
-	int ball_middle_y = ball_bottom_y + (ball_size / 2);
-	int ball_top_y = ball_bottom_y + ball_size;
+	int ball_middle_y = ball_bottom_y + (BALL_SIZE / 2);
+	int ball_top_y = ball_bottom_y + BALL_SIZE;
 
 	//Values to set later
 	int distance_to_middle_from_middle = 0;
@@ -1030,12 +969,12 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 	if (hit_below_bottom == false) 
 	{
 		distance_to_middle_from_middle = ball_middle_y - paddle_middle_y; //work out distance to middle of paddle from above
-		return_angle = distance_to_middle_from_middle * 2.5; //use distance * 2 for angle
+		return_angle = distance_to_middle_from_middle * DEFAULT_ANGLE_MULTIPLIER; //use angle multiplier for return angle
 	}
 	else 
 	{
 		distance_to_middle_from_middle = paddle_middle_y - ball_middle_y; //work out distance to middle of paddle from below
-		return_angle = distance_to_middle_from_middle * 2.5; //use distance * 2 for angle
+		return_angle = distance_to_middle_from_middle * DEFAULT_ANGLE_MULTIPLIER; //use angle multiplier for return angle
 		if (include_reverses)
 		{
 			return_angle *= -1; //reverse the direction up/down
@@ -1049,35 +988,35 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 /**
 *   Scripts for win
 */
-void Pong::handleWin(std::string winner)
+void Pong::handleWin(std::string winner_name)
 {
-	if (winner == "p1")
+	if (winner_name == "p1") //Left side wins
 	{
 		//Update points 
 		player_1_points += 1;
-		if (gamestate_vscpu)
+		if (is_against_cpu)
 		{
-			winner_id = 4;
+			winner = PLAYER_HUMAN; //PLAYER
 			scoreboard_score_player += 1;
 		}
 		else
 		{
-			winner_id = 1;
+			winner = PLAYER_P1; //P1
 			scoreboard_score_p1 += 1;
 		}
 	}
-	else 
+	else //Right side wins
 	{
 		//Update points 
 		player_2_points += 1;
-		if (gamestate_vscpu)
+		if (is_against_cpu)
 		{
-			winner_id = 3;
+			winner = PLAYER_CPU; //CPU
 			scoreboard_score_cpu += 1;
 		}
 		else
 		{
-			winner_id = 2;
+			winner = PLAYER_P2; //P2
 			scoreboard_score_p2 += 1;
 		}
 	}
@@ -1086,14 +1025,14 @@ void Pong::handleWin(std::string winner)
 	PlaySound(TEXT("../../Resources/Audio/BEEP_016.wav"), NULL, SND_ASYNC);
 
 	//Reset ball position
-	ball1->xPos((game_width / 2) - (ball_size / 2));
-	ball1->yPos((game_height / 2) - (ball_size / 2));
+	ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
+	ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
 
 	//Reset paddle positions
 	paddle1->xPos(100);
-	paddle1->yPos((game_height / 2) - (paddle_height / 2));
-	paddle2->xPos(game_width - 100);
-	paddle2->yPos((game_height / 2) - (paddle_height / 2));
+	paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
+	paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
+	paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
 
 	//Reset angle
 	movement_angle = 0;
@@ -1102,6 +1041,42 @@ void Pong::handleWin(std::string winner)
 	right_paddle_moving = false;
 	left_paddle_moving = false;
 
-	//Show win text
-	player_has_won = true;
+	//Update gamestate
+	gamestate = PLAYER_HAS_WON;
+}
+
+/**
+*   Perform a game reset
+*/
+void Pong::resetGame()
+{
+	//Reset points
+	player_1_points = 0;
+	player_2_points = 0;
+
+	//Open and reset menu
+	gamestate = IS_IN_MENU;
+	menu_option = MENU_OPTION_PVP_INFINITE;
+	menu_page = MENU_PAGE_1;
+	menu_tab = MENU_TAB_1;
+
+	//Reset gamestates, settings & vars
+	gamemode = NO_GAMEMODE;
+	is_against_cpu = false;
+	game_timer = 0;
+	freeze_ball = true;
+	ball_direction = RIGHT;
+	cpu_speed_modifier = 2;
+	movement_angle = 0;
+	effect_has_finished_cycle = false;
+
+	//Reset ball position
+	ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
+	ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
+
+	//Reset paddle positions
+	paddle1->xPos(100);
+	paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
+	paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
+	paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
 }

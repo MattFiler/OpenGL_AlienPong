@@ -23,8 +23,8 @@
 Pong::Pong()
 {
 	//Change Resolution
-	game_width = 1024;
-	game_height = 768;
+	game_width = GAMEWINDOW_MAX_WIDTH;
+	game_height = GAMEWINDOW_MAX_HEIGHT;
 }
 
 
@@ -318,213 +318,213 @@ bool Pong::init()
 	//Create paddle 1
 	paddle1 = renderer->createRawSprite();
 	paddle1->loadTexture(".\\Resources\\Textures\\whitepixel.jpg");
-	paddle1->width(paddle_width);
-	paddle1->height(paddle_height);
+	paddle1->width(PADDLE_WIDTH);
+	paddle1->height(PADDLE_HEIGHT);
 	paddle1->xPos(100);
-	paddle1->yPos((game_height / 2) - (paddle_height / 2));
+	paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
 
 	//Create paddle 2
 	paddle2 = renderer->createRawSprite();
 	paddle2->loadTexture(".\\Resources\\Textures\\whitepixel.jpg");
-	paddle2->width(paddle_width);
-	paddle2->height(paddle_height);
-	paddle2->xPos(game_width - 100);
-	paddle2->yPos((game_height / 2) - (paddle_height / 2));
+	paddle2->width(PADDLE_WIDTH);
+	paddle2->height(PADDLE_HEIGHT);
+	paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
+	paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
 
 	//Create ball
 	ball1 = renderer->createRawSprite();
 	ball1->loadTexture(".\\Resources\\Textures\\whitepixel.jpg");
-	ball1->width(ball_size);
-	ball1->height(ball_size);
-	ball1->xPos((game_width / 2) - (ball_size / 2));
-	ball1->yPos((game_height / 2) - (ball_size / 2));
+	ball1->width(BALL_SIZE);
+	ball1->height(BALL_SIZE);
+	ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
+	ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
 
 
 	//Monitor overlay
 	monitor_overlay = renderer->createRawSprite();
 	monitor_overlay->loadTexture(".\\Resources\\Textures\\MENU\\overlay_monitor_effect.png");
-	monitor_overlay->width(game_width);
-	monitor_overlay->height(game_height);
+	monitor_overlay->width(GAMEWINDOW_MAX_WIDTH);
+	monitor_overlay->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Menu background
 	menu_background = renderer->createRawSprite();
 	menu_background->loadTexture(".\\Resources\\Textures\\MENU\\background.jpg");
-	menu_background->width(game_width);
-	menu_background->height(game_height);
+	menu_background->width(GAMEWINDOW_MAX_WIDTH);
+	menu_background->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Menu background state 00
 	menu_background_s00 = renderer->createRawSprite();
 	menu_background_s00->loadTexture(".\\Resources\\Textures\\MENU\\background_static00.jpg");
-	menu_background_s00->width(game_width);
-	menu_background_s00->height(game_height);
+	menu_background_s00->width(GAMEWINDOW_MAX_WIDTH);
+	menu_background_s00->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Menu background state 01
 	menu_background_s01 = renderer->createRawSprite();
 	menu_background_s01->loadTexture(".\\Resources\\Textures\\MENU\\background_static01.jpg");
-	menu_background_s01->width(game_width);
-	menu_background_s01->height(game_height);
+	menu_background_s01->width(GAMEWINDOW_MAX_WIDTH);
+	menu_background_s01->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Menu background state 02
 	menu_background_s02 = renderer->createRawSprite();
 	menu_background_s02->loadTexture(".\\Resources\\Textures\\MENU\\background_static02.jpg");
-	menu_background_s02->width(game_width);
-	menu_background_s02->height(game_height);
+	menu_background_s02->width(GAMEWINDOW_MAX_WIDTH);
+	menu_background_s02->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Menu background state 03
 	menu_background_s03 = renderer->createRawSprite();
 	menu_background_s03->loadTexture(".\\Resources\\Textures\\MENU\\background_static03.jpg");
-	menu_background_s03->width(game_width);
-	menu_background_s03->height(game_height);
+	menu_background_s03->width(GAMEWINDOW_MAX_WIDTH);
+	menu_background_s03->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Menu background state 04
 	menu_background_s04 = renderer->createRawSprite();
 	menu_background_s04->loadTexture(".\\Resources\\Textures\\MENU\\background_static04.jpg");
-	menu_background_s04->width(game_width);
-	menu_background_s04->height(game_height);
+	menu_background_s04->width(GAMEWINDOW_MAX_WIDTH);
+	menu_background_s04->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Loading overlay
 	menu_overlay_loading = renderer->createRawSprite();
 	menu_overlay_loading->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading_s.png");
-	menu_overlay_loading->width(game_width);
-	menu_overlay_loading->height(game_height);
+	menu_overlay_loading->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_loading->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Loading overlay S0
 	menu_overlay_loading_s0 = renderer->createRawSprite();
 	menu_overlay_loading_s0->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading_s0.png");
-	menu_overlay_loading_s0->width(game_width);
-	menu_overlay_loading_s0->height(game_height);
+	menu_overlay_loading_s0->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_loading_s0->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Loading overlay S1
 	menu_overlay_loading_s1 = renderer->createRawSprite();
 	menu_overlay_loading_s1->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading_s1.png");
-	menu_overlay_loading_s1->width(game_width);
-	menu_overlay_loading_s1->height(game_height);
+	menu_overlay_loading_s1->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_loading_s1->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Loading overlay S2
 	menu_overlay_loading_s2 = renderer->createRawSprite();
 	menu_overlay_loading_s2->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading_s2.png");
-	menu_overlay_loading_s2->width(game_width);
-	menu_overlay_loading_s2->height(game_height);
+	menu_overlay_loading_s2->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_loading_s2->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Loading overlay S3
 	menu_overlay_loading_s3 = renderer->createRawSprite();
 	menu_overlay_loading_s3->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading_s3.png");
-	menu_overlay_loading_s3->width(game_width);
-	menu_overlay_loading_s3->height(game_height);
+	menu_overlay_loading_s3->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_loading_s3->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Loading overlay S4
 	menu_overlay_loading_s4 = renderer->createRawSprite();
 	menu_overlay_loading_s4->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading_s4.png");
-	menu_overlay_loading_s4->width(game_width);
-	menu_overlay_loading_s4->height(game_height);
+	menu_overlay_loading_s4->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_loading_s4->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Loading overlay S5
 	menu_overlay_loading_s5 = renderer->createRawSprite();
 	menu_overlay_loading_s5->loadTexture(".\\Resources\\Textures\\MENU\\overlay_loading_s5.png");
-	menu_overlay_loading_s5->width(game_width);
-	menu_overlay_loading_s5->height(game_height);
+	menu_overlay_loading_s5->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_loading_s5->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Two Player overlay
 	menu_overlay_twoPlayer = renderer->createRawSprite();
 	menu_overlay_twoPlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_oneplayer.png");
-	menu_overlay_twoPlayer->width(game_width);
-	menu_overlay_twoPlayer->height(game_height);
+	menu_overlay_twoPlayer->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_twoPlayer->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//One Player overlay
 	menu_overlay_onePlayer = renderer->createRawSprite();
 	menu_overlay_onePlayer->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_twoplayer.png");
-	menu_overlay_onePlayer->width(game_width);
-	menu_overlay_onePlayer->height(game_height);
+	menu_overlay_onePlayer->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_onePlayer->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Controls overlay
 	menu_overlay_controls = renderer->createRawSprite();
 	menu_overlay_controls->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_controls.png");
-	menu_overlay_controls->width(game_width);
-	menu_overlay_controls->height(game_height);
+	menu_overlay_controls->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_controls->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//Scoreboard overlay
 	menu_overlay_scoreboard = renderer->createRawSprite();
 	menu_overlay_scoreboard->loadTexture(".\\Resources\\Textures\\MENU\\overlay_mode_scores.png");
-	menu_overlay_scoreboard->width(game_width);
-	menu_overlay_scoreboard->height(game_height);
+	menu_overlay_scoreboard->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_scoreboard->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay MODE: Regular
 	menu_overlay_mode_regular = renderer->createRawSprite();
 	menu_overlay_mode_regular->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_regular.png");
-	menu_overlay_mode_regular->width(game_width);
-	menu_overlay_mode_regular->height(game_height);
+	menu_overlay_mode_regular->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_mode_regular->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay MODE: Timed
 	menu_overlay_mode_timed = renderer->createRawSprite();
 	menu_overlay_mode_timed->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_timed.png");
-	menu_overlay_mode_timed->width(game_width);
-	menu_overlay_mode_timed->height(game_height);
+	menu_overlay_mode_timed->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_mode_timed->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay MODE: First to 5
 	menu_overlay_mode_score = renderer->createRawSprite();
 	menu_overlay_mode_score->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_points.png");
-	menu_overlay_mode_score->width(game_width);
-	menu_overlay_mode_score->height(game_height);
+	menu_overlay_mode_score->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_mode_score->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay PAUSE screen
 	menu_overlay_paused = renderer->createRawSprite();
 	menu_overlay_paused->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_paused.png");
-	menu_overlay_paused->width(game_width);
-	menu_overlay_paused->height(game_height);
+	menu_overlay_paused->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_paused->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay WIN screen - P1
 	menu_overlay_win_p1 = renderer->createRawSprite();
 	menu_overlay_win_p1->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_win_p1.png");
-	menu_overlay_win_p1->width(game_width);
-	menu_overlay_win_p1->height(game_height);
+	menu_overlay_win_p1->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_win_p1->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay WIN screen - P2
 	menu_overlay_win_p2 = renderer->createRawSprite();
 	menu_overlay_win_p2->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_win_p2.png");
-	menu_overlay_win_p2->width(game_width);
-	menu_overlay_win_p2->height(game_height);
+	menu_overlay_win_p2->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_win_p2->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay WIN screen - PLAYER
 	menu_overlay_win_player = renderer->createRawSprite();
 	menu_overlay_win_player->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_win_human.png");
-	menu_overlay_win_player->width(game_width);
-	menu_overlay_win_player->height(game_height);
+	menu_overlay_win_player->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_win_player->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay WIN screen - CPU
 	menu_overlay_win_cpu = renderer->createRawSprite();
 	menu_overlay_win_cpu->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_win_cpu.png");
-	menu_overlay_win_cpu->width(game_width);
-	menu_overlay_win_cpu->height(game_height);
+	menu_overlay_win_cpu->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_win_cpu->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay WIN screen - DRAW
 	menu_overlay_win_draw = renderer->createRawSprite();
 	menu_overlay_win_draw->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_win_draw.png");
-	menu_overlay_win_draw->width(game_width);
-	menu_overlay_win_draw->height(game_height);
+	menu_overlay_win_draw->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_win_draw->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay SCORE screen - P1
 	menu_overlay_score_p1 = renderer->createRawSprite();
 	menu_overlay_score_p1->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_score_p1.png");
-	menu_overlay_score_p1->width(game_width);
-	menu_overlay_score_p1->height(game_height);
+	menu_overlay_score_p1->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_score_p1->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay SCORE screen - P2
 	menu_overlay_score_p2 = renderer->createRawSprite();
 	menu_overlay_score_p2->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_score_p2.png");
-	menu_overlay_score_p2->width(game_width);
-	menu_overlay_score_p2->height(game_height);
+	menu_overlay_score_p2->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_score_p2->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay SCORE screen - PLAYER
 	menu_overlay_score_player = renderer->createRawSprite();
 	menu_overlay_score_player->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_score_human.png");
-	menu_overlay_score_player->width(game_width);
-	menu_overlay_score_player->height(game_height);
+	menu_overlay_score_player->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_score_player->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay SCORE screen - CPU
 	menu_overlay_score_cpu = renderer->createRawSprite();
 	menu_overlay_score_cpu->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_score_cpu.png");
-	menu_overlay_score_cpu->width(game_width);
-	menu_overlay_score_cpu->height(game_height);
+	menu_overlay_score_cpu->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_score_cpu->height(GAMEWINDOW_MAX_HEIGHT);
 
 
 	//Handle inputs

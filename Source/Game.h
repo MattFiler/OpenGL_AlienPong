@@ -17,10 +17,8 @@ struct GameFont;
 /*
 TODO:
 	Implement vector class
-	Implement point line checker to account for frame lag
-	Implement new menu system
-		Jixellation.ttf font import
-		Scoreboard
+	Point line checker to account for frame lag
+	Jixellation.ttf font import?
 */
 
 
@@ -35,24 +33,25 @@ public:
 
 private:
 	void keyHandler(ASGE::SharedEventData data);
-
-	// Inherited via OGLGame
 	virtual void update(const ASGE::GameTime &) override;
 	virtual void render(const ASGE::GameTime &) override;
+
+
 	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const;
 	bool hasHitEdge(std::string edgeName) const;
 	int calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses) const;
-	void handleWin(std::string winner);
+	void handleWin(std::string winner_name);
+	void resetGame();
+
 
 	bool exit = false;                  /**< Exit boolean. If true the game loop will exit. */
-
 	int  key_callback_id = -1;	        /**< Key Input Callback ID. */
+
 
 	ASGE::Sprite* paddle1 = nullptr;    /**< Sprite Object. Paddle 1. */
 	ASGE::Sprite* paddle2 = nullptr;    /**< Sprite Object. Paddle 2. */
 	ASGE::Sprite* ball1 = nullptr;      /**< Sprite Object. Ball. */
 	
-	//Menu backgrounds and overlays
 	ASGE::Sprite* menu_background = nullptr;  //Menu background
 	ASGE::Sprite* menu_background_s00 = nullptr;  //Menu background s00
 	ASGE::Sprite* menu_background_s01 = nullptr;  //Menu background s01
@@ -92,39 +91,67 @@ private:
 	ASGE::Sprite* menu_overlay_score_player = nullptr; //in-game SCORE screen - PLAYER
 	ASGE::Sprite* menu_overlay_score_cpu = nullptr; //in-game SCORE screen - CPU
 
-	//Paddle and ball sizes
-	int paddle_height = 150;
-	int paddle_width = 10;
-	int ball_size = 10;
 
-	//Paddle controls
+	//Global game values and settings
+	enum game_definitions { GAMEWINDOW_MAX_WIDTH = 1024, GAMEWINDOW_MAX_HEIGHT = 768, 
+							PADDLE_HEIGHT = 150, PADDLE_WIDTH = 10, 
+							BALL_SIZE = 10,
+							DEFAULT_ANGLE_MULTIPLIER = 2, HIGH_ANGLE_MULTIPLIER = 3,
+							DEFAULT_SPEED = 600, HIGH_SPEED = 1000,
+							CPU_SLOW_SPEED_REFRESH = 4, CPU_MEDIUM_SPEED_REFRESH = 3, CPU_FAST_SPEED_REFRESH = 2,
+							CPU_MODIFIER_EASY = 3, CPU_MODIFIER_MEDIUM = 2, CPU_MODIFIER_HARD = 1};
+
+
+	//Movement, angles & directions
+	enum directions { NO_DIRECTION, UP, DOWN, LEFT, RIGHT };
+	int ball_direction = RIGHT;
+	int left_paddle_direction = NO_DIRECTION;
+	int right_paddle_direction = NO_DIRECTION;
+
 	bool right_paddle_moving = false;
-	bool right_paddle_moving_up = false;
 	bool left_paddle_moving = false;
-	bool left_paddle_moving_up = false;
 
-	//Movement direction: left = 0, right = 1.
-	int movement_direction = 1;
 	int movement_angle = 0;
 	int movement_angle_raw = 0;
+	
 
-	//Angle/speed settings
-	int angle_variant = 140;
-	int angle_base = 25;
-	int speed_base = 600; 
+	//Gamestates
+	enum gamestates { IS_IN_MENU, IS_PAUSED, IS_IN_LOADSCREEN, IS_GAME_OVER, IS_PLAYING, PLAYER_HAS_WON };
+	int gamestate = IS_IN_LOADSCREEN;
 
-	//Score
+
+	//Gamemodes
+	enum gamemodes { NO_GAMEMODE, GAMEMODE_INFINITE, GAMEMODE_TIMED, GAMEMODE_SCORE };
+	int gamemode = NO_GAMEMODE;
+	bool is_against_cpu = false;
+
+
+	//Menu options
+	enum menu_options { MENU_OPTION_PVP_INFINITE = 0, MENU_OPTION_PVP_TIMED = 5, MENU_OPTION_PVP_SCORE = 10,
+						MENU_OPTION_CPU_INFINITE = 15, MENU_OPTION_CPU_TIMED = 20, MENU_OPTION_CPU_SCORE = 25};
+	int menu_option = MENU_OPTION_PVP_INFINITE;
+
+
+	//Menu states
+	enum menu_states { MENU_PAGE_1, MENU_PAGE_2, MENU_TAB_1, MENU_TAB_2 };
+	int menu_page = MENU_PAGE_1;
+	int menu_tab = MENU_TAB_1;
+
+
+	//Player type
+	enum player { PLAYER_NULL, PLAYER_P1, PLAYER_P2, PLAYER_HUMAN, PLAYER_CPU };
+	int winner = PLAYER_NULL;
+
+
+	//Scores
 	int player_1_points = 0;
 	int player_2_points = 0;
 
-	//Menu
-	bool is_in_menu = true;
-	int menu_option = 0;
-	bool player_has_won = false;
-	int winner_id = 0;
-	bool is_in_loadscreen = true;
-	bool swap_tabs = false;
-	bool showing_first_menu = true;
+	int scoreboard_score_p1 = 0;
+	int scoreboard_score_p2 = 0;
+	int scoreboard_score_player = 0;
+	int scoreboard_score_cpu = 0;
+
 
 	//Custom FX
 	bool is_performing_effect = false;
@@ -133,27 +160,16 @@ private:
 	float effect_time_in_seconds = 0.07;
 	bool effect_has_finished_cycle = false;
 
-	//Gamestates
-	bool gamestate_freeplay = false;
-	bool gamestate_timedgameplay = false;
-	bool gamestate_firsttofive = false;
-	bool gamestate_vscpu = false;
-	int cpu_speed_modifier = 2;
-	int cpu_speed_modifier_check = 0;
-	int cpu_speed_refresh_rate = 3;
-	bool game_over = false;
+
+	//Timers and runtime modifiers
+	bool freeze_ball = true;
 	float game_timer = 0;
 	float global_game_timer = 0;
-	bool is_paused = false;
-	bool freeze_ball = true;
+	int cpu_speed_modifier_check = 0;
+	float cpu_speed_modifier = 2;
+
 
 	//Audio checks
 	bool has_performed_startup_sound = false;
-
-	//Scores
-	int scoreboard_score_p1 = 0;
-	int scoreboard_score_p2 = 0;
-	int scoreboard_score_player = 0;
-	int scoreboard_score_cpu = 0;
 };
 
