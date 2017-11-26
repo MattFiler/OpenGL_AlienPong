@@ -223,6 +223,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 						paddle2->xPos(game_width - 100);
 						paddle2->yPos((game_height / 2) - (paddle_height / 2));
 
+						//Reset angle & direction
+						movement_angle = 0;
+						movement_angle_raw = 0;
+						movement_direction = 1;
+
 						//Free play
 						if (menu_option == 0)
 						{
@@ -1024,15 +1029,15 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 	{
 		distance_to_middle_from_middle = ball_middle_y - paddle_middle_y; //work out distance to middle of paddle from above
 		return_angle = distance_to_middle_from_middle * 2.5; //use distance * 2 for angle
-		if (include_reverses)
-		{
-			return_angle *= -1; //reverse the direction up/down
-		}
 	}
 	else 
 	{
 		distance_to_middle_from_middle = paddle_middle_y - ball_middle_y; //work out distance to middle of paddle from below
 		return_angle = distance_to_middle_from_middle * 2.5; //use distance * 2 for angle
+		if (include_reverses)
+		{
+			return_angle *= -1; //reverse the direction up/down
+		}
 	}
 
 	//Return the angle
