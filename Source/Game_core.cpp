@@ -351,6 +351,9 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			left_paddle_moving = false;
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
+				//Play SFX
+				PlaySound(TEXT("../../Resources/Audio/BEEP_016.wav"), NULL, SND_ASYNC);
+
 				//Reset game and return to menu
 				resetGame();
 			}
@@ -874,6 +877,7 @@ void Pong::render(const ASGE::GameTime &)
 		*/
 		case IS_GAME_OVER: 
 		{
+			//Render final win screen
 			if (player_1_points == player_2_points)
 			{
 				renderer->renderSprite(*menu_overlay_win_draw); //Draw
@@ -1074,9 +1078,6 @@ void Pong::handleWin(std::string winner_name)
 		}
 	}
 
-	//Play SFX
-	PlaySound(TEXT("../../Resources/Audio/BEEP_016.wav"), NULL, SND_ASYNC);
-
 	//Reset ball position
 	ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
 	ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
@@ -1086,6 +1087,9 @@ void Pong::handleWin(std::string winner_name)
 	paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
 	paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
 	paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
+
+	//Play SFX
+	PlaySound(TEXT("../../Resources/Audio/BEEP_009.wav"), NULL, SND_ASYNC);
 
 	//Reset angle
 	movement_angle = 0;
