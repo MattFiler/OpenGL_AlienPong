@@ -100,187 +100,189 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				right_paddle_moving = false;
 				left_paddle_moving = false;
 
-				/* MENU */
-				//Swap current menu
-				if (key->key == ASGE::KEYS::KEY_Q && key->action == ASGE::KEYS::KEY_RELEASED) 
-				{
-					//Play SFX
-					PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
-
-					//Update display
-					if (showing_first_menu) 
+				if (!is_paused) {
+					/* MENU */
+					//Swap current menu
+					if (key->key == ASGE::KEYS::KEY_Q && key->action == ASGE::KEYS::KEY_RELEASED)
 					{
-						showing_first_menu = false;
-						swap_tabs = false;
-						menu_option = 0;
+						//Play SFX
+						PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
+
+						//Update display
+						if (showing_first_menu)
+						{
+							showing_first_menu = false;
+							swap_tabs = false;
+							menu_option = 0;
+						}
+						else
+						{
+							showing_first_menu = true;
+							swap_tabs = false;
+							menu_option = 0;
+						}
+					}
+					//Swap top/bottom tabs on current menu
+					if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED)
+					{
+						//Play SFX
+						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
+
+						//Update screen vars
+						if (swap_tabs)
+						{
+							swap_tabs = false;
+							menu_option = 0;
+						}
+						else
+						{
+							swap_tabs = true;
+							menu_option = 15;
+						}
+					}
+					if (swap_tabs)
+					{
+						if (showing_first_menu == false)
+						{
+							//Go down on press of down
+							if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+							{
+								if (menu_option != 25)
+								{
+									menu_option += 5;
+									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+								}
+								else
+								{
+									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+								}
+							}
+							//Go up on press of up
+							if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+							{
+								if (menu_option != 15)
+								{
+									menu_option -= 5;
+									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+								}
+								else
+								{
+									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+								}
+							}
+						}
 					}
 					else
 					{
-						showing_first_menu = true;
-						swap_tabs = false;
-						menu_option = 0;
-					}
-				}
-				//Swap top/bottom tabs on current menu
-				if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED) 
-				{
-					//Play SFX
-					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
-
-					//Update screen vars
-					if (swap_tabs) 
-					{
-						swap_tabs = false;
-						menu_option = 0;
-					}
-					else 
-					{
-						swap_tabs = true;
-						menu_option = 15;
-					}
-				}
-				if (swap_tabs)
-				{
-					if (showing_first_menu == false) 
-					{
-						//Go down on press of down
-						if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+						if (showing_first_menu == false)
 						{
-							if (menu_option != 25)
+							//Go down on press of down
+							if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 							{
-								menu_option += 5;
-								PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+								if (menu_option != 10)
+								{
+									menu_option += 5;
+									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+								}
+								else
+								{
+									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+								}
 							}
-							else
+							//Go up on press of up
+							if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
 							{
-								PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-							}
-						}
-						//Go up on press of up
-						if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
-						{
-							if (menu_option != 15)
-							{
-								menu_option -= 5;
-								PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-							}
-							else
-							{
-								PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+								if (menu_option != 0)
+								{
+									menu_option -= 5;
+									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+								}
+								else
+								{
+									PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+								}
 							}
 						}
 					}
-				}
-				else
-				{
-					if (showing_first_menu == false)
+					//Handle menu selections
+					if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 					{
-						//Go down on press of down
-						if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
+						if (showing_first_menu == false && is_paused == false)
 						{
-							if (menu_option != 10)
-							{
-								menu_option += 5;
-								PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-							}
-							else
-							{
-								PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-							}
-						}
-						//Go up on press of up
-						if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
-						{
-							if (menu_option != 0)
-							{
-								menu_option -= 5;
-								PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-							}
-							else
-							{
-								PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-							}
-						}
-					}
-				}
-				//Handle menu selections
-				if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					if (showing_first_menu == false && is_paused == false)
-					{
-						//Play SFX
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
+							//Play SFX
+							PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
 
-						//Reset points
-						game_timer = 0;
-						player_1_points = 0;
-						player_2_points = 0;
-						freeze_ball = false;
+							//Reset points
+							game_timer = 0;
+							player_1_points = 0;
+							player_2_points = 0;
+							freeze_ball = false;
 
-						//Reset paddle positions
-						paddle1->xPos(100);
-						paddle1->yPos((game_height / 2) - (paddle_height / 2));
-						paddle2->xPos(game_width - 100);
-						paddle2->yPos((game_height / 2) - (paddle_height / 2));
+							//Reset paddle positions
+							paddle1->xPos(100);
+							paddle1->yPos((game_height / 2) - (paddle_height / 2));
+							paddle2->xPos(game_width - 100);
+							paddle2->yPos((game_height / 2) - (paddle_height / 2));
 
-						//Reset angle & direction
-						movement_angle = 0;
-						movement_angle_raw = 0;
-						movement_direction = 1;
+							//Reset angle & direction
+							movement_angle = 0;
+							movement_angle_raw = 0;
+							movement_direction = 1;
 
-						//Free play
-						if (menu_option == 0)
-						{
-							is_in_menu = false;
-							gamestate_freeplay = true;
-							gamestate_timedgameplay = false;
-							gamestate_firsttofive = false;
-							gamestate_vscpu = false;
-						}
-						//Timed gameplay
-						if (menu_option == 5)
-						{
-							is_in_menu = false;
-							gamestate_freeplay = false;
-							gamestate_timedgameplay = true;
-							gamestate_firsttofive = false;
-							gamestate_vscpu = false;
-						}
-						//First to 5
-						if (menu_option == 10)
-						{
-							is_in_menu = false;
-							gamestate_freeplay = false;
-							gamestate_timedgameplay = false;
-							gamestate_firsttofive = true;
-							gamestate_vscpu = false;
-						}
-						//VS CPU
-						if (menu_option == 15)
-						{
-							is_in_menu = false;
-							gamestate_freeplay = true;
-							gamestate_timedgameplay = false;
-							gamestate_firsttofive = false;
-							gamestate_vscpu = true;
-						}
-						//VS CPU timed
-						if (menu_option == 20)
-						{
-							is_in_menu = false;
-							gamestate_freeplay = false;
-							gamestate_timedgameplay = true;
-							gamestate_firsttofive = false;
-							gamestate_vscpu = true;
-						}
-						//VS CPU first to 5
-						if (menu_option == 25)
-						{
-							is_in_menu = false;
-							gamestate_freeplay = false;
-							gamestate_timedgameplay = false;
-							gamestate_firsttofive = true;
-							gamestate_vscpu = true;
+							//Free play
+							if (menu_option == 0)
+							{
+								is_in_menu = false;
+								gamestate_freeplay = true;
+								gamestate_timedgameplay = false;
+								gamestate_firsttofive = false;
+								gamestate_vscpu = false;
+							}
+							//Timed gameplay
+							if (menu_option == 5)
+							{
+								is_in_menu = false;
+								gamestate_freeplay = false;
+								gamestate_timedgameplay = true;
+								gamestate_firsttofive = false;
+								gamestate_vscpu = false;
+							}
+							//First to 5
+							if (menu_option == 10)
+							{
+								is_in_menu = false;
+								gamestate_freeplay = false;
+								gamestate_timedgameplay = false;
+								gamestate_firsttofive = true;
+								gamestate_vscpu = false;
+							}
+							//VS CPU
+							if (menu_option == 15)
+							{
+								is_in_menu = false;
+								gamestate_freeplay = true;
+								gamestate_timedgameplay = false;
+								gamestate_firsttofive = false;
+								gamestate_vscpu = true;
+							}
+							//VS CPU timed
+							if (menu_option == 20)
+							{
+								is_in_menu = false;
+								gamestate_freeplay = false;
+								gamestate_timedgameplay = true;
+								gamestate_firsttofive = false;
+								gamestate_vscpu = true;
+							}
+							//VS CPU first to 5
+							if (menu_option == 25)
+							{
+								is_in_menu = false;
+								gamestate_freeplay = false;
+								gamestate_timedgameplay = false;
+								gamestate_firsttofive = true;
+								gamestate_vscpu = true;
+							}
 						}
 					}
 				}
