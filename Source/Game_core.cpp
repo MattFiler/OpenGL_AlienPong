@@ -499,11 +499,11 @@ void Pong::update(const ASGE::GameTime & us)
 			if (right_paddle_moving)
 			{
 				//Bespoke speed modifier for CPU movement (if human player, we default to 2)
-				if (int(game_timer) % CPU_MEDIUM_SPEED_REFRESH == 0 && is_against_cpu)
+				if (int(game_timer) % CPU_SLOW_SPEED_REFRESH == 0 && is_against_cpu)
 				{
 					if (cpu_speed_modifier_check != int(game_timer))
 					{
-						cpu_speed_modifier = (rand() % 3) + CPU_MODIFIER_MEDIUM;
+						cpu_speed_modifier = (rand() % CPU_MODIFIER_EASY) + 2.5;
 						cpu_speed_modifier_check = int(game_timer);
 					}
 				}
@@ -602,6 +602,9 @@ void Pong::render(const ASGE::GameTime &)
 
 	//Render background
 	renderer->renderSprite(*menu_background);
+
+	//Debug output
+	//renderer->renderText((std::to_string(cpu_speed_modifier)).c_str(),55, 55, 1.0, ASGE::COLOURS::WHITE);
 
 	/*
 	Render FX if requested (and not already performing)
