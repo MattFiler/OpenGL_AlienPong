@@ -2,7 +2,7 @@
 #include <string>
 #include <Engine/OGLGame.h>
 #include "Game_vars.h"
-//#include "PongPAK.h"
+#include "PongPAK.h"
 
 struct GameFont;
 
@@ -35,6 +35,7 @@ private:
 	int calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses) const;
 	void handleWin(std::string winner_name);
 	void resetGame();
+	void loadAssets();
 
 
 	bool exit = false;                  /**< Exit boolean. If true the game loop will exit. */
@@ -144,7 +145,6 @@ private:
 
 
 	//Ready-up our file handler
-	//PongPAK PongFileHandler;
-	//No longer using PongPAK - full explanation in the class.
+	PongPAK PongFileHandler;
 };
 

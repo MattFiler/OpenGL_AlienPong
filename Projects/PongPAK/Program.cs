@@ -26,9 +26,10 @@ namespace PongPAK
                     File.Delete(pong_build_directory + @"\Resources\resources.pongmfst");
                     Console.WriteLine("Resetting Pong PAK");
                     Console.WriteLine("--------------------------");
-                    File.WriteAllText(pong_build_directory + @"\Resources\resources.pongpak", "");
-                    File.WriteAllText(pong_build_directory + @"\Resources\resources.pongmfst", "");
                 }
+                //Regen PAK and manifest
+                File.WriteAllText(pong_build_directory + @"\Resources\resources.pongpak", "");
+                File.WriteAllText(pong_build_directory + @"\Resources\resources.pongmfst", "");
 
                 string[] files = Directory.GetFiles(pong_build_directory + @"\Source Assets", "*", SearchOption.AllDirectories);
                 StreamWriter update_manifest = new StreamWriter(pong_build_directory + @"\Resources\resources.pongmfst");

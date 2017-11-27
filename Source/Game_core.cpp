@@ -55,7 +55,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			if (key->key == ASGE::KEYS::KEY_Q && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
+				PlaySound(TEXT("BEEP_018.wav"), NULL, SND_ASYNC);
 
 				//Update display
 				if (menu_page == MENU_PAGE_1)
@@ -76,7 +76,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
+				PlaySound(TEXT("Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
 
 				//Update screen vars
 				if (menu_tab == MENU_TAB_1)
@@ -100,11 +100,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 					if (menu_option != 10)
 					{
 						menu_option += 5;
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+						PlaySound(TEXT("Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 					}
 					else
 					{
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+						PlaySound(TEXT("Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
 					}
 				}
 				//Go up on press of up
@@ -113,11 +113,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 					if (menu_option != 0)
 					{
 						menu_option -= 5;
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+						PlaySound(TEXT("Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 					}
 					else
 					{
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+						PlaySound(TEXT("Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
 					}
 				}
 			}
@@ -129,11 +129,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 					if (menu_option != 25)
 					{
 						menu_option += 5;
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+						PlaySound(TEXT("Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 					}
 					else
 					{
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+						PlaySound(TEXT("Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
 					}
 				}
 				//Go up on press of up
@@ -142,11 +142,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 					if (menu_option != 15)
 					{
 						menu_option -= 5;
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
+						PlaySound(TEXT("Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 					}
 					else
 					{
-						PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
+						PlaySound(TEXT("Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
 					}
 				}
 			}
@@ -157,7 +157,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				if (gamestate == IS_IN_MENU && menu_page == MENU_PAGE_2)
 				{
 					//Play SFX
-					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
+					PlaySound(TEXT("Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
 
 					//Reset points & states
 					pong_core.game_timer = 0;
@@ -224,6 +224,8 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			//Quit game on ESC when in main menu
 			if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
+				//Close game and cleanup all PongPAK files
+				PongFileHandler.ClearupFiles();
 				signalExit();
 			}
 
@@ -284,7 +286,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 				gamestate = IS_PAUSED;
 
 				//Play SFX
-				PlaySound(TEXT("../../Resources/Audio/BEEP_005.wav"), NULL, SND_ASYNC);
+				PlaySound(TEXT("BEEP_005.wav"), NULL, SND_ASYNC);
 			}
 
 			break;
@@ -299,7 +301,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			if (key->key == ASGE::KEYS::KEY_C && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("../../Resources/Audio/BEEP_011.wav"), NULL, SND_ASYNC);
+				PlaySound(TEXT("BEEP_011.wav"), NULL, SND_ASYNC);
 
 				//Un-pause
 				gamestate = IS_PLAYING;
@@ -311,7 +313,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			if (key->key == ASGE::KEYS::KEY_M && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("../../Resources/Audio/BEEP_018.wav"), NULL, SND_ASYNC);
+				PlaySound(TEXT("BEEP_018.wav"), NULL, SND_ASYNC);
 
 				//Reset game and return to menu
 				resetGame();
@@ -331,7 +333,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("../../Resources/Audio/BEEP_011.wav"), NULL, SND_ASYNC);
+				PlaySound(TEXT("BEEP_011.wav"), NULL, SND_ASYNC);
 
 				//Return to game
 				gamestate = IS_PLAYING;
@@ -352,7 +354,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("../../Resources/Audio/BEEP_016.wav"), NULL, SND_ASYNC);
+				PlaySound(TEXT("BEEP_016.wav"), NULL, SND_ASYNC);
 
 				//Reset game and return to menu
 				resetGame();
@@ -687,7 +689,7 @@ void Pong::render(const ASGE::GameTime &)
 
 				//Play SFX
 				if (!pong_core.has_performed_startup_sound) {
-					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC);
+					PlaySound(TEXT("Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC);
 					//PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_BG_Loop.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
 					pong_core.has_performed_startup_sound = true;
 				}
@@ -967,7 +969,7 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 		if (y > (sprite->yPos() - BALL_SIZE) && y < (sprite->yPos() + PADDLE_HEIGHT))
 		{
 			//Play SFX
-			PlaySound(TEXT("../../Resources/Audio/BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+			PlaySound(TEXT("BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 			return true;
 		}
 		else
@@ -1117,7 +1119,7 @@ void Pong::handleWin(std::string winner_name)
 	paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
 
 	//Play SFX
-	PlaySound(TEXT("../../Resources/Audio/BEEP_009.wav"), NULL, SND_ASYNC);
+	PlaySound(TEXT("BEEP_009.wav"), NULL, SND_ASYNC);
 
 	//Reset angle
 	movement_angle = 0;
@@ -1164,4 +1166,61 @@ void Pong::resetGame()
 	paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
 	paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
 	paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
+}
+
+/*
+	Load our assets
+*/
+void Pong::loadAssets() 
+{
+	//Load FONTS
+	PongFileHandler.FetchFile("Jixellation.ttf");
+
+	//Load SOUNDS
+	PongFileHandler.FetchFile("BEEP_005.wav");
+	PongFileHandler.FetchFile("BEEP_009.wav");
+	PongFileHandler.FetchFile("BEEP_011.wav");
+	PongFileHandler.FetchFile("BEEP_016.wav");
+	PongFileHandler.FetchFile("BEEP_018.wav");
+	PongFileHandler.FetchFile("BEEP_021.wav");
+	PongFileHandler.FetchFile("Interactive_Terminal_Startup_SHORTENED.wav");
+	PongFileHandler.FetchFile("Interactive_Terminal_Telem_02.wav");
+	PongFileHandler.FetchFile("Interactive_Terminal_Telem_04.wav");
+	PongFileHandler.FetchFile("Interactive_Terminal_Telem_06.wav");
+	PongFileHandler.FetchFile("Interactive_Terminal_Telem_07.wav");
+
+	//Load IMAGES
+	PongFileHandler.FetchFile("whitepixel.jpg");
+	PongFileHandler.FetchFile("overlay_monitor_effect.png");
+	PongFileHandler.FetchFile("background.jpg");
+	PongFileHandler.FetchFile("background_static00.jpg");
+	PongFileHandler.FetchFile("background_static01.jpg");
+	PongFileHandler.FetchFile("background_static02.jpg");
+	PongFileHandler.FetchFile("background_static03.jpg");
+	PongFileHandler.FetchFile("background_static04.jpg");
+	PongFileHandler.FetchFile("overlay_loading_s.png");
+	PongFileHandler.FetchFile("overlay_loading_s0.png");
+	PongFileHandler.FetchFile("overlay_loading_s1.png");
+	PongFileHandler.FetchFile("overlay_loading_s2.png");
+	PongFileHandler.FetchFile("overlay_loading_s3.png");
+	PongFileHandler.FetchFile("overlay_loading_s4.png");
+	PongFileHandler.FetchFile("overlay_loading_s5.png");
+	PongFileHandler.FetchFile("overlay_mode_oneplayer.png");
+	PongFileHandler.FetchFile("overlay_mode_twoplayer.png");
+	PongFileHandler.FetchFile("overlay_mode_controls.png");
+	PongFileHandler.FetchFile("overlay_mode_scores.png");
+	PongFileHandler.FetchFile("overlay_ingame_regular.png");
+	PongFileHandler.FetchFile("overlay_ingame_timed.png");
+	PongFileHandler.FetchFile("overlay_ingame_points.png");
+	PongFileHandler.FetchFile("overlay_ingame_scorebox.png");
+	PongFileHandler.FetchFile("overlay_ingame_paused.png");
+	PongFileHandler.FetchFile("overlay_ingame_win_p1.png");
+	PongFileHandler.FetchFile("overlay_ingame_win_p2.png");
+	PongFileHandler.FetchFile("overlay_ingame_win_human.png");
+	PongFileHandler.FetchFile("overlay_ingame_win_cpu.png");
+	PongFileHandler.FetchFile("overlay_ingame_win_draw.png");
+	PongFileHandler.FetchFile("overlay_ingame_score_p1.png");
+	PongFileHandler.FetchFile("overlay_ingame_score_p2.png");
+	PongFileHandler.FetchFile("overlay_ingame_score_human.png");
+	PongFileHandler.FetchFile("overlay_ingame_score_cpu.png");
 }
