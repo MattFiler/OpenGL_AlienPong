@@ -653,11 +653,11 @@ void Pong::render(const ASGE::GameTime &)
 	/*
 	Render overlays for each mode (as long as we're not in the menu)
 	*/
-	if (gamemode == GAMEMODE_INFINITE && gamestate != NO_GAMEMODE)
+	if (gamemode == GAMEMODE_INFINITE && gamestate != IS_IN_MENU)
 		renderer->renderSprite(*menu_overlay_mode_regular); //MODE OVERLAY: regular
-	if (gamemode == GAMEMODE_SCORE && gamestate != NO_GAMEMODE)
+	if (gamemode == GAMEMODE_SCORE && gamestate != IS_IN_MENU)
 		renderer->renderSprite(*menu_overlay_mode_score); //MODE OVERLAY: score
-	if (gamemode == GAMEMODE_TIMED && gamestate != NO_GAMEMODE)
+	if (gamemode == GAMEMODE_TIMED && gamestate != IS_IN_MENU)
 		renderer->renderSprite(*menu_overlay_mode_timed); //MODE OVERLAY: timed
 
 	/*
