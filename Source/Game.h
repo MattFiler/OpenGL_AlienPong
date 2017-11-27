@@ -67,6 +67,7 @@ private:
 	ASGE::Sprite* menu_overlay_mode_regular = nullptr; //in-game MODE overlay regular
 	ASGE::Sprite* menu_overlay_mode_timed = nullptr; //in-game MODE overlay timed
 	ASGE::Sprite* menu_overlay_mode_score = nullptr; //in-game MODE overlay score
+	ASGE::Sprite* menu_overlay_score_box = nullptr; //in-game score box overlay
 
 	ASGE::Sprite* menu_overlay_paused = nullptr; //in-game PAUSE screen
 

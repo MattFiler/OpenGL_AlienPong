@@ -212,6 +212,13 @@ Pong::~Pong()
 		menu_overlay_mode_score = nullptr;
 	}
 
+	//overlay score counter
+	if (menu_overlay_score_box)
+	{
+		delete menu_overlay_score_box;
+		menu_overlay_score_box = nullptr;
+	}
+
 	//overlay PAUSE menu
 	if (menu_overlay_paused)
 	{
@@ -468,6 +475,12 @@ bool Pong::init()
 	menu_overlay_mode_score->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_points.png");
 	menu_overlay_mode_score->width(GAMEWINDOW_MAX_WIDTH);
 	menu_overlay_mode_score->height(GAMEWINDOW_MAX_HEIGHT);
+
+	//overlay score box
+	menu_overlay_score_box = renderer->createRawSprite();
+	menu_overlay_score_box->loadTexture(".\\Resources\\Textures\\MENU\\overlay_ingame_scorebox.png");
+	menu_overlay_score_box->width(GAMEWINDOW_MAX_WIDTH);
+	menu_overlay_score_box->height(GAMEWINDOW_MAX_HEIGHT);
 
 	//overlay PAUSE screen
 	menu_overlay_paused = renderer->createRawSprite();
