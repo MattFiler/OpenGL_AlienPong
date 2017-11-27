@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <Engine/OGLGame.h>
+#include "Game_vars.h"
 
 struct GameFont;
 
@@ -143,33 +144,9 @@ private:
 	int winner = PLAYER_NULL;
 
 
-	//Scores
-	int player_1_points = 0;
-	int player_2_points = 0;
-
-	int scoreboard_score_p1 = 0;
-	int scoreboard_score_p2 = 0;
-	int scoreboard_score_player = 0;
-	int scoreboard_score_cpu = 0;
-
-
-	//Custom FX
-	bool is_performing_effect = false;
-	bool has_requested_effect = false;
-	float time_effect_started = 0.0;
-	float effect_time_in_seconds = 0.07;
-	bool effect_has_finished_cycle = false;
-
-
-	//Timers and runtime modifiers
-	bool freeze_ball = true;
-	float game_timer = 0;
-	float global_game_timer = 0;
-	int cpu_speed_modifier_check = 0;
-	float cpu_speed_modifier = 2;
-
-
-	//Audio checks
-	bool has_performed_startup_sound = false;
+	//Call our external classes
+	GameVars_Scores pong_points; //Score counters
+	GameVars_FX pong_fx; //FX vars
+	GameVars_Core pong_core; //Core vars
 };
 

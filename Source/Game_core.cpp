@@ -160,10 +160,10 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
 
 					//Reset points & states
-					game_timer = 0;
-					player_1_points = 0;
-					player_2_points = 0;
-					freeze_ball = false;
+					pong_core.game_timer = 0;
+					pong_points.p1 = 0;
+					pong_points.p2 = 0;
+					pong_core.freeze_ball = false;
 
 					//Reset paddle positions
 					paddle1->xPos(100);
@@ -303,8 +303,8 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 
 				//Un-pause
 				gamestate = IS_PLAYING;
-				effect_has_finished_cycle = false;
-				freeze_ball = false;
+				pong_fx.has_finished_cycle = false;
+				pong_core.freeze_ball = false;
 			}
 
 			//Return to main menu
@@ -335,7 +335,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 
 				//Return to game
 				gamestate = IS_PLAYING;
-				effect_has_finished_cycle = false;
+				pong_fx.has_finished_cycle = false;
 			}
 
 			break;
@@ -376,9 +376,9 @@ void Pong::update(const ASGE::GameTime & us)
 	//Update timers
 	if (gamestate == IS_PLAYING)
 	{
-		game_timer += (us.delta_time.count() / 1000.f);
+		pong_core.game_timer += (us.delta_time.count() / 1000.f);
 	}
-	global_game_timer += (us.delta_time.count() / 1000.f);
+	pong_core.global_game_timer += (us.delta_time.count() / 1000.f);
 
 	//Get current ball position
 	auto x_pos = ball1->xPos();
@@ -429,7 +429,7 @@ void Pong::update(const ASGE::GameTime & us)
 			}
 			//Apply movement angle
 			y_pos += movement_angle * (us.delta_time.count() / 1000.f);
-			if (!freeze_ball)
+			if (!pong_core.freeze_ball)
 			{
 				//Update X position of ball
 				ball1->xPos(x_pos);
@@ -499,23 +499,23 @@ void Pong::update(const ASGE::GameTime & us)
 			if (right_paddle_moving)
 			{
 				//Bespoke speed modifier for CPU movement (if human player, we default to 2)
-				if (int(game_timer) % CPU_SLOW_SPEED_REFRESH == 0 && is_against_cpu)
+				if (int(pong_core.game_timer) % CPU_SLOW_SPEED_REFRESH == 0 && is_against_cpu)
 				{
-					if (cpu_speed_modifier_check != int(game_timer))
+					if (pong_core.cpu_speed_modifier_check != int(pong_core.game_timer))
 					{
-						cpu_speed_modifier = (rand() % CPU_MODIFIER_EASY) + 2.5;
-						cpu_speed_modifier_check = int(game_timer);
+						pong_core.cpu_speed_modifier = (rand() % CPU_MODIFIER_EASY) + 2.5;
+						pong_core.cpu_speed_modifier_check = int(pong_core.game_timer);
 					}
 				}
 				if (right_paddle_direction == UP)
 				{
 					//Update Y position of paddle UP
-					paddle2->yPos(paddle2->yPos() - (DEFAULT_SPEED / cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+					paddle2->yPos(paddle2->yPos() - (DEFAULT_SPEED / pong_core.cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 				}
 				else
 				{
 					//Update Y position of paddle DOWN
-					paddle2->yPos(paddle2->yPos() + (DEFAULT_SPEED / cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+					paddle2->yPos(paddle2->yPos() + (DEFAULT_SPEED / pong_core.cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 				}
 			}
 
@@ -528,7 +528,7 @@ void Pong::update(const ASGE::GameTime & us)
 		case IS_PAUSED:
 		{
 			//Freeze ball on pause
-			freeze_ball = true;
+			pong_core.freeze_ball = true;
 
 			break;
 		}
@@ -563,12 +563,12 @@ void Pong::update(const ASGE::GameTime & us)
 	*/
 	if (gamemode == GAMEMODE_TIMED)
 	{
-		if (game_timer > 60)
+		if (pong_core.game_timer > 60)
 		{
 			right_paddle_moving = false;
 			left_paddle_moving = false;
 			gamestate = IS_GAME_OVER;
-			freeze_ball = true;
+			pong_core.freeze_ball = true;
 		}
 	}
 
@@ -577,12 +577,12 @@ void Pong::update(const ASGE::GameTime & us)
 	*/
 	if (gamemode == GAMEMODE_SCORE)
 	{
-		if (player_1_points == 5 || player_2_points == 5)
+		if (pong_points.p1 == 5 || pong_points.p2 == 5)
 		{
 			right_paddle_moving = false;
 			left_paddle_moving = false;
 			gamestate = IS_GAME_OVER;
-			freeze_ball = true;
+			pong_core.freeze_ball = true;
 		}
 	}
 }
@@ -609,47 +609,47 @@ void Pong::render(const ASGE::GameTime &)
 	/*
 	Render FX if requested (and not already performing)
 	*/
-	if (has_requested_effect || //Has requested effect?
-		((time_effect_started + effect_time_in_seconds) < global_game_timer && is_performing_effect) //Is in time range for performing effect?
+	if (pong_fx.has_requested || //Has requested effect?
+		((pong_fx.time_started + pong_fx.time_in_seconds) < pong_core.global_game_timer && pong_fx.is_performing) //Is in time range for performing effect?
 		) 
 	{
-		if (!effect_has_finished_cycle) 
+		if (!pong_fx.has_finished_cycle)
 		{
-			if (is_performing_effect == false)
+			if (pong_fx.is_performing == false)
 			{
-				time_effect_started = global_game_timer; //Log start time (if not already performing)
+				pong_fx.time_started = pong_core.global_game_timer; //Log start time (if not already performing)
 			}
-			is_performing_effect = false;
+			pong_fx.is_performing = false;
 
 			//Run animation
-			if (global_game_timer - time_effect_started < 0.01)
+			if (pong_core.global_game_timer - pong_fx.time_started < 0.01)
 			{
 				renderer->renderSprite(*menu_background_s00);
-				is_performing_effect = true;
+				pong_fx.is_performing = true;
 			}
-			if (global_game_timer - time_effect_started < 0.03 && global_game_timer - time_effect_started >= 0.01)
+			if (pong_core.global_game_timer - pong_fx.time_started < 0.03 && pong_core.global_game_timer - pong_fx.time_started >= 0.01)
 			{
 				renderer->renderSprite(*menu_background_s01);
-				is_performing_effect = true;
+				pong_fx.is_performing = true;
 			}
-			if (global_game_timer - time_effect_started < 0.04 && global_game_timer - time_effect_started >= 0.03)
+			if (pong_core.global_game_timer - pong_fx.time_started < 0.04 && pong_core.global_game_timer - pong_fx.time_started >= 0.03)
 			{
 				renderer->renderSprite(*menu_background_s02);
-				is_performing_effect = true;
+				pong_fx.is_performing = true;
 			}
-			if (global_game_timer - time_effect_started < 0.06 && global_game_timer - time_effect_started >= 0.04)
+			if (pong_core.global_game_timer - pong_fx.time_started < 0.06 && pong_core.global_game_timer - pong_fx.time_started >= 0.04)
 			{
 				renderer->renderSprite(*menu_background_s03);
-				is_performing_effect = true;
+				pong_fx.is_performing = true;
 			}
-			if (global_game_timer - time_effect_started < 0.07 && global_game_timer - time_effect_started >= 0.06)
+			if (pong_core.global_game_timer - pong_fx.time_started < 0.07 && pong_core.global_game_timer - pong_fx.time_started >= 0.06)
 			{
 				renderer->renderSprite(*menu_background_s04);
-				is_performing_effect = true;
-				effect_has_finished_cycle = true;
+				pong_fx.is_performing = true;
+				pong_fx.has_finished_cycle = true;
 			}
 
-			has_requested_effect = false; //Clear request
+			pong_fx.has_requested = false; //Clear request
 		}
 	}
 
@@ -674,7 +674,7 @@ void Pong::render(const ASGE::GameTime &)
 		case IS_IN_LOADSCREEN:
 		{
 			//Render loading screen for first few seconds
-			if (int(global_game_timer) < 3.2)
+			if (int(pong_core.global_game_timer) < 3.2)
 			{
 				//Speed
 				float stage_0 = 0.3;
@@ -686,32 +686,32 @@ void Pong::render(const ASGE::GameTime &)
 				float stage_6 = 2.8;
 
 				//Play SFX
-				if (!has_performed_startup_sound) {
+				if (!pong_core.has_performed_startup_sound) {
 					PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC);
 					//PlaySound(TEXT("../../Resources/Audio/Interactive_Terminal_BG_Loop.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
-					has_performed_startup_sound = true;
+					pong_core.has_performed_startup_sound = true;
 				}
 
 				//Animation
-				if (global_game_timer < stage_0)
+				if (pong_core.global_game_timer < stage_0)
 				{
 					renderer->renderSprite(*menu_overlay_loading);
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 				}
-				if (global_game_timer < stage_1 && global_game_timer >= stage_0)
+				if (pong_core.global_game_timer < stage_1 && pong_core.global_game_timer >= stage_0)
 					renderer->renderSprite(*menu_overlay_loading_s0);
-				if (global_game_timer < stage_2 && global_game_timer >= stage_1)
+				if (pong_core.global_game_timer < stage_2 && pong_core.global_game_timer >= stage_1)
 					renderer->renderSprite(*menu_overlay_loading_s1);
-				if (global_game_timer < stage_3 && global_game_timer >= stage_2)
+				if (pong_core.global_game_timer < stage_3 && pong_core.global_game_timer >= stage_2)
 					renderer->renderSprite(*menu_overlay_loading_s2);
-				if (global_game_timer < stage_4 && global_game_timer >= stage_3)
+				if (pong_core.global_game_timer < stage_4 && pong_core.global_game_timer >= stage_3)
 					renderer->renderSprite(*menu_overlay_loading_s3);
-				if (global_game_timer < stage_5 && global_game_timer >= stage_4)
+				if (pong_core.global_game_timer < stage_5 && pong_core.global_game_timer >= stage_4)
 					renderer->renderSprite(*menu_overlay_loading_s4);
-				if ((global_game_timer < stage_6 && global_game_timer >= stage_5) || global_game_timer >= stage_6)
+				if ((pong_core.global_game_timer < stage_6 && pong_core.global_game_timer >= stage_5) || pong_core.global_game_timer >= stage_6)
 				{
 					renderer->renderSprite(*menu_overlay_loading_s5);
-					effect_has_finished_cycle = false;
+					pong_fx.has_finished_cycle = false;
 				}
 			}
 			else
@@ -736,10 +736,10 @@ void Pong::render(const ASGE::GameTime &)
 
 					//Scoreboard
 					renderer->renderText(" Scoreboard", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 1.1, ASGE::COLOURS::WHITE);
-					renderer->renderText(("  Player 1 Rounds Won:            " + std::to_string(scoreboard_score_p2)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
-					renderer->renderText(("  Player 2 Rounds Won:            " + std::to_string(scoreboard_score_p1)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 1.0, ASGE::COLOURS::WHITE);
-					renderer->renderText(("  Human (VS CPU) Rounds Won:      " + std::to_string(scoreboard_score_player)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 1.0, ASGE::COLOURS::WHITE);
-					renderer->renderText(("  CPU Rounds Won:                 " + std::to_string(scoreboard_score_cpu)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 65, 1.0, ASGE::COLOURS::WHITE);
+					renderer->renderText(("  Player 1 Rounds Won:            " + std::to_string(pong_points.scoreboard_p2)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 1.0, ASGE::COLOURS::WHITE);
+					renderer->renderText(("  Player 2 Rounds Won:            " + std::to_string(pong_points.scoreboard_p1)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 1.0, ASGE::COLOURS::WHITE);
+					renderer->renderText(("  Human (VS CPU) Rounds Won:      " + std::to_string(pong_points.scoreboard_player)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 1.0, ASGE::COLOURS::WHITE);
+					renderer->renderText(("  CPU Rounds Won:                 " + std::to_string(pong_points.scoreboard_cpu)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 65, 1.0, ASGE::COLOURS::WHITE);
 				}
 				else //Page 2, Tab 2
 				{
@@ -808,19 +808,19 @@ void Pong::render(const ASGE::GameTime &)
 			//Render Points
 			if (is_against_cpu)
 			{
-				renderer->renderText(("Player Score: " + std::to_string(player_1_points)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 80, 1.0, ASGE::COLOURS::WHITE);
-				renderer->renderText(("CPU Score: " + std::to_string(player_2_points)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("Player Score: " + std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 80, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("CPU Score: " + std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
 			}
 			else
 			{
-				renderer->renderText(("Player 1 Score: " + std::to_string(player_1_points)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 80, 1.0, ASGE::COLOURS::WHITE);
-				renderer->renderText(("Player 2 Score: " + std::to_string(player_2_points)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("Player 1 Score: " + std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 80, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText(("Player 2 Score: " + std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 50 - 195, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
 			}
 
 			//Render Timer
 			if (gamemode == GAMEMODE_TIMED)
 			{
-				renderer->renderText((std::to_string(int((60 - game_timer) + 0.5)) + " Seconds Remaining").c_str(), 50, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
+				renderer->renderText((std::to_string(int((60 - pong_core.game_timer) + 0.5)) + " Seconds Remaining").c_str(), 50, GAMEWINDOW_MAX_HEIGHT - 50, 1.0, ASGE::COLOURS::WHITE);
 			}
 
 			break;
@@ -833,7 +833,7 @@ void Pong::render(const ASGE::GameTime &)
 		{
 			//Game is paused
 			renderer->renderSprite(*menu_overlay_paused);
-			has_requested_effect = true;
+			pong_fx.has_requested = true;
 
 			break;
 		}
@@ -849,25 +849,25 @@ void Pong::render(const ASGE::GameTime &)
 				case PLAYER_P1:
 				{
 					renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 					break;
 				}
 				case PLAYER_P2:
 				{
 					renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 					break;
 				}
 				case PLAYER_CPU:
 				{
 					renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 					break;
 				}
 				case PLAYER_HUMAN:
 				{
 					renderer->renderSprite(*menu_overlay_score_player); //Player scored
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 					break;
 				}
 			}
@@ -881,34 +881,34 @@ void Pong::render(const ASGE::GameTime &)
 		case IS_GAME_OVER: 
 		{
 			//Render final win screen
-			if (player_1_points == player_2_points)
+			if (pong_points.p1 == pong_points.p2)
 			{
 				renderer->renderSprite(*menu_overlay_win_draw); //Draw
 			}
-			if (player_1_points > player_2_points)
+			if (pong_points.p1 > pong_points.p2)
 			{
 				if (is_against_cpu)
 				{
 					renderer->renderSprite(*menu_overlay_win_player); //Human wins
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 				}
 				else
 				{
 					renderer->renderSprite(*menu_overlay_win_p1); //P1 wins
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 				}
 			}
-			if (player_1_points < player_2_points)
+			if (pong_points.p1 < pong_points.p2)
 			{
 				if (is_against_cpu)
 				{
 					renderer->renderSprite(*menu_overlay_win_cpu); //CPU wins
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 				}
 				else
 				{
 					renderer->renderSprite(*menu_overlay_win_p2); //P2 wins
-					has_requested_effect = true;
+					pong_fx.has_requested = true;
 				}
 			}
 
@@ -1053,31 +1053,31 @@ void Pong::handleWin(std::string winner_name)
 	if (winner_name == "p1") //Left side wins
 	{
 		//Update points 
-		player_1_points += 1;
+		pong_points.p1 += 1;
 		if (is_against_cpu)
 		{
 			winner = PLAYER_HUMAN; //PLAYER
-			scoreboard_score_player += 1;
+			pong_points.scoreboard_player += 1;
 		}
 		else
 		{
 			winner = PLAYER_P1; //P1
-			scoreboard_score_p1 += 1;
+			pong_points.scoreboard_p1 += 1;
 		}
 	}
 	else //Right side wins
 	{
 		//Update points 
-		player_2_points += 1;
+		pong_points.p2 += 1;
 		if (is_against_cpu)
 		{
 			winner = PLAYER_CPU; //CPU
-			scoreboard_score_cpu += 1;
+			pong_points.scoreboard_cpu += 1;
 		}
 		else
 		{
 			winner = PLAYER_P2; //P2
-			scoreboard_score_p2 += 1;
+			pong_points.scoreboard_p2 += 1;
 		}
 	}
 
@@ -1111,8 +1111,8 @@ void Pong::handleWin(std::string winner_name)
 void Pong::resetGame()
 {
 	//Reset points
-	player_1_points = 0;
-	player_2_points = 0;
+	pong_points.p1 = 0;
+	pong_points.p2 = 0;
 
 	//Open and reset menu
 	gamestate = IS_IN_MENU;
@@ -1123,12 +1123,12 @@ void Pong::resetGame()
 	//Reset gamestates, settings & vars
 	gamemode = NO_GAMEMODE;
 	is_against_cpu = false;
-	game_timer = 0;
-	freeze_ball = true;
+	pong_core.game_timer = 0;
+	pong_core.freeze_ball = true;
 	ball_direction = RIGHT;
-	cpu_speed_modifier = 2;
+	pong_core.cpu_speed_modifier = 2;
 	movement_angle = 0;
-	effect_has_finished_cycle = false;
+	pong_fx.has_finished_cycle = false;
 
 	//Reset ball position
 	ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
