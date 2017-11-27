@@ -314,6 +314,9 @@ bool Pong::init()
 	//Disable threads
 	inputs->use_threads = false;
 
+	//Load Jixellation font to slot 0
+	GameFont::fonts[0] = new GameFont(renderer->loadFont("..\\..\\Resources\\Fonts\\Jixellation.ttf", 45), "default", 45);
+
 
 	//Create paddle 1
 	paddle1 = renderer->createRawSprite();

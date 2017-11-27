@@ -15,15 +15,6 @@ struct GameFont;
 
 
 
-/*
-TODO:
-	Implement vector class
-	Point line checker to account for frame lag
-	Jixellation.ttf font import?
-*/
-
-
-
 class Pong :
 	public ASGE::OGLGame
 {
