@@ -94,10 +94,12 @@
     <ClCompile Include="..\..\Source\Game_vars.cpp" />
     <ClCompile Include="..\..\Source\main.cpp" />
     <ClCompile Include="..\..\Source\Game_setup.cpp" />
+    <ClCompile Include="..\..\Source\PongPAK.cpp" />
     <ClInclude Include="..\..\Source\Constants.h" />
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameFont.h" />
     <ClInclude Include="..\..\Source\Game_vars.h" />
+    <ClInclude Include="..\..\Source\PongPAK.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Game_core.cpp" />

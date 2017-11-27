@@ -16,6 +16,9 @@
     <ClCompile Include="..\..\Source\Game_vars.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\PongPAK.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -36,6 +39,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Game_vars.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PongPAK.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

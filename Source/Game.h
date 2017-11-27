@@ -2,6 +2,7 @@
 #include <string>
 #include <Engine/OGLGame.h>
 #include "Game_vars.h"
+//#include "PongPAK.h"
 
 struct GameFont;
 
@@ -140,5 +141,10 @@ private:
 	GameVars_Scores pong_points; //Score counters
 	GameVars_FX pong_fx; //FX vars
 	GameVars_Core pong_core; //Core vars
+
+
+	//Ready-up our file handler
+	//PongPAK PongFileHandler;
+	//No longer using PongPAK - full explanation in the class.
 };
 
