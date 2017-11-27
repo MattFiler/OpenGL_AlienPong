@@ -828,17 +828,17 @@ void Pong::render(const ASGE::GameTime &)
 			{
 				renderer->setFont(GameFont::fonts[0]->id);
 				renderer->renderText("Player", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
-									renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 85, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
+									renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
 				renderer->renderText("CPU", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
-									renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 85, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
+									renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
 			}
 			else
 			{
 				renderer->setFont(GameFont::fonts[0]->id);
 				renderer->renderText("Player 1", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
-									renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 85, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
+									renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
 				renderer->renderText("Player 2", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
-									renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 85, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
+									renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
 			}
 
 			//Render Timer
