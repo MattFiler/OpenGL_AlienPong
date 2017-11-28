@@ -224,8 +224,11 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			//Quit game on ESC when in main menu
 			if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
-				//Close game
-				PongFileHandler.ClearupFiles(); //THIS CAUSES A CRASH! Try and gracefully cleanup (deallocate assets first?).
+				//Close game & cleanup
+				PongFileHandler.ClearupFiles();
+				while (PongFileHandler.cleanup_counter != 45) {
+					//Wait to delete
+				}
 				signalExit();
 			}
 
@@ -605,15 +608,12 @@ void Pong::render(const ASGE::GameTime &)
 	//Render background
 	renderer->renderSprite(*menu_background);
 
-	//Debug output
-	//renderer->renderText((std::to_string(cpu_speed_modifier)).c_str(),55, 55, 0.5, ASGE::COLOURS::WHITE);
-
 	/*
 	Render FX if requested (and not already performing)
 	*/
 	if (pong_fx.has_requested || //Has requested effect?
 		((pong_fx.time_started + pong_fx.time_in_seconds) < pong_core.global_game_timer && pong_fx.is_performing) //Is in time range for performing effect?
-		) 
+		)
 	{
 		if (!pong_fx.has_finished_cycle)
 		{
@@ -668,7 +668,7 @@ void Pong::render(const ASGE::GameTime &)
 	/*
 	Gamestate rendering
 	*/
-	switch (gamestate) 
+	switch (gamestate)
 	{
 		/*
 		Render load screen on game start
@@ -773,22 +773,22 @@ void Pong::render(const ASGE::GameTime &)
 					//Menu controls
 					renderer->renderText("Menu Controls", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.6, ASGE::COLOURS::WHITE);
 					renderer->renderText("  Swap Primary Menu Groups:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
-													renderer->renderText("Q", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("Q", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
 					renderer->renderText("  Swap Secondary Menu Groups:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
-													renderer->renderText("TAB", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("TAB", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
 					renderer->renderText("  Swap Menu Choices:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
-													renderer->renderText("UP/DOWN ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("UP/DOWN ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
 
 					//In-game controls
 					renderer->renderText("In-Game Controls", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 125, 0.6, ASGE::COLOURS::WHITE);
 					renderer->renderText("  Left Paddle Up:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 165, 0.4, ASGE::COLOURS::WHITE);
-													renderer->renderText("W", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 165, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("W", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 165, 0.4, ASGE::COLOURS::WHITE);
 					renderer->renderText("  Left Paddle Down:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 195, 0.4, ASGE::COLOURS::WHITE);
-													renderer->renderText("S", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 195, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("S", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 195, 0.4, ASGE::COLOURS::WHITE);
 					renderer->renderText("  Right Paddle Up:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 225, 0.4, ASGE::COLOURS::WHITE);
-													renderer->renderText("UP ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 225, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("UP ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 225, 0.4, ASGE::COLOURS::WHITE);
 					renderer->renderText("  Right Paddle Down:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 255, 0.4, ASGE::COLOURS::WHITE);
-													renderer->renderText("DOWN ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 255, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("DOWN ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 255, 0.4, ASGE::COLOURS::WHITE);
 				}
 				else //Page 2, Tab 1
 				{
@@ -830,17 +830,17 @@ void Pong::render(const ASGE::GameTime &)
 			{
 				renderer->setFont(GameFont::fonts[0]->id);
 				renderer->renderText("Player", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
-									renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
+				renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
 				renderer->renderText("CPU", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
-									renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
+				renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
 			}
 			else
 			{
 				renderer->setFont(GameFont::fonts[0]->id);
 				renderer->renderText("Player 1", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
-									renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
+				renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
 				renderer->renderText("Player 2", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
-									renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
+				renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
 			}
 
 			//Render Timer
@@ -873,30 +873,30 @@ void Pong::render(const ASGE::GameTime &)
 			//Render round win screen
 			switch (winner)
 			{
-				case PLAYER_P1:
-				{
-					renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
-					pong_fx.has_requested = true;
-					break;
-				}
-				case PLAYER_P2:
-				{
-					renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
-					pong_fx.has_requested = true;
-					break;
-				}
-				case PLAYER_CPU:
-				{
-					renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
-					pong_fx.has_requested = true;
-					break;
-				}
-				case PLAYER_HUMAN:
-				{
-					renderer->renderSprite(*menu_overlay_score_player); //Player scored
-					pong_fx.has_requested = true;
-					break;
-				}
+			case PLAYER_P1:
+			{
+				renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
+				pong_fx.has_requested = true;
+				break;
+			}
+			case PLAYER_P2:
+			{
+				renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
+				pong_fx.has_requested = true;
+				break;
+			}
+			case PLAYER_CPU:
+			{
+				renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
+				pong_fx.has_requested = true;
+				break;
+			}
+			case PLAYER_HUMAN:
+			{
+				renderer->renderSprite(*menu_overlay_score_player); //Player scored
+				pong_fx.has_requested = true;
+				break;
+			}
 			}
 
 			break;
@@ -905,7 +905,7 @@ void Pong::render(const ASGE::GameTime &)
 		/*
 		Render game over screen
 		*/
-		case IS_GAME_OVER: 
+		case IS_GAME_OVER:
 		{
 			//Render final win screen
 			if (pong_points.p1 == pong_points.p2)

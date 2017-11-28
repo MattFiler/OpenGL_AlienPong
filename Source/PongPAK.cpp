@@ -70,7 +70,7 @@ void PongPAK::FetchFile(std::string requested_file)
 */
 void PongPAK::ClearupFiles()
 {
-	for (int i = 0; i <= output_counter; i++)
+	for (int i = 0; i < output_counter; i++)
 	{
 		remove(("Resources_Temp\\" + output_array[i]).c_str());
 		cleanup_counter += 1;
