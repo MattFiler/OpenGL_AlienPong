@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <Engine/Platform.h>
 #include "Game.h"
+#include <stdlib.h>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {

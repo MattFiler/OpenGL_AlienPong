@@ -224,8 +224,8 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 			//Quit game on ESC when in main menu
 			if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
-				//Close game and cleanup all PongPAK files
-				PongFileHandler.ClearupFiles();
+				//Close game
+				PongFileHandler.ClearupFiles(); //THIS CAUSES A CRASH! Try and gracefully cleanup (deallocate assets first?).
 				signalExit();
 			}
 

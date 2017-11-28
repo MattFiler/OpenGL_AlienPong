@@ -8,6 +8,7 @@ PongPAK::PongPAK()
 {
 	//output_array = { " " };
 	output_counter = 0;
+	cleanup_counter = 0;
 }
 
 /*
@@ -61,16 +62,17 @@ void PongPAK::FetchFile(std::string requested_file)
 	delete[] read_file_from_pongpak;
 	pong_manifest.close();
 	pong_pak.close();
-	output_file.close();
+	output_file.close(); 
 }
 
 /*
 	Clear up any files exported from PongPAK
 */
-void PongPAK::ClearupFiles(void)
+void PongPAK::ClearupFiles()
 {
 	for (int i = 0; i <= output_counter; i++)
 	{
 		remove(("Resources_Temp\\" + output_array[i]).c_str());
+		cleanup_counter += 1;
 	}
 }
