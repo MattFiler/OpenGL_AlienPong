@@ -4,6 +4,18 @@
 #include <fstream>
 #include <direct.h>  
 
+
+
+/*
+
+//////// PONG - Created by Matt Filer ////////
+////////////////// PongPAK ///////////////////
+
+*/
+
+
+
+
 PongPAK::PongPAK() 
 {
 	//output_array = { " " };
@@ -31,10 +43,12 @@ void PongPAK::FetchFile(std::string requested_file)
 	{
 		if (lines_to_capture > 0)
 		{
-			if (lines_to_capture == 2) {
+			if (lines_to_capture == 2) 
+			{
 				file_starting_position = atoi(manifest_line.c_str());
 			}
-			if (lines_to_capture == 1) {
+			if (lines_to_capture == 1) 
+			{
 				file_ending_position = atoi(manifest_line.c_str());
 			}
 			lines_to_capture -= 1;

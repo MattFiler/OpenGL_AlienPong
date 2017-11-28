@@ -314,7 +314,8 @@ bool Pong::init()
 
 	//Load all assets before we begin
 	loadAssets();
-	while(PongFileHandler.output_counter != 45) {
+	while(PongFileHandler.output_counter != 45) 
+	{
 		//Wait to load in
 	}
 

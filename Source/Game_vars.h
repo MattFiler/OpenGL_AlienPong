@@ -1,5 +1,17 @@
 #pragma once
-class GameVars_Scores {
+
+
+/*
+
+//////// PONG - Created by Matt Filer ////////
+/////////////// GAME VARIABLES ///////////////
+
+*/
+
+
+
+class GameVars_Scores 
+{
 public:
 	//Main void
 	GameVars_Scores();
@@ -15,7 +27,8 @@ public:
 	int scoreboard_cpu;
 };
 
-class GameVars_FX {
+class GameVars_FX 
+{
 public:
 	//Main void
 	GameVars_FX();
@@ -30,7 +43,8 @@ public:
 	float time_in_seconds;
 };
 
-class GameVars_Core {
+class GameVars_Core 
+{
 public:
 	//Main void
 	GameVars_Core();

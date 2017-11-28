@@ -3,7 +3,19 @@
 #include <string>
 #include <fstream>
 
-class PongPAK {
+
+
+/*
+
+//////// PONG - Created by Matt Filer ////////
+/////////////// PongPAK HEADER ///////////////
+
+*/
+
+
+
+class PongPAK 
+{
 public:
 	std::string output_array[45];
 	int output_counter;

@@ -5,6 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+
+
+/*
+
+//////// PongPAK Tool - Created by Matt Filer ////////
+////// GENERATES PONG ARCHIVE FILE AND MANIFEST //////
+
+*/
+
+
+
 namespace PongPAK
 {
     class Program

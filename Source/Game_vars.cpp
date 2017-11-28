@@ -1,5 +1,16 @@
 #include "Game_vars.h"
 
+
+
+/*
+
+//////// PONG - Created by Matt Filer ////////
+//////////// GAME VARIABLE HEADER ////////////
+
+*/
+
+
+
 /*
 	Score counters
 */
