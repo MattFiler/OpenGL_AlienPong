@@ -814,6 +814,9 @@ void Pong::render(const ASGE::GameTime &)
 		*/
 		case IS_PLAYING:
 		{
+			//Render score box
+			renderer->renderSprite(*menu_overlay_score_box);
+
 			//Render paddle 1
 			renderer->renderSprite(*paddle1);
 
@@ -822,9 +825,6 @@ void Pong::render(const ASGE::GameTime &)
 
 			//Render ball 1
 			renderer->renderSprite(*ball1);
-
-			//Render score box
-			renderer->renderSprite(*menu_overlay_score_box);
 
 			//Render Points
 			if (is_against_cpu)
