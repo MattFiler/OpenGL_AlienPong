@@ -7,12 +7,13 @@
 #include <Engine/Input.h>
 #include <Engine/InputEvents.h>
 #include <Engine/Sprite.h>
+#include <Engine\Renderer.h>
 
+#include "Pong/Scene Manager/scene.h"
 #include "Pong/Definitions/GameVars.h"
 #include "Pong/Definitions/enum_values.h"
 #include "Pong/Definitions/enums.h"
 #include "GameFont.h"
-#include "Pong/Scene Manager/scene.h"
 #include "Pong/Menus/menus.h"
 #include "Pong/Animation/vhs_fx.h"
 #include "PongPAK.h"
@@ -43,6 +44,7 @@ private:
 	pongUISFX sound_fx;
 	GameVars_FX pong_fx;
 	GameVars_Core pong_vars;
+
 	sceneManager scenemanager;
 	sceneBackground scenemanager_background;
 	sceneDynamicForeground scenemanger_foreground_dynamic;

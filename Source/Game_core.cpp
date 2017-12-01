@@ -1,4 +1,3 @@
-#pragma once
 #include "Game.h"
 
 
@@ -368,7 +367,8 @@ void Pong::render(const ASGE::GameTime &)
 	//Set default font
 	renderer->setFont(0);
 
-	
+	renderer->renderSprite(*scenemanager_background.menu_background);
+	//scenemanager.renderBackground(renderer.get());
 
 	/*
 	Gamestate rendering

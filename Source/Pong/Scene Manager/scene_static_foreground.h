@@ -21,7 +21,7 @@ public:
 	sceneStaticForeground();
 	~sceneStaticForeground();
 
-	void loadSprites(std::shared_ptr<ASGE::Renderer> renderer);
+	void loadSprites(ASGE::Renderer* renderer);
 
 	ASGE::Sprite* menu_overlay_loading = nullptr; //Menu loading overlay
 	ASGE::Sprite* menu_overlay_loading_s0 = nullptr; //Menu loading overlay S0

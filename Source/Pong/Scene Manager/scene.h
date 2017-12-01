@@ -13,9 +13,7 @@ public:
 	sceneManager();
 	~sceneManager();
 
-	void loadAllSprites();
-
-	void renderBackground();
+	void renderBackground(ASGE::Renderer* renderer);
 	void renderLoadscreen();
 	void renderMenuPage1();
 	void renderMenuPage2();
@@ -23,6 +21,7 @@ public:
 	void renderPauseMenu();
 	void renderScoreScreen();
 
+private:
 	sceneBackground background;
 	sceneStaticForeground static_foreground;
 	sceneDynamicForeground dynamic_foreground;

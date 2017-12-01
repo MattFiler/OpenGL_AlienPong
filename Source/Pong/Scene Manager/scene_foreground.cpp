@@ -26,7 +26,7 @@ sceneForeground::~sceneForeground()
 /*
 Load sprites
 */
-void sceneForeground::loadSprites(std::shared_ptr<ASGE::Renderer> renderer)
+void sceneForeground::loadSprites(ASGE::Renderer* renderer)
 {
 	//Monitor overlay
 	monitor_overlay = renderer->createRawSprite();

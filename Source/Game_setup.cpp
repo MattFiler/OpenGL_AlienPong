@@ -89,7 +89,10 @@ bool Pong::init()
 	GameFont::fonts[0] = new GameFont(renderer->loadFont("Resources_Temp\\Jixellation.ttf", 45), "default", 45);
 
 	//Load sprites
-	scenemanager.loadAllSprites();
+	scenemanager_background.loadSprites(renderer.get());
+	scenemanager_foreground.loadSprites(renderer.get());
+	scenemanager_foreground_static.loadSprites(renderer.get());
+	scenemanger_foreground_dynamic.loadSprites(renderer.get());
 
 	//Handle inputs
 	key_callback_id = inputs->addCallbackFnc(

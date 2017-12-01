@@ -40,7 +40,7 @@ sceneDynamicForeground::~sceneDynamicForeground()
 /*
 	Load sprites
 */
-void sceneDynamicForeground::loadSprites(std::shared_ptr<ASGE::Renderer> renderer)
+void sceneDynamicForeground::loadSprites(ASGE::Renderer* renderer)
 {
 	//Create paddle 1
 	paddle1 = renderer->createRawSprite();

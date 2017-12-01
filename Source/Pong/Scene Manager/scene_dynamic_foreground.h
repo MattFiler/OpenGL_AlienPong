@@ -21,7 +21,7 @@ public:
 	sceneDynamicForeground();
 	~sceneDynamicForeground();
 
-	void loadSprites(std::shared_ptr<ASGE::Renderer> renderer);
+	void loadSprites(ASGE::Renderer* renderer);
 
 	ASGE::Sprite* paddle1 = nullptr; //Paddle 1
 	ASGE::Sprite* paddle2 = nullptr; //Paddle 2

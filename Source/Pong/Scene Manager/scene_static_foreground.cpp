@@ -194,7 +194,7 @@ sceneStaticForeground::~sceneStaticForeground()
 /*
 	Load sprites
 */
-void sceneStaticForeground::loadSprites(std::shared_ptr<ASGE::Renderer> renderer)
+void sceneStaticForeground::loadSprites(ASGE::Renderer* renderer)
 {
 	//Loading overlay
 	menu_overlay_loading = renderer->createRawSprite();

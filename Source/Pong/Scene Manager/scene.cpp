@@ -13,21 +13,9 @@ sceneManager::~sceneManager()
 	foreground.~sceneForeground();
 }
 
-void sceneManager::loadAllSprites()
+void sceneManager::renderBackground(ASGE::Renderer* renderer)
 {
-	std::shared_ptr<ASGE::Renderer> renderer;
-
-	background.loadSprites(renderer);
-	static_foreground.loadSprites(renderer);
-	dynamic_foreground.loadSprites(renderer);
-	foreground.loadSprites(renderer);
-}
-
-void sceneManager::renderBackground()
-{
-	//std::shared_ptr<ASGE::Renderer> renderer;
-	//background.loadSprites();
-	//renderer->renderSprite(*background.menu_background);
+	renderer->renderSprite(*background.menu_background);
 }
 
 void sceneManager::renderLoadscreen()

@@ -21,7 +21,7 @@ public:
 	sceneBackground();
 	~sceneBackground();
 
-	void loadSprites(std::shared_ptr<ASGE::Renderer> renderer);
+	void loadSprites(ASGE::Renderer* renderer);
 
 	ASGE::Sprite* menu_background = nullptr; //Menu background
 	ASGE::Sprite* menu_background_s00 = nullptr; //Menu background s00

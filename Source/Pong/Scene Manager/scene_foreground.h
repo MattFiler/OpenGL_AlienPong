@@ -21,7 +21,7 @@ public:
 	sceneForeground();
 	~sceneForeground();
 
-	void loadSprites(std::shared_ptr<ASGE::Renderer> renderer);
+	void loadSprites(ASGE::Renderer* renderer);
 
 	ASGE::Sprite* monitor_overlay = nullptr;  //monitor overlay effect
 };

@@ -26,7 +26,7 @@ sceneBackground::~sceneBackground()
 /*
 	Load sprites
 */
-void sceneBackground::loadSprites(std::shared_ptr<ASGE::Renderer> renderer)
+void sceneBackground::loadSprites(ASGE::Renderer* renderer)
 {
 	//Menu background
 	menu_background = renderer->createRawSprite();
