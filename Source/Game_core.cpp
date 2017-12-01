@@ -368,7 +368,7 @@ void Pong::render(const ASGE::GameTime &)
 	renderer->setFont(0);
 
 	renderer->renderSprite(*scenemanager_background.menu_background);
-	//scenemanager.renderBackground(renderer.get());
+	scenemanager.renderBackground(renderer.get());
 
 	/*
 	Gamestate rendering
