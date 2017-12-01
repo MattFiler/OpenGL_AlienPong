@@ -1,11 +1,24 @@
 #pragma once
+
 #include <string>
+
 #include <Engine/OGLGame.h>
-#include "Game_vars.h"
+#include <Engine/Keys.h>
+#include <Engine/Input.h>
+#include <Engine/InputEvents.h>
+#include <Engine/Sprite.h>
+
+#include "Pong/Definitions/GameVars.h"
+#include "Pong/Definitions/enum_values.h"
+#include "Pong/Definitions/enums.h"
+#include "GameFont.h"
+#include "Pong/Scene Manager/scene.h"
+#include "Pong/Menus/menus.h"
+#include "Pong/Animation/vhs_fx.h"
 #include "PongPAK.h"
+#include "Pong/Interactive/interactive.h"
 
 struct GameFont;
-
 
 /*
 
@@ -14,7 +27,8 @@ struct GameFont;
 
 */
 
-
+#ifndef GAME_H
+#define GAME_H
 
 class Pong :
 	public ASGE::OGLGame
@@ -25,125 +39,42 @@ public:
 	virtual bool init() override;
 
 private:
+	gamestateValues gamestate;
+	pongUISFX sound_fx;
+	GameVars_FX pong_fx;
+	GameVars_Core pong_vars;
+	sceneManager scenemanager;
+	sceneBackground scenemanager_background;
+	sceneDynamicForeground scenemanger_foreground_dynamic;
+	sceneForeground scenemanager_foreground;
+	sceneStaticForeground scenemanager_foreground_static;
+	GameVars_Scores pong_points;
+
+	pongPaddles paddle;
+
+	directionValues direction;
+	gamemodeValues gamemode;
+	playerValues player;
+
+	PongPAK file_handler;
+
+	pongMenuMain main_menu;
+
+	pongVHS vhs_fx;
+
 	void keyHandler(ASGE::SharedEventData data);
 	virtual void update(const ASGE::GameTime &) override;
 	virtual void render(const ASGE::GameTime &) override;
 
-	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const;
-	bool hasHitEdge(std::string edgeName) const;
+	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName);
 	int calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses) const;
 	void handleWin(std::string winner_name);
 	void resetGame();
 	void loadAssets();
-
+	bool hasHitEdge(std::string edgeName) const;
 
 	bool exit = false;                  /**< Exit boolean. If true the game loop will exit. */
 	int  key_callback_id = -1;	        /**< Key Input Callback ID. */
-
-
-	ASGE::Sprite* paddle1 = nullptr;    /**< Sprite Object. Paddle 1. */
-	ASGE::Sprite* paddle2 = nullptr;    /**< Sprite Object. Paddle 2. */
-	ASGE::Sprite* ball1 = nullptr;      /**< Sprite Object. Ball. */
-	
-	ASGE::Sprite* menu_background = nullptr;  //Menu background
-	ASGE::Sprite* menu_background_s00 = nullptr;  //Menu background s00
-	ASGE::Sprite* menu_background_s01 = nullptr;  //Menu background s01
-	ASGE::Sprite* menu_background_s02 = nullptr;  //Menu background s02
-	ASGE::Sprite* menu_background_s03 = nullptr;  //Menu background s03
-	ASGE::Sprite* menu_background_s04 = nullptr;  //Menu background s04
-
-	ASGE::Sprite* menu_overlay_loading = nullptr; //Menu loading overlay
-	ASGE::Sprite* menu_overlay_loading_s0 = nullptr; //Menu loading overlay S0
-	ASGE::Sprite* menu_overlay_loading_s1 = nullptr; //Menu loading overlay S1
-	ASGE::Sprite* menu_overlay_loading_s2 = nullptr; //Menu loading overlay S2
-	ASGE::Sprite* menu_overlay_loading_s3 = nullptr; //Menu loading overlay S3
-	ASGE::Sprite* menu_overlay_loading_s4 = nullptr; //Menu loading overlay S4
-	ASGE::Sprite* menu_overlay_loading_s5 = nullptr; //Menu loading overlay S5
-
-	ASGE::Sprite* menu_overlay_twoPlayer = nullptr; //Menu TwoPlayer overlay
-	ASGE::Sprite* menu_overlay_onePlayer = nullptr; //Menu OnePlayer overlay
-	ASGE::Sprite* menu_overlay_controls = nullptr; //Menu controls overlay
-	ASGE::Sprite* menu_overlay_scoreboard = nullptr; //Menu scores overlay
-	 
-	ASGE::Sprite* menu_overlay_mode_regular = nullptr; //in-game MODE overlay regular
-	ASGE::Sprite* menu_overlay_mode_timed = nullptr; //in-game MODE overlay timed
-	ASGE::Sprite* menu_overlay_mode_score = nullptr; //in-game MODE overlay score
-	ASGE::Sprite* menu_overlay_score_box = nullptr; //in-game score box overlay
-
-	ASGE::Sprite* menu_overlay_paused = nullptr; //in-game PAUSE screen
-
-	ASGE::Sprite* monitor_overlay = nullptr;  //monitor overlay effect
-
-	ASGE::Sprite* menu_overlay_win_p1 = nullptr; //in-game WIN screen - P1
-	ASGE::Sprite* menu_overlay_win_p2 = nullptr; //in-game WIN screen - P2
-	ASGE::Sprite* menu_overlay_win_player = nullptr; //in-game WIN screen - PLAYER
-	ASGE::Sprite* menu_overlay_win_cpu = nullptr; //in-game WIN screen - CPU
-	ASGE::Sprite* menu_overlay_win_draw = nullptr; //in-game WIN screen - DRAW
-
-	ASGE::Sprite* menu_overlay_score_p1 = nullptr; //in-game SCORE screen - P1
-	ASGE::Sprite* menu_overlay_score_p2 = nullptr; //in-game SCORE screen - P2
-	ASGE::Sprite* menu_overlay_score_player = nullptr; //in-game SCORE screen - PLAYER
-	ASGE::Sprite* menu_overlay_score_cpu = nullptr; //in-game SCORE screen - CPU
-
-
-	//Global game values and settings
-	enum game_definitions { GAMEWINDOW_MAX_WIDTH = 1024, GAMEWINDOW_MAX_HEIGHT = 768, 
-							PADDLE_HEIGHT = 150, PADDLE_WIDTH = 10, 
-							BALL_SIZE = 10,
-							DEFAULT_ANGLE_MULTIPLIER = 2, HIGH_ANGLE_MULTIPLIER = 3,
-							DEFAULT_SPEED = 600, HIGH_SPEED = 1000,
-							CPU_SLOW_SPEED_REFRESH = 4, CPU_MEDIUM_SPEED_REFRESH = 3, CPU_FAST_SPEED_REFRESH = 2,
-							CPU_MODIFIER_EASY = 4, CPU_MODIFIER_MEDIUM = 3, CPU_MODIFIER_HARD = 2};
-
-
-	//Movement, angles & directions
-	enum directions { NO_DIRECTION, UP, DOWN, LEFT, RIGHT };
-	int ball_direction = RIGHT;
-	int left_paddle_direction = NO_DIRECTION;
-	int right_paddle_direction = NO_DIRECTION;
-
-	bool right_paddle_moving = false;
-	bool left_paddle_moving = false;
-
-	int movement_angle = 0;
-	int movement_angle_raw = 0;
-	
-
-	//Gamestates
-	enum gamestates { IS_IN_MENU, IS_PAUSED, IS_IN_LOADSCREEN, IS_GAME_OVER, IS_PLAYING, PLAYER_HAS_WON };
-	int gamestate = IS_IN_LOADSCREEN;
-
-
-	//Gamemodes
-	enum gamemodes { NO_GAMEMODE, GAMEMODE_INFINITE, GAMEMODE_TIMED, GAMEMODE_SCORE };
-	int gamemode = NO_GAMEMODE;
-	bool is_against_cpu = false;
-
-
-	//Menu options
-	enum menu_options { MENU_OPTION_PVP_INFINITE = 0, MENU_OPTION_PVP_TIMED = 5, MENU_OPTION_PVP_SCORE = 10,
-						MENU_OPTION_CPU_INFINITE = 15, MENU_OPTION_CPU_TIMED = 20, MENU_OPTION_CPU_SCORE = 25};
-	int menu_option = MENU_OPTION_PVP_INFINITE;
-
-
-	//Menu states
-	enum menu_states { MENU_PAGE_1, MENU_PAGE_2, MENU_TAB_1, MENU_TAB_2 };
-	int menu_page = MENU_PAGE_1;
-	int menu_tab = MENU_TAB_1;
-
-
-	//Player type
-	enum player { PLAYER_NULL, PLAYER_P1, PLAYER_P2, PLAYER_HUMAN, PLAYER_CPU };
-	int winner = PLAYER_NULL;
-
-
-	//Call our external classes
-	GameVars_Scores pong_points; //Score counters
-	GameVars_FX pong_fx; //FX vars
-	GameVars_Core pong_core; //Core vars
-
-
-	//Ready-up our file handler
-	PongPAK PongFileHandler;
 };
 
+#endif

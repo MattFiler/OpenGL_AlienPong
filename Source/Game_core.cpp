@@ -1,16 +1,5 @@
-#include <Engine/Keys.h>
-#include <Engine/Input.h>
-#include <Engine/InputEvents.h>
-#include <Engine/Sprite.h>
-
-#include "Constants.h"
+#pragma once
 #include "Game.h"
-#include "GameFont.h"
-
-#ifdef _WIN32
-	#include <windows.h>
-	#include <mmsystem.h>
-#endif
 
 
 /*
@@ -40,198 +29,14 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 	/*
 	Gamestate key handlers
 	*/
-	switch (gamestate)
+	switch (gamestate.current_gamestate)
 	{
 		/*
 		Key handlers for main menu
 		*/
-		case IS_IN_MENU:
+		case gamestate::IS_IN_MENU:
 		{
-			//Force stop paddles
-			right_paddle_moving = false;
-			left_paddle_moving = false;
-
-			//Swap current menu group
-			if (key->key == ASGE::KEYS::KEY_Q && key->action == ASGE::KEYS::KEY_RELEASED)
-			{
-				//Play SFX
-				PlaySound(TEXT("Resources_Temp\\BEEP_018.wav"), NULL, SND_ASYNC);
-
-				//Update display
-				if (menu_page == MENU_PAGE_1)
-				{
-					menu_page = MENU_PAGE_2;
-					menu_tab = MENU_TAB_1;
-					menu_option = MENU_OPTION_PVP_INFINITE;
-				}
-				else
-				{
-					menu_page = MENU_PAGE_1;
-					menu_tab = MENU_TAB_1;
-					menu_option = MENU_OPTION_PVP_INFINITE;
-				}
-			}
-
-			//Swap top/bottom tabs on current menu group
-			if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED)
-			{
-				//Play SFX
-				PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
-
-				//Update screen vars
-				if (menu_tab == MENU_TAB_1)
-				{
-					menu_tab = MENU_TAB_2;
-					menu_option = MENU_OPTION_CPU_INFINITE;
-				}
-				else
-				{
-					menu_tab = MENU_TAB_1;
-					menu_option = MENU_OPTION_PVP_INFINITE;
-				}
-			}
-
-			//Swap menu selections within current tab
-			if (menu_page == MENU_PAGE_2 && menu_tab == MENU_TAB_1) //Page 2, Tab 1
-			{
-				//Go down on press of down
-				if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					if (menu_option != 10)
-					{
-						menu_option += 5;
-						PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-					}
-					else
-					{
-						PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-					}
-				}
-				//Go up on press of up
-				if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					if (menu_option != 0)
-					{
-						menu_option -= 5;
-						PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-					}
-					else
-					{
-						PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-					}
-				}
-			}
-			if (menu_page == MENU_PAGE_2 && menu_tab == MENU_TAB_2) //Page 2, Tab 2
-			{
-				//Go down on press of down
-				if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					if (menu_option != 25)
-					{
-						menu_option += 5;
-						PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-					}
-					else
-					{
-						PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-					}
-				}
-				//Go up on press of up
-				if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					if (menu_option != 15)
-					{
-						menu_option -= 5;
-						PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
-					}
-					else
-					{
-						PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_06.wav"), NULL, SND_ASYNC);
-					}
-				}
-			}
-
-			//Handle menu selections
-			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
-			{
-				if (gamestate == IS_IN_MENU && menu_page == MENU_PAGE_2)
-				{
-					//Play SFX
-					PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
-
-					//Reset points & states
-					pong_core.game_timer = 0;
-					pong_points.p1 = 0;
-					pong_points.p2 = 0;
-					pong_core.freeze_ball = false;
-
-					//Reset paddle positions
-					paddle1->xPos(100);
-					paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
-					paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
-					paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
-
-					//Reset angle & direction
-					movement_angle = 0;
-					movement_angle_raw = 0;
-					ball_direction = RIGHT;
-
-					//Selected infinite mode
-					if (menu_option == 0)
-					{
-						gamestate = IS_PLAYING;
-						gamemode = GAMEMODE_INFINITE;
-						is_against_cpu = false;
-					}
-					//Selected timed mode
-					if (menu_option == 5)
-					{
-						gamestate = IS_PLAYING;
-						gamemode = GAMEMODE_TIMED;
-						is_against_cpu = false;
-					}
-					//Selected score-based mode
-					if (menu_option == 10)
-					{
-						gamestate = IS_PLAYING;
-						gamemode = GAMEMODE_SCORE;
-						is_against_cpu = false;
-					}
-					//Selected VS CPU infinite mode
-					if (menu_option == 15)
-					{
-						gamestate = IS_PLAYING;
-						gamemode = GAMEMODE_INFINITE;
-						is_against_cpu = true;
-					}
-					//Selected VS CPU timed mode
-					if (menu_option == 20)
-					{
-						gamestate = IS_PLAYING;
-						gamemode = GAMEMODE_TIMED;
-						is_against_cpu = true;
-					}
-					//Selected VS CPU score-based mode
-					if (menu_option == 25)
-					{
-						gamestate = IS_PLAYING;
-						gamemode = GAMEMODE_SCORE;
-						is_against_cpu = true;
-					}
-				}
-			}
-
-			//Quit game on ESC when in main menu
-			if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
-			{
-				//Close game & cleanup
-				PongFileHandler.ClearupFiles();
-				while (PongFileHandler.cleanup_counter != 45) 
-				{
-					//Wait to delete
-				}
-				signalExit();
-			}
+			
 
 			break;
 		}
@@ -239,58 +44,15 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		/*
 		Key handlers for the main game
 		*/
-		case IS_PLAYING:
+		case gamestate::IS_PLAYING:
 		{
-			/* LEFT PADDLE */
-			//Move up
-			if (key->key == ASGE::KEYS::KEY_W)
-			{
-				left_paddle_moving = true;
-				left_paddle_direction = UP;
-			}
-			//Move Down
-			if (key->key == ASGE::KEYS::KEY_S)
-			{
-				left_paddle_moving = true;
-				left_paddle_direction = DOWN;
-			}
-			//Stop moving
-			if (key->key == ASGE::KEYS::KEY_W && key->action == ASGE::KEYS::KEY_RELEASED ||
-				key->key == ASGE::KEYS::KEY_S && key->action == ASGE::KEYS::KEY_RELEASED)
-			{
-				left_paddle_moving = false;
-			}
-
-			/* RIGHT PADDLE */
-			if (!is_against_cpu)
-			{
-				//Move up
-				if (key->key == ASGE::KEYS::KEY_UP)
-				{
-					right_paddle_moving = true;
-					right_paddle_direction = UP;
-				}
-				//Move Down
-				if (key->key == ASGE::KEYS::KEY_DOWN)
-				{
-					right_paddle_moving = true;
-					right_paddle_direction = DOWN;
-				}
-				//Stop moving
-				if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED ||
-					key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
-				{
-					right_paddle_moving = false;
-				}
-			}
-
 			//Pause game on press of escape
 			if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
-				gamestate = IS_PAUSED;
+				gamestate.current_gamestate = gamestate::IS_PAUSED;
 
 				//Play SFX
-				PlaySound(TEXT("Resources_Temp\\BEEP_005.wav"), NULL, SND_ASYNC);
+				sound_fx.playSound(0);
 			}
 
 			break;
@@ -299,25 +61,25 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		/*
 		Key handlers for pause screen
 		*/
-		case IS_PAUSED:
+		case gamestate::IS_PAUSED:
 		{
 			//Close pause menu and return to game
 			if (key->key == ASGE::KEYS::KEY_C && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("Resources_Temp\\BEEP_011.wav"), NULL, SND_ASYNC);
+				sound_fx.playSound(2);
 
 				//Un-pause
-				gamestate = IS_PLAYING;
+				gamestate.current_gamestate = gamestate::IS_PLAYING;
 				pong_fx.has_finished_cycle = false;
-				pong_core.freeze_ball = false;
+				pong_vars.freeze_ball = false;
 			}
 
 			//Return to main menu
 			if (key->key == ASGE::KEYS::KEY_M && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("Resources_Temp\\BEEP_018.wav"), NULL, SND_ASYNC);
+				sound_fx.playSound(4);
 
 				//Reset game and return to menu
 				resetGame();
@@ -329,18 +91,18 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		/*
 		Key handlers for "player has scored" screen
 		*/
-		case PLAYER_HAS_WON:
+		case gamestate::PLAYER_HAS_WON:
 		{
 			//Disable all other controls
-			right_paddle_moving = false;
-			left_paddle_moving = false;
+			paddle.right_paddle_moving = false;
+			paddle.left_paddle_moving = false;
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("Resources_Temp\\BEEP_011.wav"), NULL, SND_ASYNC);
+				sound_fx.playSound(2);
 
 				//Return to game
-				gamestate = IS_PLAYING;
+				gamestate.current_gamestate = gamestate::IS_PLAYING;
 				pong_fx.has_finished_cycle = false;
 			}
 
@@ -350,15 +112,15 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 		/*
 		Key handlers for game over screen
 		*/
-		case IS_GAME_OVER:
+		case gamestate::IS_GAME_OVER:
 		{
 			//Disable other controls
-			right_paddle_moving = false;
-			left_paddle_moving = false;
+			paddle.right_paddle_moving = false;
+			paddle.left_paddle_moving = false;
 			if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 			{
 				//Play SFX
-				PlaySound(TEXT("Resources_Temp\\BEEP_016.wav"), NULL, SND_ASYNC);
+				sound_fx.playSound(3);
 
 				//Reset game and return to menu
 				resetGame();
@@ -380,74 +142,74 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 void Pong::update(const ASGE::GameTime & us)
 {
 	//Update timers
-	if (gamestate == IS_PLAYING)
+	if (gamestate.current_gamestate == gamestate::IS_PLAYING)
 	{
-		pong_core.game_timer += (us.delta_time.count() / 1000.f);
+		pong_vars.game_timer += (us.delta_time.count() / 1000.f);
 	}
-	pong_core.global_game_timer += (us.delta_time.count() / 1000.f);
+	pong_vars.global_game_timer += (us.delta_time.count() / 1000.f);
 
 	//Get current ball position
-	auto x_pos = ball1->xPos();
-	auto y_pos = ball1->yPos();
+	auto x_pos = scenemanger_foreground_dynamic.ball1->xPos();
+	auto y_pos = scenemanger_foreground_dynamic.ball1->yPos();
 
 	/*
 	Gamestate updates
 	*/
-	switch (gamestate)
+	switch (gamestate.current_gamestate)
 	{
 		/*
 		In-game scripts
 		*/
-		case IS_PLAYING:
+		case gamestate::IS_PLAYING:
 		{
 			/* BALL COLLISION DETECTION */
 			//See if we're touching the LEFT paddle
-			if (isTouchingPaddle(paddle1, x_pos, y_pos, "LeftPaddle"))
+			if (isTouchingPaddle(scenemanger_foreground_dynamic.paddle1, x_pos, y_pos, "LeftPaddle"))
 			{
-				ball_direction = RIGHT;
-				movement_angle = calculateReturnAngle(paddle1, true);
-				movement_angle_raw = calculateReturnAngle(paddle1, false);
+				direction.ball_direction = direction::RIGHT;
+				direction.movement_angle = calculateReturnAngle(scenemanger_foreground_dynamic.paddle1, true);
+				direction.movement_angle_raw = calculateReturnAngle(scenemanger_foreground_dynamic.paddle1, false);
 			}
 			//See if we're touching the RIGHT paddle
-			if (isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
+			if (isTouchingPaddle(scenemanger_foreground_dynamic.paddle2, x_pos, y_pos, "RightPaddle"))
 			{
-				ball_direction = LEFT;
-				movement_angle = calculateReturnAngle(paddle2, true);
-				movement_angle_raw = calculateReturnAngle(paddle2, false);
+				direction.ball_direction = direction::LEFT;
+				direction.movement_angle = calculateReturnAngle(scenemanger_foreground_dynamic.paddle2, true);
+				direction.movement_angle_raw = calculateReturnAngle(scenemanger_foreground_dynamic.paddle2, false);
 			}
 			//See if we're touching the TOP of the window
 			if (hasHitEdge("Top") || hasHitEdge("Bottom"))
 			{
-				movement_angle *= -1; //Swap angle on touch of top or bottom
+				direction.movement_angle *= -1; //Swap angle on touch of top or bottom
 			}
 
 			/* BALL MOVEMENT */
 			//Movement direction
-			if (ball_direction == LEFT)
+			if (direction.ball_direction == direction::LEFT)
 			{
 				//Set X position
-				x_pos -= (DEFAULT_SPEED - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
+				x_pos -= ((int)settings::DEFAULT_SPEED - direction.movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 			}
 			else
 			{
 				//Set X position
-				x_pos += (DEFAULT_SPEED - movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
+				x_pos += ((int)settings::DEFAULT_SPEED - direction.movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 			}
 			//Apply movement angle
-			y_pos += movement_angle * (us.delta_time.count() / 1000.f);
-			if (!pong_core.freeze_ball)
+			y_pos += direction.movement_angle * (us.delta_time.count() / 1000.f);
+			if (!pong_vars.freeze_ball)
 			{
 				//Update X position of ball
-				ball1->xPos(x_pos);
+				scenemanger_foreground_dynamic.ball1->xPos(x_pos);
 
 				//Update Y position of ball
-				ball1->yPos(y_pos);
+				scenemanger_foreground_dynamic.ball1->yPos(y_pos);
 			}
 			else
 			{
 				//Freeze ball if requested
-				ball1->xPos(ball1->xPos());
-				ball1->yPos(ball1->yPos());
+				scenemanger_foreground_dynamic.ball1->xPos(scenemanger_foreground_dynamic.ball1->xPos());
+				scenemanger_foreground_dynamic.ball1->yPos(scenemanger_foreground_dynamic.ball1->yPos());
 			}
 
 			/* HANDLE WINS */
@@ -465,63 +227,63 @@ void Pong::update(const ASGE::GameTime & us)
 			}
 
 			/* CPU PLAYER */
-			if (is_against_cpu)
+			if (gamemode.is_against_cpu)
 			{
-				if (ball1->yPos() > (paddle2->yPos() + (BALL_SIZE * 3)) && ball1->yPos() < (paddle2->yPos() + PADDLE_HEIGHT - (BALL_SIZE * 3)))
+				if (scenemanger_foreground_dynamic.ball1->yPos() > (scenemanger_foreground_dynamic.paddle2->yPos() + ((int)settings::BALL_SIZE * 3)) && scenemanger_foreground_dynamic.ball1->yPos() < (scenemanger_foreground_dynamic.paddle2->yPos() + (int)settings::PADDLE_HEIGHT - ((int)settings::BALL_SIZE * 3)))
 				{
-					right_paddle_moving = false;
+					paddle.right_paddle_moving = false;
 				}
 				else
 				{
 					//Ball is out of paddle range, move to it
-					right_paddle_moving = true;
-					if (ball1->yPos() > paddle2->yPos())
+					paddle.right_paddle_moving = true;
+					if (scenemanger_foreground_dynamic.ball1->yPos() > scenemanger_foreground_dynamic.paddle2->yPos())
 					{
-						right_paddle_direction = DOWN;
+						paddle.right_paddle_direction = direction::DOWN;
 					}
-					if (ball1->yPos() < (paddle2->yPos() + PADDLE_HEIGHT - (BALL_SIZE * 3)))
+					if (scenemanger_foreground_dynamic.ball1->yPos() < (scenemanger_foreground_dynamic.paddle2->yPos() + (int)settings::PADDLE_HEIGHT - ((int)settings::BALL_SIZE * 3)))
 					{
-						right_paddle_direction = UP;
+						paddle.right_paddle_direction = direction::UP;
 					}
 				}
 			}
 
 			/* PADDLE MOVEMENT */
 			//Left Paddle
-			if (left_paddle_moving)
+			if (paddle.left_paddle_moving)
 			{
-				if (left_paddle_direction == UP)
+				if (paddle.left_paddle_direction == direction::UP)
 				{
 					//Update Y position of paddle UP
-					paddle1->yPos(paddle1->yPos() - (DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
+					scenemanger_foreground_dynamic.paddle1->yPos(scenemanger_foreground_dynamic.paddle1->yPos() - ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
 				}
 				else
 				{
 					//Update Y position of paddle DOWN
-					paddle1->yPos(paddle1->yPos() + (DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
+					scenemanger_foreground_dynamic.paddle1->yPos(scenemanger_foreground_dynamic.paddle1->yPos() + ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
 				}
 			}
 			//Right Paddle
-			if (right_paddle_moving)
+			if (paddle.right_paddle_moving)
 			{
 				//Bespoke speed modifier for CPU movement (if human player, we default to 2)
-				if (int(pong_core.game_timer) % CPU_SLOW_SPEED_REFRESH == 0 && is_against_cpu)
+				if (int(pong_vars.game_timer) % (int)settings::CPU_SLOW_SPEED_REFRESH == 0 && gamemode.is_against_cpu)
 				{
-					if (pong_core.cpu_speed_modifier_check != int(pong_core.game_timer))
+					if (pong_vars.cpu_speed_modifier_check != int(pong_vars.game_timer))
 					{
-						pong_core.cpu_speed_modifier = (rand() % CPU_MODIFIER_EASY) + 2.5;
-						pong_core.cpu_speed_modifier_check = int(pong_core.game_timer);
+						pong_vars.cpu_speed_modifier = (rand() % (int)settings::CPU_MODIFIER_EASY) + 2.5;
+						pong_vars.cpu_speed_modifier_check = int(pong_vars.game_timer);
 					}
 				}
-				if (right_paddle_direction == UP)
+				if (paddle.right_paddle_direction == direction::UP)
 				{
 					//Update Y position of paddle UP
-					paddle2->yPos(paddle2->yPos() - (DEFAULT_SPEED / pong_core.cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+					scenemanger_foreground_dynamic.paddle2->yPos(scenemanger_foreground_dynamic.paddle2->yPos() - ((int)settings::DEFAULT_SPEED / pong_vars.cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 				}
 				else
 				{
 					//Update Y position of paddle DOWN
-					paddle2->yPos(paddle2->yPos() + (DEFAULT_SPEED / pong_core.cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+					scenemanger_foreground_dynamic.paddle2->yPos(scenemanger_foreground_dynamic.paddle2->yPos() + ((int)settings::DEFAULT_SPEED / pong_vars.cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 				}
 			}
 
@@ -531,10 +293,10 @@ void Pong::update(const ASGE::GameTime & us)
 		/*
 		Pause scripts
 		*/
-		case IS_PAUSED:
+		case gamestate::IS_PAUSED:
 		{
 			//Freeze ball on pause
-			pong_core.freeze_ball = true;
+			pong_vars.freeze_ball = true;
 
 			break;
 		}
@@ -542,11 +304,11 @@ void Pong::update(const ASGE::GameTime & us)
 		/*
 		"Player has scored" scripts
 		*/
-		case PLAYER_HAS_WON:
+		case gamestate::PLAYER_HAS_WON:
 		{
 			//Keep ball reset
-			ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
-			ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
+			scenemanger_foreground_dynamic.ball1->xPos(((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - ((int)settings::BALL_SIZE / 2));
+			scenemanger_foreground_dynamic.ball1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::BALL_SIZE / 2));
 
 			break;
 		}
@@ -554,11 +316,11 @@ void Pong::update(const ASGE::GameTime & us)
 		/*
 		Game over scripts
 		*/
-		case IS_GAME_OVER:
+		case gamestate::IS_GAME_OVER:
 		{
 			//Keep ball reset
-			ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
-			ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
+			scenemanger_foreground_dynamic.ball1->xPos(((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - ((int)settings::BALL_SIZE / 2));
+			scenemanger_foreground_dynamic.ball1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::BALL_SIZE / 2));
 
 			break;
 		}
@@ -567,28 +329,28 @@ void Pong::update(const ASGE::GameTime & us)
 	/*
 	Timed game mode scripts
 	*/
-	if (gamemode == GAMEMODE_TIMED)
+	if (gamemode.current_gamemode == gamemode::GAMEMODE_TIMED)
 	{
-		if (pong_core.game_timer > 60)
+		if (pong_vars.game_timer > 60)
 		{
-			right_paddle_moving = false;
-			left_paddle_moving = false;
-			gamestate = IS_GAME_OVER;
-			pong_core.freeze_ball = true;
+			paddle.right_paddle_moving = false;
+			paddle.left_paddle_moving = false;
+			gamestate.current_gamestate = gamestate::IS_GAME_OVER;
+			pong_vars.freeze_ball = true;
 		}
 	}
 
 	/*
 	Score-based game mode scripts
 	*/
-	if (gamemode == GAMEMODE_SCORE)
+	if (gamemode.current_gamemode == gamemode::GAMEMODE_SCORE)
 	{
 		if (pong_points.p1 == 5 || pong_points.p2 == 5)
 		{
-			right_paddle_moving = false;
-			left_paddle_moving = false;
-			gamestate = IS_GAME_OVER;
-			pong_core.freeze_ball = true;
+			paddle.right_paddle_moving = false;
+			paddle.left_paddle_moving = false;
+			gamestate.current_gamestate = gamestate::IS_GAME_OVER;
+			pong_vars.freeze_ball = true;
 		}
 	}
 }
@@ -606,121 +368,19 @@ void Pong::render(const ASGE::GameTime &)
 	//Set default font
 	renderer->setFont(0);
 
-	//Render background
-	renderer->renderSprite(*menu_background);
-
-	/*
-	Render FX if requested (and not already performing)
-	*/
-	if (pong_fx.has_requested || //Has requested effect?
-		((pong_fx.time_started + pong_fx.time_in_seconds) < pong_core.global_game_timer && pong_fx.is_performing) //Is in time range for performing effect?
-		)
-	{
-		if (!pong_fx.has_finished_cycle)
-		{
-			if (pong_fx.is_performing == false)
-			{
-				pong_fx.time_started = pong_core.global_game_timer; //Log start time (if not already performing)
-			}
-			pong_fx.is_performing = false;
-
-			//Run animation
-			if (pong_core.global_game_timer - pong_fx.time_started < 0.01)
-			{
-				renderer->renderSprite(*menu_background_s00);
-				pong_fx.is_performing = true;
-			}
-			if (pong_core.global_game_timer - pong_fx.time_started < 0.03 && pong_core.global_game_timer - pong_fx.time_started >= 0.01)
-			{
-				renderer->renderSprite(*menu_background_s01);
-				pong_fx.is_performing = true;
-			}
-			if (pong_core.global_game_timer - pong_fx.time_started < 0.04 && pong_core.global_game_timer - pong_fx.time_started >= 0.03)
-			{
-				renderer->renderSprite(*menu_background_s02);
-				pong_fx.is_performing = true;
-			}
-			if (pong_core.global_game_timer - pong_fx.time_started < 0.06 && pong_core.global_game_timer - pong_fx.time_started >= 0.04)
-			{
-				renderer->renderSprite(*menu_background_s03);
-				pong_fx.is_performing = true;
-			}
-			if (pong_core.global_game_timer - pong_fx.time_started < 0.07 && pong_core.global_game_timer - pong_fx.time_started >= 0.06)
-			{
-				renderer->renderSprite(*menu_background_s04);
-				pong_fx.is_performing = true;
-				pong_fx.has_finished_cycle = true;
-			}
-
-			pong_fx.has_requested = false; //Clear request
-		}
-	}
-
-	/*
-	Render overlays for each mode (as long as we're not in the menu)
-	*/
-	if (gamemode == GAMEMODE_INFINITE && gamestate != IS_IN_MENU)
-		renderer->renderSprite(*menu_overlay_mode_regular); //MODE OVERLAY: regular
-	if (gamemode == GAMEMODE_SCORE && gamestate != IS_IN_MENU)
-		renderer->renderSprite(*menu_overlay_mode_score); //MODE OVERLAY: score
-	if (gamemode == GAMEMODE_TIMED && gamestate != IS_IN_MENU)
-		renderer->renderSprite(*menu_overlay_mode_timed); //MODE OVERLAY: timed
+	
 
 	/*
 	Gamestate rendering
 	*/
-	switch (gamestate)
+	switch (gamestate.current_gamestate)
 	{
 		/*
 		Render load screen on game start
 		*/
-		case IS_IN_LOADSCREEN:
+		case gamestate::IS_IN_LOADSCREEN:
 		{
-			//Render loading screen for first few seconds
-			if (int(pong_core.global_game_timer) < 3.2)
-			{
-				//Speed
-				float stage_0 = 0.3;
-				float stage_1 = 0.7;
-				float stage_2 = 1.2;
-				float stage_3 = 1.6;
-				float stage_4 = 2.1;
-				float stage_5 = 2.5;
-				float stage_6 = 2.8;
-
-				//Play SFX
-				if (!pong_core.has_performed_startup_sound) {
-					PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC);
-					//PlaySound(TEXT("Resources_Temp\\../../Resources/Audio/Interactive_Terminal_BG_Loop.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
-					pong_core.has_performed_startup_sound = true;
-				}
-
-				//Animation
-				if (pong_core.global_game_timer < stage_0)
-				{
-					renderer->renderSprite(*menu_overlay_loading);
-					pong_fx.has_requested = true;
-				}
-				if (pong_core.global_game_timer < stage_1 && pong_core.global_game_timer >= stage_0)
-					renderer->renderSprite(*menu_overlay_loading_s0);
-				if (pong_core.global_game_timer < stage_2 && pong_core.global_game_timer >= stage_1)
-					renderer->renderSprite(*menu_overlay_loading_s1);
-				if (pong_core.global_game_timer < stage_3 && pong_core.global_game_timer >= stage_2)
-					renderer->renderSprite(*menu_overlay_loading_s2);
-				if (pong_core.global_game_timer < stage_4 && pong_core.global_game_timer >= stage_3)
-					renderer->renderSprite(*menu_overlay_loading_s3);
-				if (pong_core.global_game_timer < stage_5 && pong_core.global_game_timer >= stage_4)
-					renderer->renderSprite(*menu_overlay_loading_s4);
-				if ((pong_core.global_game_timer < stage_6 && pong_core.global_game_timer >= stage_5) || pong_core.global_game_timer >= stage_6)
-				{
-					renderer->renderSprite(*menu_overlay_loading_s5);
-					pong_fx.has_finished_cycle = false;
-				}
-			}
-			else
-			{
-				gamestate = IS_IN_MENU; //Take us out of the animation
-			}
+			
 
 			break;
 		}
@@ -728,81 +388,81 @@ void Pong::render(const ASGE::GameTime &)
 		/*
 		Render main menu
 		*/
-		case IS_IN_MENU:
+		case gamestate::IS_IN_MENU:
 		{
-			if (menu_tab == MENU_TAB_2) //Tab 2
+			if (main_menu.current_menu_tab == menuState::MENU_TAB_2) //Tab 2
 			{
-				if (menu_page == MENU_PAGE_1) //Page 1, Tab 2
+				if (main_menu.current_menu_page == menuState::MENU_PAGE_1) //Page 1, Tab 2
 				{
 					//Render SCOREBOARD
-					renderer->renderSprite(*menu_overlay_scoreboard);
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_scoreboard);
 					renderer->setFont(GameFont::fonts[0]->id);
 
 					//Scoreboard
-					renderer->renderText("Scoreboard", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.6, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Player 1 Rounds Won:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText((std::to_string(pong_points.scoreboard_p1)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Player 2 Rounds Won:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText((std::to_string(pong_points.scoreboard_p2)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Human (VS CPU) Rounds Won:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText((std::to_string(pong_points.scoreboard_player)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
-					renderer->renderText("  CPU Rounds Won:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 65, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText((std::to_string(pong_points.scoreboard_cpu)).c_str(), (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 65, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("Scoreboard", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.6, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Player 1 Rounds Won:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText((std::to_string(pong_points.scoreboard_p1)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Player 2 Rounds Won:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText((std::to_string(pong_points.scoreboard_p2)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Human (VS CPU) Rounds Won:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText((std::to_string(pong_points.scoreboard_player)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("  CPU Rounds Won:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 65, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText((std::to_string(pong_points.scoreboard_cpu)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 65, 0.4, ASGE::COLOURS::WHITE);
 				}
 				else //Page 2, Tab 2
 				{
 					//Render TWO PLAYER
-					renderer->renderSprite(*menu_overlay_twoPlayer);
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_twoPlayer);
 					renderer->setFont(GameFont::fonts[0]->id);
 
 					//Option 1 - VS CPU 
-					renderer->renderText(menu_option == MENU_OPTION_CPU_INFINITE ? "> PLAY VS CPU - Infinite" : "  PLAY VS CPU - Infinite", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.5, ASGE::COLOURS::WHITE);
+					renderer->renderText(main_menu.current_menu_option == menuOption::MENU_OPTION_CPU_INFINITE ? "> PLAY VS CPU - Infinite" : "  PLAY VS CPU - Infinite", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.5, ASGE::COLOURS::WHITE);
 					//Option 2 - VS CPU timed
-					renderer->renderText(menu_option == MENU_OPTION_CPU_TIMED ? "> PLAY VS CPU - Best of 60 seconds" : "  PLAY VS CPU - Best of 60 seconds", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
+					renderer->renderText(main_menu.current_menu_option == menuOption::MENU_OPTION_CPU_TIMED ? "> PLAY VS CPU - Best of 60 seconds" : "  PLAY VS CPU - Best of 60 seconds", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
 					//Option 3 - VS CPU first to 5
-					renderer->renderText(menu_option == MENU_OPTION_CPU_SCORE ? "> PLAY VS CPU - First to 5" : "  PLAY VS CPU - First to 5", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
+					renderer->renderText(main_menu.current_menu_option == menuOption::MENU_OPTION_CPU_SCORE ? "> PLAY VS CPU - First to 5" : "  PLAY VS CPU - First to 5", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
 				}
 			}
 			else //Tab 1
 			{
-				if (menu_page == MENU_PAGE_1) //Page 1, Tab 1
+				if (main_menu.current_menu_page == menuState::MENU_PAGE_1) //Page 1, Tab 1
 				{
 					//Render CONTROLS
-					renderer->renderSprite(*menu_overlay_controls);
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_controls);
 					renderer->setFont(GameFont::fonts[0]->id);
 
 					//Menu controls
-					renderer->renderText("Menu Controls", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.6, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Swap Primary Menu Groups:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText("Q", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Swap Secondary Menu Groups:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText("TAB", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Swap Menu Choices:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText("UP/DOWN ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("Menu Controls", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.6, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Swap Primary Menu Groups:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText("Q", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Swap Secondary Menu Groups:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText("TAB", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Swap Menu Choices:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText("UP/DOWN ARROW", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
 
 					//In-game controls
-					renderer->renderText("In-Game Controls", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 125, 0.6, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Left Paddle Up:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 165, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText("W", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 165, 0.4, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Left Paddle Down:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 195, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText("S", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 195, 0.4, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Right Paddle Up:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 225, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText("UP ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 225, 0.4, ASGE::COLOURS::WHITE);
-					renderer->renderText("  Right Paddle Down:", (GAMEWINDOW_MAX_WIDTH / 2) - 180, (GAMEWINDOW_MAX_HEIGHT / 2) + 255, 0.4, ASGE::COLOURS::WHITE);
-							renderer->renderText("DOWN ARROW", (GAMEWINDOW_MAX_WIDTH / 2) + 220, (GAMEWINDOW_MAX_HEIGHT / 2) + 255, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("In-Game Controls", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 125, 0.6, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Left Paddle Up:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 165, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText("W", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 165, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Left Paddle Down:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 195, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText("S", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 195, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Right Paddle Up:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 225, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText("UP ARROW", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 225, 0.4, ASGE::COLOURS::WHITE);
+					renderer->renderText("  Right Paddle Down:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 255, 0.4, ASGE::COLOURS::WHITE);
+							renderer->renderText("DOWN ARROW", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 255, 0.4, ASGE::COLOURS::WHITE);
 				}
 				else //Page 2, Tab 1
 				{
 					//Render ONE PLAYER
-					renderer->renderSprite(*menu_overlay_onePlayer);
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_onePlayer);
 					renderer->setFont(GameFont::fonts[0]->id);
 
 					//Option 1 - freeplay
-					renderer->renderText(menu_option == MENU_OPTION_PVP_INFINITE ? "> PLAY VS PLAYER - Infinite" : "  PLAY VS PLAYER - Infinite", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.5, ASGE::COLOURS::WHITE);
+					renderer->renderText(main_menu.current_menu_option == menuOption::MENU_OPTION_PVP_INFINITE ? "> PLAY VS PLAYER - Infinite" : "  PLAY VS PLAYER - Infinite", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.5, ASGE::COLOURS::WHITE);
 					//Option 2 - timed 
-					renderer->renderText(menu_option == MENU_OPTION_PVP_TIMED ? "> PLAY VS PLAYER - Best of 60 seconds" : "  PLAY VS PLAYER - Best of 60 seconds", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
+					renderer->renderText(main_menu.current_menu_option == menuOption::MENU_OPTION_PVP_TIMED ? "> PLAY VS PLAYER - Best of 60 seconds" : "  PLAY VS PLAYER - Best of 60 seconds", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
 					//Option 3 - first to 5
-					renderer->renderText(menu_option == MENU_OPTION_PVP_SCORE ? "> PLAY VS PLAYER - First to 5" : "  PLAY VS PLAYER - First to 5", (GAMEWINDOW_MAX_WIDTH / 2) - 190, (GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
+					renderer->renderText(main_menu.current_menu_option == menuOption::MENU_OPTION_PVP_SCORE ? "> PLAY VS PLAYER - First to 5" : "  PLAY VS PLAYER - First to 5", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
 				}
 			}
 
@@ -812,44 +472,9 @@ void Pong::render(const ASGE::GameTime &)
 		/*
 		Render the main game
 		*/
-		case IS_PLAYING:
+		case gamestate::IS_PLAYING:
 		{
-			//Render score box
-			renderer->renderSprite(*menu_overlay_score_box);
-
-			//Render paddle 1
-			renderer->renderSprite(*paddle1);
-
-			//Render paddle 2
-			renderer->renderSprite(*paddle2);
-
-			//Render ball 1
-			renderer->renderSprite(*ball1);
-
-			//Render Points
-			if (is_against_cpu)
-			{
-				renderer->setFont(GameFont::fonts[0]->id);
-				renderer->renderText("Player", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
-						renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
-				renderer->renderText("CPU", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
-						renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
-			}
-			else
-			{
-				renderer->setFont(GameFont::fonts[0]->id);
-				renderer->renderText("Player 1", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
-						renderer->renderText((std::to_string(pong_points.p1)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 90, 0.4, ASGE::COLOURS::WHITE);
-				renderer->renderText("Player 2", GAMEWINDOW_MAX_WIDTH - 50 - 175, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
-						renderer->renderText((std::to_string(pong_points.p2)).c_str(), GAMEWINDOW_MAX_WIDTH - 80, GAMEWINDOW_MAX_HEIGHT - 54, 0.4, ASGE::COLOURS::WHITE);
-			}
-
-			//Render Timer
-			if (gamemode == GAMEMODE_TIMED)
-			{
-				renderer->setFont(GameFont::fonts[0]->id);
-				renderer->renderText((std::to_string(int((60 - pong_core.game_timer) + 0.5)) + " Seconds Remaining").c_str(), 50, GAMEWINDOW_MAX_HEIGHT - 50, 0.4, ASGE::COLOURS::WHITE);
-			}
+			
 
 			break;
 		}
@@ -857,11 +482,12 @@ void Pong::render(const ASGE::GameTime &)
 		/*
 		Render pause screen
 		*/
-		case IS_PAUSED:
+		case gamestate::IS_PAUSED:
 		{
 			//Game is paused
-			renderer->renderSprite(*menu_overlay_paused);
-			pong_fx.has_requested = true;
+			renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_paused);
+			vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+			vhs_fx.renderFX();
 
 			break;
 		}
@@ -869,33 +495,37 @@ void Pong::render(const ASGE::GameTime &)
 		/*
 		Render "player scored" screen
 		*/
-		case PLAYER_HAS_WON:
+		case gamestate::PLAYER_HAS_WON:
 		{
 			//Render round win screen
-			switch (winner)
+			switch (player.winner)
 			{
-				case PLAYER_P1:
+				case player::PLAYER_P1:
 				{
-					renderer->renderSprite(*menu_overlay_score_p1); //P1 scored
-					pong_fx.has_requested = true;
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_score_p1); //P1 scored
+					vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+					vhs_fx.renderFX();
 					break;
 				}
-				case PLAYER_P2:
+				case player::PLAYER_P2:
 				{
-					renderer->renderSprite(*menu_overlay_score_p2); //P2 scored
-					pong_fx.has_requested = true;
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_score_p2); //P2 scored
+					vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+					vhs_fx.renderFX();
 					break;
 				}
-				case PLAYER_CPU:
+				case player::PLAYER_CPU:
 				{
-					renderer->renderSprite(*menu_overlay_score_cpu); //CPU scored
-					pong_fx.has_requested = true;
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_score_cpu); //CPU scored
+					vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+					vhs_fx.renderFX();
 					break;
 				}
-				case PLAYER_HUMAN:
+				case player::PLAYER_HUMAN:
 				{
-					renderer->renderSprite(*menu_overlay_score_player); //Player scored
-					pong_fx.has_requested = true;
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_score_player); //Player scored
+					vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+					vhs_fx.renderFX();
 					break;
 				}
 			}
@@ -906,37 +536,41 @@ void Pong::render(const ASGE::GameTime &)
 		/*
 		Render game over screen
 		*/
-		case IS_GAME_OVER:
+		case gamestate::IS_GAME_OVER:
 		{
 			//Render final win screen
 			if (pong_points.p1 == pong_points.p2)
 			{
-				renderer->renderSprite(*menu_overlay_win_draw); //Draw
+				renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_win_draw); //Draw
 			}
 			if (pong_points.p1 > pong_points.p2)
 			{
-				if (is_against_cpu)
+				if (gamemode.is_against_cpu)
 				{
-					renderer->renderSprite(*menu_overlay_win_player); //Human wins
-					pong_fx.has_requested = true;
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_win_player); //Human wins
+					vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+					vhs_fx.renderFX();
 				}
 				else
 				{
-					renderer->renderSprite(*menu_overlay_win_p1); //P1 wins
-					pong_fx.has_requested = true;
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_win_p1); //P1 wins
+					vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+					vhs_fx.renderFX();
 				}
 			}
 			if (pong_points.p1 < pong_points.p2)
 			{
-				if (is_against_cpu)
+				if (gamemode.is_against_cpu)
 				{
-					renderer->renderSprite(*menu_overlay_win_cpu); //CPU wins
-					pong_fx.has_requested = true;
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_win_cpu); //CPU wins
+					vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+					vhs_fx.renderFX();
 				}
 				else
 				{
-					renderer->renderSprite(*menu_overlay_win_p2); //P2 wins
-					pong_fx.has_requested = true;
+					renderer->renderSprite(*scenemanager_foreground_static.menu_overlay_win_p2); //P2 wins
+					vhs_fx.pongfx_state = animationState::HAS_BEEN_REQUESTED;
+					vhs_fx.renderFX();
 				}
 			}
 
@@ -945,19 +579,19 @@ void Pong::render(const ASGE::GameTime &)
 	}
 
 	//Render monitor overlay - ALWAYS ON TOP
-	renderer->renderSprite(*monitor_overlay);
+	renderer->renderSprite(*scenemanager_foreground.monitor_overlay);
 }
 
 /**
 *   Checks to see if ball is touching paddle
 */
-bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const
+bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName)
 {
 	//Auto-correct ball's X position for right paddle
 	float ball_x_pos = x; 
 	if (spriteName == "RightPaddle") 
 	{
-		ball_x_pos += BALL_SIZE;
+		ball_x_pos += (int)settings::BALL_SIZE;
 	}
 
 	//See if we hit any area on the paddle
@@ -965,12 +599,12 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 		TODO: When using vectors, calculate path between the two vectors and see if it intersects the paddle.
 		Should solve the lag issue when frames skip and the ball hit isn't registered.
 	*/
-	if (ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + PADDLE_WIDTH))
+	if (ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + (int)settings::PADDLE_WIDTH))
 	{
-		if (y > (sprite->yPos() - BALL_SIZE) && y < (sprite->yPos() + PADDLE_HEIGHT))
+		if (y > (sprite->yPos() - (int)settings::BALL_SIZE) && y < (sprite->yPos() + (int)settings::PADDLE_HEIGHT))
 		{
 			//Play SFX
-			PlaySound(TEXT("Resources_Temp\\BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+			sound_fx.playSound(5);
 			return true;
 		}
 		else
@@ -982,49 +616,7 @@ bool Pong::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::s
 	return false;
 }
 
-/**
-*   Checks to see if ball is touching the top or bottom of the screen
-*/
-bool Pong::hasHitEdge(std::string edgeName) const
-{
-	//Touching left?
-	if (edgeName == "Left")
-	{
-		if (ball1->xPos() - BALL_SIZE <= 0)
-		{
-			return true; //Hit
-		}
-	}
 
-	//Touching right?
-	if (edgeName == "Right")
-	{
-		if (ball1->xPos() >= GAMEWINDOW_MAX_WIDTH)
-		{
-			return true; //Hit
-		}
-	}
-
-	//Touching top?
-	if (edgeName == "Top")
-	{
-		if (ball1->yPos() <= 0)
-		{
-			return true; //Hit
-		}
-	}
-
-	//Touching bottom?
-	if (edgeName == "Bottom")
-	{
-		if (ball1->yPos() + BALL_SIZE >= GAMEWINDOW_MAX_HEIGHT)
-		{
-			return true; //Hit
-		}
-	}
-
-	return false;
-}
 
 /**
 *   Calculate the angle to return the ball at
@@ -1033,11 +625,11 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 {
 	//Save Y vals
 	int paddle_bottom_y = paddle->yPos();
-	int paddle_middle_y = paddle_bottom_y + (PADDLE_HEIGHT / 2);
-	int paddle_top_y = paddle_bottom_y + PADDLE_HEIGHT;
-	int ball_bottom_y = ball1->yPos();
-	int ball_middle_y = ball_bottom_y + (BALL_SIZE / 2);
-	int ball_top_y = ball_bottom_y + BALL_SIZE;
+	int paddle_middle_y = paddle_bottom_y + ((int)settings::PADDLE_HEIGHT / 2);
+	int paddle_top_y = paddle_bottom_y + (int)settings::PADDLE_HEIGHT;
+	int ball_bottom_y = scenemanger_foreground_dynamic.ball1->yPos();
+	int ball_middle_y = ball_bottom_y + ((int)settings::BALL_SIZE / 2);
+	int ball_top_y = ball_bottom_y + (int)settings::BALL_SIZE;
 
 	//Values to set later
 	int distance_to_middle_from_middle = 0;
@@ -1057,12 +649,12 @@ int Pong::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses
 	if (hit_below_bottom == false) 
 	{
 		distance_to_middle_from_middle = ball_middle_y - paddle_middle_y; //work out distance to middle of paddle from above
-		return_angle = distance_to_middle_from_middle * DEFAULT_ANGLE_MULTIPLIER; //use angle multiplier for return angle
+		return_angle = distance_to_middle_from_middle * (int)settings::DEFAULT_ANGLE_MULTIPLIER; //use angle multiplier for return angle
 	}
 	else 
 	{
 		distance_to_middle_from_middle = paddle_middle_y - ball_middle_y; //work out distance to middle of paddle from below
-		return_angle = distance_to_middle_from_middle * DEFAULT_ANGLE_MULTIPLIER; //use angle multiplier for return angle
+		return_angle = distance_to_middle_from_middle * (int)settings::DEFAULT_ANGLE_MULTIPLIER; //use angle multiplier for return angle
 		if (include_reverses)
 		{
 			return_angle *= -1; //reverse the direction up/down
@@ -1082,14 +674,14 @@ void Pong::handleWin(std::string winner_name)
 	{
 		//Update points 
 		pong_points.p1 += 1;
-		if (is_against_cpu)
+		if (gamemode.is_against_cpu)
 		{
-			winner = PLAYER_HUMAN; //PLAYER
+			player.winner = player::PLAYER_HUMAN; //PLAYER
 			pong_points.scoreboard_player += 1;
 		}
 		else
 		{
-			winner = PLAYER_P1; //P1
+			player.winner = player::PLAYER_P1; //P1
 			pong_points.scoreboard_p1 += 1;
 		}
 	}
@@ -1097,40 +689,40 @@ void Pong::handleWin(std::string winner_name)
 	{
 		//Update points 
 		pong_points.p2 += 1;
-		if (is_against_cpu)
+		if (gamemode.is_against_cpu)
 		{
-			winner = PLAYER_CPU; //CPU
+			player.winner = player::PLAYER_CPU; //CPU
 			pong_points.scoreboard_cpu += 1;
 		}
 		else
 		{
-			winner = PLAYER_P2; //P2
+			player.winner = player::PLAYER_P2; //P2
 			pong_points.scoreboard_p2 += 1;
 		}
 	}
 
 	//Reset ball position
-	ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
-	ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
+	scenemanger_foreground_dynamic.ball1->xPos(((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - ((int)settings::BALL_SIZE / 2));
+	scenemanger_foreground_dynamic.ball1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::BALL_SIZE / 2));
 
 	//Reset paddle positions
-	paddle1->xPos(100);
-	paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
-	paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
-	paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
+	scenemanger_foreground_dynamic.paddle1->xPos(100);
+	scenemanger_foreground_dynamic.paddle1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
+	scenemanger_foreground_dynamic.paddle2->xPos((int)settings::GAMEWINDOW_MAX_WIDTH - 100);
+	scenemanger_foreground_dynamic.paddle2->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
 
 	//Play SFX
-	PlaySound(TEXT("Resources_Temp\\BEEP_009.wav"), NULL, SND_ASYNC);
+	sound_fx.playSound(1);
 
 	//Reset angle
-	movement_angle = 0;
+	direction.movement_angle = 0;
 
 	//Try stop paddle moving ASAP!
-	right_paddle_moving = false;
-	left_paddle_moving = false;
+	paddle.right_paddle_moving = false;
+	paddle.left_paddle_moving = false;
 
 	//Update gamestate
-	gamestate = PLAYER_HAS_WON;
+	gamestate.current_gamestate = gamestate::PLAYER_HAS_WON;
 }
 
 /**
@@ -1143,30 +735,30 @@ void Pong::resetGame()
 	pong_points.p2 = 0;
 
 	//Open and reset menu
-	gamestate = IS_IN_MENU;
-	menu_option = MENU_OPTION_PVP_INFINITE;
-	menu_page = MENU_PAGE_1;
-	menu_tab = MENU_TAB_1;
+	gamestate.current_gamestate = gamestate::IS_IN_MENU;
+	main_menu.current_menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
+	main_menu.current_menu_page = menuState::MENU_PAGE_1;
+	main_menu.current_menu_tab = menuState::MENU_TAB_1;
 
 	//Reset gamestates, settings & vars
-	gamemode = NO_GAMEMODE;
-	is_against_cpu = false;
-	pong_core.game_timer = 0;
-	pong_core.freeze_ball = true;
-	ball_direction = RIGHT;
-	pong_core.cpu_speed_modifier = 2;
-	movement_angle = 0;
+	gamemode.current_gamemode = gamemode::NO_GAMEMODE;
+	gamemode.is_against_cpu = false;
+	pong_vars.game_timer = 0;
+	pong_vars.freeze_ball = true;
+	direction.ball_direction = direction::RIGHT;
+	pong_vars.cpu_speed_modifier = 2;
+	direction.movement_angle = 0;
 	pong_fx.has_finished_cycle = false;
 
 	//Reset ball position
-	ball1->xPos((GAMEWINDOW_MAX_WIDTH / 2) - (BALL_SIZE / 2));
-	ball1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (BALL_SIZE / 2));
+	scenemanger_foreground_dynamic.ball1->xPos(((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - ((int)settings::BALL_SIZE / 2));
+	scenemanger_foreground_dynamic.ball1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::BALL_SIZE / 2));
 
 	//Reset paddle positions
-	paddle1->xPos(100);
-	paddle1->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
-	paddle2->xPos(GAMEWINDOW_MAX_WIDTH - 100);
-	paddle2->yPos((GAMEWINDOW_MAX_HEIGHT / 2) - (PADDLE_HEIGHT / 2));
+	scenemanger_foreground_dynamic.paddle1->xPos(100);
+	scenemanger_foreground_dynamic.paddle1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
+	scenemanger_foreground_dynamic.paddle2->xPos((int)settings::GAMEWINDOW_MAX_WIDTH - 100);
+	scenemanger_foreground_dynamic.paddle2->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
 }
 
 /*
@@ -1175,53 +767,97 @@ void Pong::resetGame()
 void Pong::loadAssets() 
 {
 	//Load FONTS
-	PongFileHandler.FetchFile("Jixellation.ttf");
+	file_handler.FetchFile("Jixellation.ttf");
 
 	//Load SOUNDS
-	PongFileHandler.FetchFile("BEEP_005.wav");
-	PongFileHandler.FetchFile("BEEP_009.wav");
-	PongFileHandler.FetchFile("BEEP_011.wav");
-	PongFileHandler.FetchFile("BEEP_016.wav");
-	PongFileHandler.FetchFile("BEEP_018.wav");
-	PongFileHandler.FetchFile("BEEP_021.wav");
-	PongFileHandler.FetchFile("Interactive_Terminal_Startup_SHORTENED.wav");
-	PongFileHandler.FetchFile("Interactive_Terminal_Telem_02.wav");
-	PongFileHandler.FetchFile("Interactive_Terminal_Telem_04.wav");
-	PongFileHandler.FetchFile("Interactive_Terminal_Telem_06.wav");
-	PongFileHandler.FetchFile("Interactive_Terminal_Telem_07.wav");
+	file_handler.FetchFile("BEEP_005.wav");
+	file_handler.FetchFile("BEEP_009.wav");
+	file_handler.FetchFile("BEEP_011.wav");
+	file_handler.FetchFile("BEEP_016.wav");
+	file_handler.FetchFile("BEEP_018.wav");
+	file_handler.FetchFile("BEEP_021.wav");
+	file_handler.FetchFile("Interactive_Terminal_Startup_SHORTENED.wav");
+	file_handler.FetchFile("Interactive_Terminal_Telem_02.wav");
+	file_handler.FetchFile("Interactive_Terminal_Telem_04.wav");
+	file_handler.FetchFile("Interactive_Terminal_Telem_06.wav");
+	file_handler.FetchFile("Interactive_Terminal_Telem_07.wav");
 
 	//Load IMAGES
-	PongFileHandler.FetchFile("whitepixel.jpg");
-	PongFileHandler.FetchFile("overlay_monitor_effect.png");
-	PongFileHandler.FetchFile("background.jpg");
-	PongFileHandler.FetchFile("background_static00.jpg");
-	PongFileHandler.FetchFile("background_static01.jpg");
-	PongFileHandler.FetchFile("background_static02.jpg");
-	PongFileHandler.FetchFile("background_static03.jpg");
-	PongFileHandler.FetchFile("background_static04.jpg");
-	PongFileHandler.FetchFile("overlay_loading_s.png");
-	PongFileHandler.FetchFile("overlay_loading_s0.png");
-	PongFileHandler.FetchFile("overlay_loading_s1.png");
-	PongFileHandler.FetchFile("overlay_loading_s2.png");
-	PongFileHandler.FetchFile("overlay_loading_s3.png");
-	PongFileHandler.FetchFile("overlay_loading_s4.png");
-	PongFileHandler.FetchFile("overlay_loading_s5.png");
-	PongFileHandler.FetchFile("overlay_mode_oneplayer.png");
-	PongFileHandler.FetchFile("overlay_mode_twoplayer.png");
-	PongFileHandler.FetchFile("overlay_mode_controls.png");
-	PongFileHandler.FetchFile("overlay_mode_scores.png");
-	PongFileHandler.FetchFile("overlay_ingame_regular.png");
-	PongFileHandler.FetchFile("overlay_ingame_timed.png");
-	PongFileHandler.FetchFile("overlay_ingame_points.png");
-	PongFileHandler.FetchFile("overlay_ingame_scorebox.png");
-	PongFileHandler.FetchFile("overlay_ingame_paused.png");
-	PongFileHandler.FetchFile("overlay_ingame_win_p1.png");
-	PongFileHandler.FetchFile("overlay_ingame_win_p2.png");
-	PongFileHandler.FetchFile("overlay_ingame_win_human.png");
-	PongFileHandler.FetchFile("overlay_ingame_win_cpu.png");
-	PongFileHandler.FetchFile("overlay_ingame_win_draw.png");
-	PongFileHandler.FetchFile("overlay_ingame_score_p1.png");
-	PongFileHandler.FetchFile("overlay_ingame_score_p2.png");
-	PongFileHandler.FetchFile("overlay_ingame_score_human.png");
-	PongFileHandler.FetchFile("overlay_ingame_score_cpu.png");
+	file_handler.FetchFile("whitepixel.jpg");
+	file_handler.FetchFile("overlay_monitor_effect.png");
+	file_handler.FetchFile("background.jpg");
+	file_handler.FetchFile("background_static00.jpg");
+	file_handler.FetchFile("background_static01.jpg");
+	file_handler.FetchFile("background_static02.jpg");
+	file_handler.FetchFile("background_static03.jpg");
+	file_handler.FetchFile("background_static04.jpg");
+	file_handler.FetchFile("overlay_loading_s.png");
+	file_handler.FetchFile("overlay_loading_s0.png");
+	file_handler.FetchFile("overlay_loading_s1.png");
+	file_handler.FetchFile("overlay_loading_s2.png");
+	file_handler.FetchFile("overlay_loading_s3.png");
+	file_handler.FetchFile("overlay_loading_s4.png");
+	file_handler.FetchFile("overlay_loading_s5.png");
+	file_handler.FetchFile("overlay_mode_oneplayer.png");
+	file_handler.FetchFile("overlay_mode_twoplayer.png");
+	file_handler.FetchFile("overlay_mode_controls.png");
+	file_handler.FetchFile("overlay_mode_scores.png");
+	file_handler.FetchFile("overlay_ingame_regular.png");
+	file_handler.FetchFile("overlay_ingame_timed.png");
+	file_handler.FetchFile("overlay_ingame_points.png");
+	file_handler.FetchFile("overlay_ingame_scorebox.png");
+	file_handler.FetchFile("overlay_ingame_paused.png");
+	file_handler.FetchFile("overlay_ingame_win_p1.png");
+	file_handler.FetchFile("overlay_ingame_win_p2.png");
+	file_handler.FetchFile("overlay_ingame_win_human.png");
+	file_handler.FetchFile("overlay_ingame_win_cpu.png");
+	file_handler.FetchFile("overlay_ingame_win_draw.png");
+	file_handler.FetchFile("overlay_ingame_score_p1.png");
+	file_handler.FetchFile("overlay_ingame_score_p2.png");
+	file_handler.FetchFile("overlay_ingame_score_human.png");
+	file_handler.FetchFile("overlay_ingame_score_cpu.png");
+}
+
+/**
+*   Checks to see if ball is touching the top or bottom of the screen
+*/
+bool Pong::hasHitEdge(std::string edgeName) const
+{
+	//Touching left?
+	if (edgeName == "Left")
+	{
+		if (scenemanger_foreground_dynamic.ball1->xPos() - (int)settings::BALL_SIZE <= 0)
+		{
+			return true; //Hit
+		}
+	}
+
+	//Touching right?
+	if (edgeName == "Right")
+	{
+		if (scenemanger_foreground_dynamic.ball1->xPos() >= (int)settings::GAMEWINDOW_MAX_WIDTH)
+		{
+			return true; //Hit
+		}
+	}
+
+	//Touching top?
+	if (edgeName == "Top")
+	{
+		if (scenemanger_foreground_dynamic.ball1->yPos() <= 0)
+		{
+			return true; //Hit
+		}
+	}
+
+	//Touching bottom?
+	if (edgeName == "Bottom")
+	{
+		if (scenemanger_foreground_dynamic.ball1->yPos() + (int)settings::BALL_SIZE >= (int)settings::GAMEWINDOW_MAX_HEIGHT)
+		{
+			return true; //Hit
+		}
+	}
+
+	return false;
 }

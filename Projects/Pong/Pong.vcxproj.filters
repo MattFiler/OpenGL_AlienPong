@@ -13,11 +13,59 @@
     <ClCompile Include="..\..\Source\Game_setup.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Game_vars.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\PongPAK.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Animation\vhs_fx.cpp">
+      <Filter>Source\Pong\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Menus\Menus\menu_main.cpp">
+      <Filter>Source\Pong\Menus\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Scene Manager\scene_background.cpp">
+      <Filter>Source\Pong\Scene Manager\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Scene Manager\scene_dynamic_foreground.cpp">
+      <Filter>Source\Pong\Scene Manager\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Scene Manager\scene_foreground.cpp">
+      <Filter>Source\Pong\Scene Manager\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Scene Manager\scene_static_foreground.cpp">
+      <Filter>Source\Pong\Scene Manager\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Scene Manager\scene.cpp">
+      <Filter>Source\Pong\Scene Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Definitions\GameVars\core.cpp">
+      <Filter>Source\Pong\Definitions\GameVars</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Definitions\GameVars\fx.cpp">
+      <Filter>Source\Pong\Definitions\GameVars</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Definitions\GameVars\scores.cpp">
+      <Filter>Source\Pong\Definitions\GameVars</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Interactive\Objects\ball.cpp">
+      <Filter>Source\Pong\Interactive\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Interactive\Objects\paddle.cpp">
+      <Filter>Source\Pong\Interactive\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Interactive\Objects\ui_sfx.cpp">
+      <Filter>Source\Pong\Interactive\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Definitions\enum_values\direction.cpp">
+      <Filter>Source\Pong\Definitions\enum_values</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Definitions\enum_values\gamestate.cpp">
+      <Filter>Source\Pong\Definitions\enum_values</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Definitions\enum_values\gamemode.cpp">
+      <Filter>Source\Pong\Definitions\enum_values</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Pong\Definitions\enum_values\player.cpp">
+      <Filter>Source\Pong\Definitions\enum_values</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +74,75 @@
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{150ff3c8-9b98-46c7-9e2b-ccd67ca720c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong">
+      <UniqueIdentifier>{0b498411-8d27-4e50-876e-ff831ec32fd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Interactive">
+      <UniqueIdentifier>{cfedf172-f87e-4d0d-89fa-f493808851a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong">
+      <UniqueIdentifier>{d0a39803-59be-4975-ae0c-32118e184e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Interactive">
+      <UniqueIdentifier>{35fe627d-d1fc-4a41-88d7-9ef7e8e47193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Definitions">
+      <UniqueIdentifier>{ebcee475-f78b-4619-985a-b2f58dd4eb1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Definitions">
+      <UniqueIdentifier>{1ac346b6-7899-4761-a270-f48d702ff751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Definitions\enums">
+      <UniqueIdentifier>{1e7f004e-0ec4-4429-b0c1-c2a1af39e813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Animation">
+      <UniqueIdentifier>{ae985332-2e13-4bb9-9f77-4e6360504a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Animation">
+      <UniqueIdentifier>{b2bf1b42-fd94-447f-885c-f40a2dee5945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Scene Manager">
+      <UniqueIdentifier>{2cd64d66-9d74-4fe4-a145-356ab03fa6c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Scene Manager">
+      <UniqueIdentifier>{82c2d8b8-73ce-41bb-abb0-3f8446cb3f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Scene Manager\Scenes">
+      <UniqueIdentifier>{328eeb0c-3bcc-4d41-a6cf-c4e6030c3aee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Scene Manager\Scenes">
+      <UniqueIdentifier>{1d34f724-ca1c-499e-8aa8-782a16757f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Menus">
+      <UniqueIdentifier>{531a1d94-1903-4a4f-aec6-7a4c44f267ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Menus">
+      <UniqueIdentifier>{11608f70-9ef5-4062-aeaf-83ea015d057c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Menus\Menus">
+      <UniqueIdentifier>{c5a530a4-1d36-4862-9fe6-76faf9e8559d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Menus\Menus">
+      <UniqueIdentifier>{fd3ed55f-d359-4a9c-83c3-8b9285557f53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Definitions\GameVars">
+      <UniqueIdentifier>{bd97ad02-71f2-47e7-a2ee-90c80c1bc19e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Definitions\GameVars">
+      <UniqueIdentifier>{225264cf-92bf-4c94-824e-658999960fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Interactive\Objects">
+      <UniqueIdentifier>{d075c589-f92d-44c5-b222-df7d5b10b52d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Interactive\Objects">
+      <UniqueIdentifier>{345bebaf-7449-4986-9310-d0554165ab1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Pong\Definitions\enum_values">
+      <UniqueIdentifier>{b251da2a-0f24-4eaf-a7b3-93446dfec987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Pong\Definitions\enum_values">
+      <UniqueIdentifier>{e7d7903d-7e9a-4196-9a8d-cb3481b974f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -38,11 +155,98 @@
     <ClInclude Include="..\..\Source\GameFont.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Game_vars.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PongPAK.h">
       <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums\player.h">
+      <Filter>Headers\Pong\Definitions\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums\settings.h">
+      <Filter>Headers\Pong\Definitions\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums\direction.h">
+      <Filter>Headers\Pong\Definitions\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums\gamemode.h">
+      <Filter>Headers\Pong\Definitions\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums\gamestate.h">
+      <Filter>Headers\Pong\Definitions\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums.h">
+      <Filter>Headers\Pong\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums\menuOption.h">
+      <Filter>Headers\Pong\Definitions\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums\menuState.h">
+      <Filter>Headers\Pong\Definitions\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Animation\vhs_fx.h">
+      <Filter>Headers\Pong\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enums\animationState.h">
+      <Filter>Headers\Pong\Definitions\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Menus\menus.h">
+      <Filter>Headers\Pong\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Menus\Menus\menu_main.h">
+      <Filter>Headers\Pong\Menus\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Scene Manager\scene_background.h">
+      <Filter>Headers\Pong\Scene Manager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Scene Manager\scene_dynamic_foreground.h">
+      <Filter>Headers\Pong\Scene Manager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Scene Manager\scene_foreground.h">
+      <Filter>Headers\Pong\Scene Manager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Scene Manager\scene_static_foreground.h">
+      <Filter>Headers\Pong\Scene Manager\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Scene Manager\scene.h">
+      <Filter>Headers\Pong\Scene Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\GameVars\scores.h">
+      <Filter>Headers\Pong\Definitions\GameVars</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\GameVars\fx.h">
+      <Filter>Headers\Pong\Definitions\GameVars</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\GameVars\core.h">
+      <Filter>Headers\Pong\Definitions\GameVars</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\GameVars.h">
+      <Filter>Headers\Pong\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Interactive\Objects\ball.h">
+      <Filter>Headers\Pong\Interactive\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Interactive\Objects\paddle.h">
+      <Filter>Headers\Pong\Interactive\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Interactive\Objects\ui_sfx.h">
+      <Filter>Headers\Pong\Interactive\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Interactive\interactive.h">
+      <Filter>Headers\Pong\Interactive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enum_values\direction.h">
+      <Filter>Headers\Pong\Definitions\enum_values</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enum_values\gamemode.h">
+      <Filter>Headers\Pong\Definitions\enum_values</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enum_values\gamestate.h">
+      <Filter>Headers\Pong\Definitions\enum_values</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enum_values\player.h">
+      <Filter>Headers\Pong\Definitions\enum_values</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pong\Definitions\enum_values.h">
+      <Filter>Headers\Pong\Definitions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

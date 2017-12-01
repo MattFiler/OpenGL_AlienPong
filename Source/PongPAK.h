@@ -1,9 +1,11 @@
 #pragma once
 #include <iostream>
-#include <string>
 #include <fstream>
+#include <direct.h>  
+#include <string>
 
-
+#ifndef PONGPAK_H
+#define PONGPAK_H
 
 /*
 
@@ -25,3 +27,5 @@ public:
 	void PongPAK::FetchFile(std::string requested_file);
 	void PongPAK::ClearupFiles();
 };
+
+#endif
