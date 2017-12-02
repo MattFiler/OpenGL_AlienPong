@@ -13,16 +13,14 @@ sceneManager::~sceneManager()
 	foreground.~sceneForeground();
 }
 
-void sceneManager::renderBackground(ASGE::Renderer* renderer)
+void sceneManager::renderBackground(ASGE::Renderer* renderer, ASGE::Sprite* menu_background)
 {
-	renderer->renderSprite(*background.menu_background);
+	renderer->renderSprite(*menu_background);
 }
 
-void sceneManager::renderLoadscreen()
+void sceneManager::renderLoadscreen(ASGE::Renderer* renderer, ASGE::Sprite* menu_background)
 {
 	/*
-	std::shared_ptr<ASGE::Renderer> renderer;
-
 	//Render loading screen for first few seconds
 	if (int(pong_core.global_game_timer) < 3.2)
 	{

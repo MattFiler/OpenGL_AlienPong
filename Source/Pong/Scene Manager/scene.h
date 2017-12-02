@@ -13,7 +13,7 @@ public:
 	sceneManager();
 	~sceneManager();
 
-	void renderBackground(ASGE::Renderer* renderer);
+	void renderBackground(ASGE::Renderer* renderer, ASGE::Sprite* menu_background);
 	void renderLoadscreen();
 	void renderMenuPage1();
 	void renderMenuPage2();
