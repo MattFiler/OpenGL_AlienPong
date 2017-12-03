@@ -105,21 +105,40 @@ Update the scene
 void Pong::update(const ASGE::GameTime & us)
 {
 	//Update timers
-	/*
 	if (pong_gamestate.current_gamestate == gamestate::IS_PLAYING)
 	{
 		pong_vars.game_timer += (us.delta_time.count() / 1000.f);
 	}
 	pong_vars.global_game_timer += (us.delta_time.count() / 1000.f);
-	*/
 
 	//Update gamestate-specific elements
-	pong_gamestate_gameover.updateState(us);
-	pong_gamestate_loadscreen.updateState(us);
-	pong_gamestate_menu.updateState(us);
-	pong_gamestate_paused.updateState(us);
-	pong_gamestate_playing.updateState(us);
-	pong_gamestate_scored.updateState(us);
+	switch (pong_gamestate.current_gamestate)
+	{
+		case gamestate::IS_IN_LOADSCREEN:
+		{
+			pong_gamestate_loadscreen.updateState(us);
+		}
+		case gamestate::IS_IN_MENU:
+		{
+			pong_gamestate_menu.updateState(us);
+		}
+		case gamestate::IS_PLAYING:
+		{
+			pong_gamestate_playing.updateState(us);
+		}
+		case gamestate::IS_PAUSED:
+		{
+			pong_gamestate_paused.updateState(us);
+		}
+		case gamestate::PLAYER_HAS_WON:
+		{
+			pong_gamestate_scored.updateState(us);
+		}
+		case gamestate::IS_GAME_OVER:
+		{
+			pong_gamestate_gameover.updateState(us);
+		}
+	}
 }
 
 
@@ -129,12 +148,33 @@ Render the scene
 void Pong::render(const ASGE::GameTime &)
 {
 	//Render gamestate-specific elements
-	pong_gamestate_gameover.renderState(renderer.get());
-	pong_gamestate_loadscreen.renderState(renderer.get());
-	pong_gamestate_menu.renderState(renderer.get());
-	pong_gamestate_paused.renderState(renderer.get());
-	pong_gamestate_playing.renderState(renderer.get());
-	pong_gamestate_scored.renderState(renderer.get());
+	switch (pong_gamestate.current_gamestate)
+	{
+		case gamestate::IS_IN_LOADSCREEN:
+		{
+			pong_gamestate_loadscreen.renderState(renderer.get());
+		}
+		case gamestate::IS_IN_MENU:
+		{
+			pong_gamestate_menu.renderState(renderer.get());
+		}
+		case gamestate::IS_PLAYING:
+		{
+			pong_gamestate_playing.renderState(renderer.get());
+		}
+		case gamestate::IS_PAUSED:
+		{
+			pong_gamestate_paused.renderState(renderer.get());
+		}
+		case gamestate::PLAYER_HAS_WON:
+		{
+			pong_gamestate_scored.renderState(renderer.get());
+		}
+		case gamestate::IS_GAME_OVER:
+		{
+			pong_gamestate_gameover.renderState(renderer.get());
+		}
+	}
 }
 
 

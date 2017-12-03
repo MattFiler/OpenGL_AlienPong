@@ -28,8 +28,8 @@
 IS_PAUSED
 */
 
-#ifndef IS_PAUSED
-#define IS_PAUSED
+#ifndef IS_PAUSED_H
+#define IS_PAUSED_H
 
 class gamestateIsPaused
 {

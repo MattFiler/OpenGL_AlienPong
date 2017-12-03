@@ -28,8 +28,8 @@
 PLAYER_HAS_WON
 */
 
-#ifndef PLAYER_HAS_WON
-#define PLAYER_HAS_WON
+#ifndef PLAYER_HAS_WON_H
+#define PLAYER_HAS_WON_H
 
 class gamestatePlayerHasWon
 {

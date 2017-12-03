@@ -16,6 +16,7 @@
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Animation/effects.h"
+#include "AlienPong/Sprites/sprites.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -27,8 +28,8 @@
 IS_GAME_OVER
 */
 
-#ifndef IS_GAME_OVER
-#define IS_GAME_OVER
+#ifndef IS_GAME_OVER_H
+#define IS_GAME_OVER_H
 
 class gamestateIsGameOver
 {

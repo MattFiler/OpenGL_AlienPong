@@ -28,8 +28,8 @@
 IS_IN_MENU
 */
 
-#ifndef IS_IN_MENU
-#define IS_IN_MENU
+#ifndef IS_IN_MENU_H
+#define IS_IN_MENU_H
 
 class gamestateIsInMenu
 {

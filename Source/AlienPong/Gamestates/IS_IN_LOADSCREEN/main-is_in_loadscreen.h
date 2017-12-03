@@ -28,8 +28,8 @@
 IS_IN_LOADSCREEN
 */
 
-#ifndef IS_IN_LOADSCREEN
-#define IS_IN_LOADSCREEN
+#ifndef IS_IN_LOADSCREEN_H
+#define IS_IN_LOADSCREEN_H
 
 class gamestateIsInLoadscreen
 {

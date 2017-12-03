@@ -28,8 +28,8 @@
 IS_PLAYING
 */
 
-#ifndef IS_PLAYING
-#define IS_PLAYING
+#ifndef IS_PLAYING_H
+#define IS_PLAYING_H
 
 class gamestateIsPlaying
 {
