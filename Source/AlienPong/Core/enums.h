@@ -1,0 +1,9 @@
+#pragma once
+#include "enums\animationState.h"
+#include "enums\direction.h"
+#include "enums\gamemode.h"
+#include "enums\gamestate.h"
+#include "enums\menuOption.h"
+#include "enums\menuState.h"
+#include "enums\player.h"
+#include "enums\settings.h"

@@ -1,48 +1,336 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\Source\main.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\GameFont.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Game_core.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Game_setup.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Game_vars.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\PongPAK.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Headers">
       <UniqueIdentifier>{02e2ca31-9bb9-45d0-9a75-a2eed8496014}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{150ff3c8-9b98-46c7-9e2b-ccd67ca720c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\Entities">
+      <UniqueIdentifier>{ba2296cd-a566-416d-ab80-9301e39108ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Gamestates">
+      <UniqueIdentifier>{bf4f5e22-1e40-4f0b-956d-9be48ad12121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Core">
+      <UniqueIdentifier>{efa653d8-176c-4cc9-9f05-11eebbac1ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities">
+      <UniqueIdentifier>{e8d5362d-5a2e-4ad9-8e28-209df1a4ef6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gamestates">
+      <UniqueIdentifier>{4430db28-3835-4c08-8002-5806d69c1fa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{5cae7aa5-2fd0-4ad6-a749-ba4925bae362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Entities\Ball">
+      <UniqueIdentifier>{f752ee54-8a74-48a4-a0eb-b3647bda4e20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Entities\Paddle">
+      <UniqueIdentifier>{714742ff-c9db-49cb-8fd6-3caf4d2cf19b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities\Ball">
+      <UniqueIdentifier>{993fab8f-ab6b-4eab-9f2e-2cbb467ad376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities\Paddle">
+      <UniqueIdentifier>{43f21c10-23ce-461f-bb6a-416165d67ee8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gamestates\IS_GAME_OVER">
+      <UniqueIdentifier>{674aa3ba-3855-4d8e-976a-cbea75274604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gamestates\IS_IN_LOADSCREEN">
+      <UniqueIdentifier>{35563dea-a640-4680-907d-b25ca4ba859e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gamestates\IS_IN_MENU">
+      <UniqueIdentifier>{287b759c-eadc-4a0e-bc2b-7c4d95909eed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gamestates\IS_PAUSED">
+      <UniqueIdentifier>{be982318-1c7e-4ef6-973f-95098ee611da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gamestates\IS_PLAYING">
+      <UniqueIdentifier>{8f1863ab-7c95-472b-b0c5-561c02c5acc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Gamestates\PLAYER_HAS_WON">
+      <UniqueIdentifier>{6a044d1e-4126-4440-830d-b219ed33f240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Gamestates\IS_GAME_OVER">
+      <UniqueIdentifier>{3adf8246-b528-4b1e-a728-d51c5f568d9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Gamestates\IS_IN_LOADSCREEN">
+      <UniqueIdentifier>{6a1015bd-2b3b-4b21-bfbf-64cdea85c3e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Gamestates\IS_IN_MENU">
+      <UniqueIdentifier>{c4193b87-2fe1-45d4-b57e-4c18adffeabd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Gamestates\IS_PAUSED">
+      <UniqueIdentifier>{a23191d0-abba-427f-bd34-e0bc676e469a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Gamestates\PLAYER_HAS_WON">
+      <UniqueIdentifier>{c5ccb836-0f88-424a-ae4e-3f13ccc3d4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Gamestates\IS_PLAYING">
+      <UniqueIdentifier>{70535da2-8e11-479b-864c-a24efabbed28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Core\enums">
+      <UniqueIdentifier>{1e8c12f1-b77c-4a66-a6bb-6fa28fa3c705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\enums">
+      <UniqueIdentifier>{07223645-7f9c-40d6-8d31-8ebe66bc5875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Core\enum_values">
+      <UniqueIdentifier>{3c14bbf3-6150-42b2-8c6f-0744c3b6581e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\enum_values">
+      <UniqueIdentifier>{f6513093-8e78-482b-b1a9-5365dba61225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\GameVars">
+      <UniqueIdentifier>{dac6b38d-3139-4832-87b0-d46908e7ecd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Core\GameVars">
+      <UniqueIdentifier>{8dcc1ee7-079d-430a-a326-9eb9298b4f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Core\PongPAK">
+      <UniqueIdentifier>{c3b802d5-d133-4922-825d-06e55fe91cae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\PongPAK">
+      <UniqueIdentifier>{13702259-73da-47b6-aeaf-bc1516deaa0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\GameFont">
+      <UniqueIdentifier>{921539ab-f37a-4f5e-bd06-e4a7e78f49ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Core\GameFont">
+      <UniqueIdentifier>{01e0e054-7a24-4598-955e-b53a6a27e107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Animation">
+      <UniqueIdentifier>{8c034333-ebf1-40b4-9b6d-8fd73bb4505b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Animation\VHS Effect">
+      <UniqueIdentifier>{d046e727-d221-4efc-8a7f-74bc907fcc93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Animation">
+      <UniqueIdentifier>{e4332109-1dc4-4b84-85a7-8cf00152b02c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Animation\VHS Effect">
+      <UniqueIdentifier>{c662d0e9-3872-434c-8c4c-3a52b3432fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Sprites">
+      <UniqueIdentifier>{538c1c30-3157-4b0a-b0a6-4d5c3ac8e953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Sprites">
+      <UniqueIdentifier>{0b8d85e6-0a9a-4cf7-92d8-5f919cfcef19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Sprites\dynamic">
+      <UniqueIdentifier>{7b7c24a3-3f12-49a5-890d-6f71447cb5f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Sprites\static">
+      <UniqueIdentifier>{2493095c-413c-4a0e-aadf-17c8d28a2765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Sprites\dynamic">
+      <UniqueIdentifier>{85e663a2-86cf-4b0a-9dc5-f4c0081290a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Sprites\static">
+      <UniqueIdentifier>{f2a90759-5b57-4487-bb6f-7bfc16c6f17e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Game.h">
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\gamestate.h">
+      <Filter>Headers\Core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\menuOption.h">
+      <Filter>Headers\Core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\menuState.h">
+      <Filter>Headers\Core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\player.h">
+      <Filter>Headers\Core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\settings.h">
+      <Filter>Headers\Core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\animationState.h">
+      <Filter>Headers\Core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\direction.h">
+      <Filter>Headers\Core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\gamemode.h">
+      <Filter>Headers\Core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\player.h">
+      <Filter>Headers\Core\enum_values</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\direction.h">
+      <Filter>Headers\Core\enum_values</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\gamemode.h">
+      <Filter>Headers\Core\enum_values</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\gamestate.h">
+      <Filter>Headers\Core\enum_values</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\scores.h">
+      <Filter>Headers\Core\GameVars</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\core.h">
+      <Filter>Headers\Core\GameVars</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\fx.h">
+      <Filter>Headers\Core\GameVars</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums.h">
+      <Filter>Headers\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars.h">
+      <Filter>Headers\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values.h">
+      <Filter>Headers\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.h">
+      <Filter>Headers\Core\PongPAK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\main.h">
+      <Filter>Headers\Gamestates\IS_IN_MENU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\main.h">
+      <Filter>Headers\Gamestates\IS_GAME_OVER</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\main.h">
+      <Filter>Headers\Gamestates\IS_IN_LOADSCREEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\main.h">
+      <Filter>Headers\Gamestates\IS_PAUSED</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\main.h">
+      <Filter>Headers\Gamestates\IS_PLAYING</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\main.h">
+      <Filter>Headers\Gamestates\PLAYER_HAS_WON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\gamestates.h">
+      <Filter>Headers\Gamestates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Pong.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Constants.h">
-      <Filter>Headers</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameFont\GameFont.h">
+      <Filter>Headers\Core\GameFont</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\GameFont.h">
-      <Filter>Headers</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Animation\effects.h">
+      <Filter>Headers\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Game_vars.h">
-      <Filter>Headers</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Animation\VHS Effect\vhs_fx.h">
+      <Filter>Headers\Animation\VHS Effect</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PongPAK.h">
-      <Filter>Headers</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Sprites\dynamic\dynamic.h">
+      <Filter>Headers\Sprites\dynamic</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Sprites\static\static.h">
+      <Filter>Headers\Sprites\static</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Sprites\sprites.h">
+      <Filter>Headers\Sprites</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\player.cpp">
+      <Filter>Source\Core\enum_values</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\direction.cpp">
+      <Filter>Source\Core\enum_values</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\gamemode.cpp">
+      <Filter>Source\Core\enum_values</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\gamestate.cpp">
+      <Filter>Source\Core\enum_values</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\fx.cpp">
+      <Filter>Source\Core\GameVars</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\scores.cpp">
+      <Filter>Source\Core\GameVars</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\core.cpp">
+      <Filter>Source\Core\GameVars</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.cpp">
+      <Filter>Source\Core\PongPAK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\input.cpp">
+      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\update.cpp">
+      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\render.cpp">
+      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\render.cpp">
+      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\update.cpp">
+      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\input.cpp">
+      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\update.cpp">
+      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\input.cpp">
+      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\render.cpp">
+      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\update.cpp">
+      <Filter>Source\Gamestates\IS_PAUSED</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\input.cpp">
+      <Filter>Source\Gamestates\IS_PAUSED</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\render.cpp">
+      <Filter>Source\Gamestates\IS_PAUSED</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\render.cpp">
+      <Filter>Source\Gamestates\IS_PLAYING</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\update.cpp">
+      <Filter>Source\Gamestates\IS_PLAYING</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\input.cpp">
+      <Filter>Source\Gamestates\IS_PLAYING</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\update.cpp">
+      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\input.cpp">
+      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\render.cpp">
+      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\GameFont\GameFont.cpp">
+      <Filter>Source\Core\GameFont</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Pong.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Animation\VHS Effect\vhs_fx.cpp">
+      <Filter>Source\Animation\VHS Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Sprites\dynamic\dynamic.cpp">
+      <Filter>Source\Sprites\dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Sprites\static\static.cpp">
+      <Filter>Source\Sprites\static</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

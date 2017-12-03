@@ -10,6 +10,75 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\AlienPong\Animation\effects.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Animation\VHS Effect\vhs_fx.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\animationState.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\direction.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\gamemode.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\gamestate.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\menuOption.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\menuState.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\player.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enums\settings.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\direction.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\gamemode.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\gamestate.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\player.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameFont\GameFont.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\core.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\fx.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\scores.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\gamestates.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\main.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\main.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\main.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\main.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\main.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\main.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Pong.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Sprites\dynamic\dynamic.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Sprites\sprites.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Sprites\static\static.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\AlienPong\Animation\VHS Effect\vhs_fx.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\direction.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\gamemode.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\gamestate.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\player.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\GameFont\GameFont.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\core.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\fx.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\scores.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\input.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\render.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\update.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\input.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\render.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\update.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\input.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\render.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\update.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\input.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\render.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\update.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\input.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\render.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\update.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\input.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\render.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\update.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\main.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Pong.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Sprites\dynamic\dynamic.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Sprites\static\static.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7F5C3AA2-D205-44FE-B63C-F411DEE5C8F7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -89,21 +158,6 @@
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Source\GameFont.cpp" />
-    <ClCompile Include="..\..\Source\Game_vars.cpp" />
-    <ClCompile Include="..\..\Source\main.cpp" />
-    <ClCompile Include="..\..\Source\Game_setup.cpp" />
-    <ClCompile Include="..\..\Source\PongPAK.cpp" />
-    <ClInclude Include="..\..\Source\Constants.h" />
-    <ClInclude Include="..\..\Source\Game.h" />
-    <ClInclude Include="..\..\Source\GameFont.h" />
-    <ClInclude Include="..\..\Source\Game_vars.h" />
-    <ClInclude Include="..\..\Source\PongPAK.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Source\Game_core.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
