@@ -192,24 +192,6 @@
     <ClInclude Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.h">
       <Filter>Headers\Core\PongPAK</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\main.h">
-      <Filter>Headers\Gamestates\IS_IN_MENU</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\main.h">
-      <Filter>Headers\Gamestates\IS_GAME_OVER</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\main.h">
-      <Filter>Headers\Gamestates\IS_IN_LOADSCREEN</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\main.h">
-      <Filter>Headers\Gamestates\IS_PAUSED</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\main.h">
-      <Filter>Headers\Gamestates\IS_PLAYING</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\main.h">
-      <Filter>Headers\Gamestates\PLAYER_HAS_WON</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\AlienPong\Gamestates\gamestates.h">
       <Filter>Headers\Gamestates</Filter>
     </ClInclude>
@@ -233,6 +215,24 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\AlienPong\Sprites\sprites.h">
       <Filter>Headers\Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\main-is_game_over.h">
+      <Filter>Headers\Gamestates\IS_GAME_OVER</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\main-is_in_loadscreen.h">
+      <Filter>Headers\Gamestates\IS_IN_LOADSCREEN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\main-is_in_menu.h">
+      <Filter>Headers\Gamestates\IS_IN_MENU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\main-is_paused.h">
+      <Filter>Headers\Gamestates\IS_PAUSED</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\main-is_playing.h">
+      <Filter>Headers\Gamestates\IS_PLAYING</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\main-player_has_won.h">
+      <Filter>Headers\Gamestates\PLAYER_HAS_WON</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,60 +263,6 @@
     <ClCompile Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.cpp">
       <Filter>Source\Core\PongPAK</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\input.cpp">
-      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\update.cpp">
-      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\render.cpp">
-      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\render.cpp">
-      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\update.cpp">
-      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\input.cpp">
-      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\update.cpp">
-      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\input.cpp">
-      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\render.cpp">
-      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\update.cpp">
-      <Filter>Source\Gamestates\IS_PAUSED</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\input.cpp">
-      <Filter>Source\Gamestates\IS_PAUSED</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\render.cpp">
-      <Filter>Source\Gamestates\IS_PAUSED</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\render.cpp">
-      <Filter>Source\Gamestates\IS_PLAYING</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\update.cpp">
-      <Filter>Source\Gamestates\IS_PLAYING</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\input.cpp">
-      <Filter>Source\Gamestates\IS_PLAYING</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\update.cpp">
-      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\input.cpp">
-      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\render.cpp">
-      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Core\GameFont\GameFont.cpp">
       <Filter>Source\Core\GameFont</Filter>
     </ClCompile>
@@ -331,6 +277,60 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Sprites\static\static.cpp">
       <Filter>Source\Sprites\static</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\input-is_game_over.cpp">
+      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\render-is_game_over.cpp">
+      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\update-is_game_over.cpp">
+      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\update-is_in_loadscreen.cpp">
+      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\render-is_in_loadscreen.cpp">
+      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\input-is_in_loadscreen.cpp">
+      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\input-is_in_menu.cpp">
+      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\render-is_in_menu.cpp">
+      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\update-is_in_menu.cpp">
+      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\input-is_paused.cpp">
+      <Filter>Source\Gamestates\IS_PAUSED</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\render-is_paused.cpp">
+      <Filter>Source\Gamestates\IS_PAUSED</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\update-is_paused.cpp">
+      <Filter>Source\Gamestates\IS_PAUSED</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\input-is_playing.cpp">
+      <Filter>Source\Gamestates\IS_PLAYING</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\render-is_playing.cpp">
+      <Filter>Source\Gamestates\IS_PLAYING</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\update-is_playing.cpp">
+      <Filter>Source\Gamestates\IS_PLAYING</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\input-player_has_won.cpp">
+      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\render-player_has_won.cpp">
+      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\update-player_has_won.cpp">
+      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

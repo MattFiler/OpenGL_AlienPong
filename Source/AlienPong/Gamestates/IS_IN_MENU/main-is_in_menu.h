@@ -16,6 +16,7 @@
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Animation/effects.h"
+#include "AlienPong/Sprites/sprites.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -27,12 +28,20 @@
 IS_IN_MENU
 */
 
-#ifndef IS_GAME_OVER
-#define IS_GAME_OVER
+#ifndef IS_IN_MENU
+#define IS_IN_MENU
 
-class gamestateIsGameOver
+class gamestateIsInMenu
 {
 public:
+	//Key Handler
+	void keyHandler(ASGE::SharedEventData data);
+
+	//Renderer
+	void renderState(ASGE::Renderer* renderer);
+
+	//Updater
+	void updateState(const ASGE::GameTime & us);
 
 
 private:
@@ -53,10 +62,6 @@ private:
 	//Sprites
 	spritesStatic pong_sprite_static;
 	spritesDynamic pong_sprite_dynamic;
-
-
-	//Key Handler
-	void keyHandler();
 };
 
 #endif

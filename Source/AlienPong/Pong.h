@@ -64,6 +64,19 @@ private:
 	//Global effects
 	pongVHS pong_vhs;
 
+	//Sprites
+	spritesStatic pong_sprite_static;
+	spritesDynamic pong_sprite_dynamic;
+
+	//Gamestates
+	gamestateIsGameOver pong_gamestate_gameover;
+	gamestateIsInLoadscreen pong_gamestate_loadscreen;
+	gamestateIsInMenu pong_gamestate_menu;
+	gamestateIsPaused pong_gamestate_paused;
+	gamestateIsPlaying pong_gamestate_playing;
+	gamestatePlayerHasWon pong_gamestate_scored;
+
+
 	//Engine functions
 	void keyHandler(ASGE::SharedEventData data);
 	virtual void update(const ASGE::GameTime &) override;

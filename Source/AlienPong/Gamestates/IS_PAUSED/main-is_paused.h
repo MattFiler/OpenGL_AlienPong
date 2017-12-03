@@ -25,15 +25,23 @@
 #endif
 
 /*
-IS_IN_MENU
+IS_PAUSED
 */
 
-#ifndef PLAYER_HAS_WON
-#define PLAYER_HAS_WON
+#ifndef IS_PAUSED
+#define IS_PAUSED
 
-class gamestatePlayerHasWon
+class gamestateIsPaused
 {
 public:
+	//Key Handler
+	void keyHandler(ASGE::SharedEventData data);
+
+	//Renderer
+	void renderState(ASGE::Renderer* renderer);
+
+	//Updater
+	void updateState(const ASGE::GameTime & us);
 
 
 private:
@@ -54,10 +62,6 @@ private:
 	//Sprites
 	spritesStatic pong_sprite_static;
 	spritesDynamic pong_sprite_dynamic;
-
-
-	//Key Handler
-	void keyHandler();
 };
 
 #endif

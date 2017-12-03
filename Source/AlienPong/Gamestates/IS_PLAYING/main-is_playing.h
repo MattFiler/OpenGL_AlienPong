@@ -25,15 +25,23 @@
 #endif
 
 /*
-IS_IN_MENU
+IS_PLAYING
 */
 
-#ifndef IS_IN_LOADSCREEN
-#define IS_IN_LOADSCREEN
+#ifndef IS_PLAYING
+#define IS_PLAYING
 
-class gamestateIsInLoadscreen
+class gamestateIsPlaying
 {
 public:
+	//Key Handler
+	void keyHandler(ASGE::SharedEventData data);
+
+	//Renderer
+	void renderState(ASGE::Renderer* renderer);
+
+	//Updater
+	void updateState(const ASGE::GameTime & us);
 
 
 private:
@@ -54,10 +62,6 @@ private:
 	//Sprites
 	spritesStatic pong_sprite_static;
 	spritesDynamic pong_sprite_dynamic;
-
-
-	//Key Handler
-	void keyHandler();
 };
 
 #endif
