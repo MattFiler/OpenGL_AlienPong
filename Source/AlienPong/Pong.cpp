@@ -147,6 +147,9 @@ Render the scene
 */
 void Pong::render(const ASGE::GameTime &)
 {
+	//Render global background
+	renderer->renderSprite(*pong_sprite_static.menu_background);
+
 	//Render gamestate-specific elements
 	switch (pong_gamestate.current_gamestate)
 	{
@@ -175,6 +178,9 @@ void Pong::render(const ASGE::GameTime &)
 			pong_gamestate_gameover.renderState(renderer.get());
 		}
 	}
+
+	//Render global foreground overlay
+	renderer->renderSprite(*pong_sprite_static.monitor_overlay);
 }
 
 
