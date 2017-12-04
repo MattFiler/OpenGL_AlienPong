@@ -1,31 +1,17 @@
 #include "main-is_in_menu.h"
 
 /*
-Remove non-managed memory
-*/
-gamestateIsInMenu::~gamestateIsInMenu()
-{
-	pong_sprite_static.~spritesStatic();
-	pong_sprite_dynamic.~spritesDynamic();
-}
-
-
-/*
 Render everything for gamestate
 */
 void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer)
 {
-	//Load sprites - DON'T USE THIS FOREVER
-	pong_sprite_static.loadSprites(renderer);
-	pong_sprite_dynamic.loadSprites(renderer);
-
 	//Handle menu screens
 	if (pongMenuState::menu_tab == menuState::MENU_TAB_2) //Tab 2
 	{
 		if (pongMenuState::menu_page == menuState::MENU_PAGE_1) //Page 1, Tab 2
 		{
 			//Render SCOREBOARD
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_scoreboard);
+			renderer->renderSprite(*menu_overlay_scoreboard);
 			renderer->setFont(GameFont::fonts[0]->id);
 
 			//Scoreboard
@@ -42,7 +28,7 @@ void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 		else //Page 2, Tab 2
 		{
 			//Render TWO PLAYER
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_twoPlayer);
+			renderer->renderSprite(*menu_overlay_twoPlayer);
 			renderer->setFont(GameFont::fonts[0]->id);
 
 			//Option 1 - VS CPU 
@@ -58,7 +44,7 @@ void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 		if (pongMenuState::menu_page == menuState::MENU_PAGE_1) //Page 1, Tab 1
 		{
 			//Render CONTROLS
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_controls);
+			renderer->renderSprite(*menu_overlay_controls);
 			renderer->setFont(GameFont::fonts[0]->id);
 
 			//Menu controls
@@ -84,7 +70,7 @@ void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 		else //Page 2, Tab 1
 		{
 			//Render ONE PLAYER
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_onePlayer);
+			renderer->renderSprite(*menu_overlay_onePlayer);
 			renderer->setFont(GameFont::fonts[0]->id);
 
 			//Option 1 - freeplay

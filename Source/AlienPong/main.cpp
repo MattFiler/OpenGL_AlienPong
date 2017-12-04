@@ -15,6 +15,7 @@ Define default global values
 
 //Default timers and runtime modifiers
 bool pongVariables::freeze_ball = true;
+bool pongVariables::reset_ball = true;
 float pongVariables::game_timer = 0;
 float pongVariables::global_game_timer = 0;
 int pongVariables::cpu_speed_modifier_check = 0;

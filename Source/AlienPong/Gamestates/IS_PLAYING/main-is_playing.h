@@ -16,7 +16,8 @@
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Animation/effects.h"
-#include "AlienPong/Sprites/sprites.h"
+#include "AlienPong/Entities/entities.h"
+#include "AlienPong/Core/GameFont/GameFont.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -34,6 +35,9 @@ IS_PLAYING
 class gamestateIsPlaying
 {
 public:
+	//Deconstructor
+	~gamestateIsPlaying();
+
 	//Key Handler
 	void keyHandler(ASGE::SharedEventData data);
 
@@ -42,6 +46,24 @@ public:
 
 	//Updater
 	void updateState(const ASGE::GameTime & us);
+
+	//Load sprites
+	void loadSprites(ASGE::Renderer* renderer);
+
+
+private:
+	//Global effects
+	pongVHS pong_vhs;
+
+	ASGE::Sprite* paddle1 = nullptr; //Paddle 1
+	ASGE::Sprite* paddle2 = nullptr; //Paddle 2
+	ASGE::Sprite* ball1 = nullptr; //Ball
+
+	ASGE::Sprite* menu_overlay_mode_regular = nullptr; //in-game MODE overlay regular
+	ASGE::Sprite* menu_overlay_mode_timed = nullptr; //in-game MODE overlay timed
+	ASGE::Sprite* menu_overlay_mode_score = nullptr; //in-game MODE overlay score
+	ASGE::Sprite* menu_overlay_score_box = nullptr; //in-game score box overlay
+
 
 	//Hit detection
 	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const;
@@ -54,15 +76,6 @@ public:
 
 	//Handle winner
 	void handleWin(std::string winner_name);
-
-
-private:
-	//Global effects
-	pongVHS pong_vhs;
-
-	//Sprites
-	spritesStatic pong_sprite_static;
-	spritesDynamic pong_sprite_dynamic;
 };
 
 #endif

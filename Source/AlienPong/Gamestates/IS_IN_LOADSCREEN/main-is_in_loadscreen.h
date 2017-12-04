@@ -16,7 +16,6 @@
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Animation/effects.h"
-#include "AlienPong/Sprites/sprites.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -34,6 +33,7 @@ IS_IN_LOADSCREEN
 class gamestateIsInLoadscreen
 {
 public:
+	//Deconstructor
 	~gamestateIsInLoadscreen();
 
 	//Key Handler
@@ -45,14 +45,22 @@ public:
 	//Updater
 	void updateState(const ASGE::GameTime & us);
 
+	//Load Sprites
+	void loadSprites(ASGE::Renderer* renderer);
+
 
 private:
 	//Global effects
 	pongVHS pong_vhs;
 
-	//Sprites
-	spritesStatic pong_sprite_static;
-	spritesDynamic pong_sprite_dynamic;
+
+	ASGE::Sprite* menu_overlay_loading = nullptr; //Menu loading overlay
+	ASGE::Sprite* menu_overlay_loading_s0 = nullptr; //Menu loading overlay S0
+	ASGE::Sprite* menu_overlay_loading_s1 = nullptr; //Menu loading overlay S1
+	ASGE::Sprite* menu_overlay_loading_s2 = nullptr; //Menu loading overlay S2
+	ASGE::Sprite* menu_overlay_loading_s3 = nullptr; //Menu loading overlay S3
+	ASGE::Sprite* menu_overlay_loading_s4 = nullptr; //Menu loading overlay S4
+	ASGE::Sprite* menu_overlay_loading_s5 = nullptr; //Menu loading overlay S5
 };
 
 #endif

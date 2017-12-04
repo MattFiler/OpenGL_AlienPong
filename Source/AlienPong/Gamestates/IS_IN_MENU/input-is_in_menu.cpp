@@ -120,12 +120,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data) {
 			pongScores::p1 = 0;
 			pongScores::p2 = 0;
 			pongVariables::freeze_ball = false;
-
-			//Reset paddle positions
-			pong_sprite_dynamic.paddle1->xPos(100);
-			pong_sprite_dynamic.paddle1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
-			pong_sprite_dynamic.paddle2->xPos((int)settings::GAMEWINDOW_MAX_WIDTH - 100);
-			pong_sprite_dynamic.paddle2->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
+			pongVariables::reset_ball = true;
 
 			//Reset angle & direction
 			pongDirections::movement_angle = 0;

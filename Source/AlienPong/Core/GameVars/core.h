@@ -5,8 +5,9 @@
 
 namespace pongVariables 
 {
-	//Freeze ball?
+	//Freeze/reset ball?
 	extern bool freeze_ball;
+	extern bool reset_ball;
 
 	//Timers
 	extern float game_timer;

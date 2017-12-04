@@ -27,9 +27,25 @@ Pong::~Pong()
 		font = nullptr;
 	}
 
-	//Sprite resets
-	pong_sprite_static.~spritesStatic();
-	pong_sprite_dynamic.~spritesDynamic();
+	//Pong main sprite resets
+	if (menu_background)
+	{
+		delete menu_background;
+		menu_background = nullptr;
+	}
+	if (monitor_overlay)
+	{
+		delete monitor_overlay;
+		monitor_overlay = nullptr;
+	}
+
+	//Gamestate sprite resets
+	pong_gamestate_gameover.~gamestateIsGameOver();
+	pong_gamestate_loadscreen.~gamestateIsInLoadscreen();
+	pong_gamestate_menu.~gamestateIsInMenu();
+	pong_gamestate_paused.~gamestateIsPaused();
+	pong_gamestate_playing.~gamestateIsPlaying();
+	pong_gamestate_scored.~gamestatePlayerHasWon();
 }
 
 
@@ -75,9 +91,26 @@ bool Pong::init()
 	//Load Jixellation font to slot 0
 	GameFont::fonts[0] = new GameFont(renderer->loadFont("Resources_Temp\\Jixellation.ttf", 45), "default", 45);
 
-	//Load sprites
-	pong_sprite_static.loadSprites(renderer.get());
-	pong_sprite_dynamic.loadSprites(renderer.get());
+	//Load FX Sprites
+	pong_vhs.loadSprites(renderer.get());
+
+	//Load gamestate-specific sprites
+	pong_gamestate_gameover.loadSprites(renderer.get());
+	pong_gamestate_loadscreen.loadSprites(renderer.get());
+	pong_gamestate_menu.loadSprites(renderer.get());
+	pong_gamestate_paused.loadSprites(renderer.get());
+	pong_gamestate_playing.loadSprites(renderer.get());
+	pong_gamestate_scored.loadSprites(renderer.get());
+
+	//Load generic sprites
+	menu_background = renderer->createRawSprite(); //Global Background
+	menu_background->loadTexture("Resources_Temp\\background.jpg");
+	menu_background->width((int)settings::GAMEWINDOW_MAX_WIDTH);
+	menu_background->height((int)settings::GAMEWINDOW_MAX_HEIGHT);
+	monitor_overlay = renderer->createRawSprite(); //Global "monitor" effect overlay
+	monitor_overlay->loadTexture("Resources_Temp\\overlay_monitor_effect.png");
+	monitor_overlay->width((int)settings::GAMEWINDOW_MAX_WIDTH);
+	monitor_overlay->height((int)settings::GAMEWINDOW_MAX_HEIGHT);
 
 	//Handle inputs
 	key_callback_id = inputs->addCallbackFnc(
@@ -144,6 +177,7 @@ void Pong::update(const ASGE::GameTime & us)
 	}
 	pongVariables::global_game_timer += (us.delta_time.count() / 1000.f);
 
+
 	//Update gamestate-specific elements
 	switch (pongGamestate::current_gamestate)
 	{
@@ -178,6 +212,36 @@ void Pong::update(const ASGE::GameTime & us)
 			break;
 		}
 	}
+
+
+	/*
+	Timed game mode scripts
+	*/
+	if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_TIMED)
+	{
+		if (pongVariables::game_timer > 60)
+		{
+			pongDirections::right_paddle_moving = false;
+			pongDirections::left_paddle_moving = false;
+			pongGamestate::current_gamestate = gamestate::IS_GAME_OVER;
+			pongVariables::freeze_ball = true;
+		}
+	}
+
+
+	/*
+	Score-based game mode scripts
+	*/
+	if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_SCORE)
+	{
+		if (pongScores::p1 == 5 || pongScores::p2 == 5)
+		{
+			pongDirections::right_paddle_moving = false;
+			pongDirections::left_paddle_moving = false;
+			pongGamestate::current_gamestate = gamestate::IS_GAME_OVER;
+			pongVariables::freeze_ball = true;
+		}
+	}
 }
 
 
@@ -187,7 +251,10 @@ Render the scene
 void Pong::render(const ASGE::GameTime & us)
 {
 	//Render global background
-	renderer->renderSprite(*pong_sprite_static.menu_background);
+	renderer->renderSprite(*menu_background);
+
+	//VFX (only when called)
+	pong_vhs.renderFX(renderer.get());
 
 	//Render gamestate-specific elements
 	switch (pongGamestate::current_gamestate)
@@ -225,7 +292,7 @@ void Pong::render(const ASGE::GameTime & us)
 	}
 
 	//Render global foreground overlay
-	renderer->renderSprite(*pong_sprite_static.monitor_overlay);
+	renderer->renderSprite(*monitor_overlay);
 }
 
 

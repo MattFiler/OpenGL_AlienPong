@@ -1,24 +1,10 @@
 #include "main-is_in_loadscreen.h"
 
 /*
-Remove non-managed memory
-*/
-gamestateIsInLoadscreen::~gamestateIsInLoadscreen()
-{
-	pong_sprite_static.~spritesStatic();
-	pong_sprite_dynamic.~spritesDynamic();
-}
-
-
-/*
 Render everything for gamestate
 */
 void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer)
 {
-	//Load sprites - DON'T USE THIS FOREVER
-	pong_sprite_static.loadSprites(renderer);
-	pong_sprite_dynamic.loadSprites(renderer);
-
 	//Render loading screen for first few seconds
 	if (pongVariables::global_game_timer < 3.2f)
 	{
@@ -41,32 +27,32 @@ void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Rende
 		//Animation
 		if (pongVariables::global_game_timer < stage_0)
 		{
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading);
+			renderer->renderSprite(*menu_overlay_loading);
 			pongFX::has_requested = true;
 		}
 		if (pongVariables::global_game_timer < stage_1 && pongVariables::global_game_timer >= stage_0)
 		{
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s0);
+			renderer->renderSprite(*menu_overlay_loading_s0);
 		}
 		if (pongVariables::global_game_timer < stage_2 && pongVariables::global_game_timer >= stage_1)
 		{
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s1);
+			renderer->renderSprite(*menu_overlay_loading_s1);
 		}
 		if (pongVariables::global_game_timer < stage_3 && pongVariables::global_game_timer >= stage_2)
 		{
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s2);
+			renderer->renderSprite(*menu_overlay_loading_s2);
 		}
 		if (pongVariables::global_game_timer < stage_4 && pongVariables::global_game_timer >= stage_3)
 		{
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s3);
+			renderer->renderSprite(*menu_overlay_loading_s3);
 		}
 		if (pongVariables::global_game_timer < stage_5 && pongVariables::global_game_timer >= stage_4)
 		{
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s4);
+			renderer->renderSprite(*menu_overlay_loading_s4);
 		}
 		if ((pongVariables::global_game_timer < stage_6 && pongVariables::global_game_timer >= stage_5) || pongVariables::global_game_timer >= stage_6)
 		{
-			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s5);
+			renderer->renderSprite(*menu_overlay_loading_s5);
 			pongFX::has_finished_cycle = false;
 		}
 	}

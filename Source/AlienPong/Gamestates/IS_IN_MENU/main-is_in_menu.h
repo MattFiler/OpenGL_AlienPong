@@ -17,7 +17,6 @@
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Core/GameFont/GameFont.h"
 #include "AlienPong/Animation/effects.h"
-#include "AlienPong/Sprites/sprites.h"
 #include "AlienPong/Core/PongPak/PongPak.h"
 
 //Windows-only Resources
@@ -36,6 +35,7 @@ IS_IN_MENU
 class gamestateIsInMenu
 {
 public:
+	//Deconstructor
 	~gamestateIsInMenu();
 
 	//Key Handler
@@ -47,17 +47,22 @@ public:
 	//Updater
 	void updateState(const ASGE::GameTime & us);
 
+	//Load Sprites
+	void loadSprites(ASGE::Renderer* renderer);
+
 
 private:
 	//Global effects
 	pongVHS pong_vhs;
 
-	//Sprites
-	spritesStatic pong_sprite_static;
-	spritesDynamic pong_sprite_dynamic;
-
 	//PongPAK
 	PongPAK pong_filehandler;
+
+
+	ASGE::Sprite* menu_overlay_twoPlayer = nullptr; //Menu TwoPlayer overlay
+	ASGE::Sprite* menu_overlay_onePlayer = nullptr; //Menu OnePlayer overlay
+	ASGE::Sprite* menu_overlay_controls = nullptr; //Menu controls overlay
+	ASGE::Sprite* menu_overlay_scoreboard = nullptr; //Menu scores overlay
 };
 
 #endif

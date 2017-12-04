@@ -1,26 +1,37 @@
 #include "main-is_playing.h"
 
-//TODO, convert all ->xPos() and ->yPos() to pongBall::x_position and pongBall::y_position
+//TODO, convert all ->xPos() and ->yPos() to ball->xPos() and pongBall::y_position
 
 
 /*
 Update game
 */
 void gamestateIsPlaying::updateState(const ASGE::GameTime & us) {
+	//Get current ball position
+	auto x_pos = ball1->xPos();
+	auto y_pos = ball1->yPos();
+
+	//Reset ball if requested
+	if (pongVariables::reset_ball == true)
+	{
+		ball1->xPos(((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - ((int)settings::BALL_SIZE / 2));
+		ball1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::BALL_SIZE / 2));
+	}
+
 	/* BALL COLLISION DETECTION */
 	//See if we're touching the LEFT paddle
-	if (isTouchingPaddle(pong_sprite_dynamic.paddle1, pongBall::x_position, pongBall::y_position, "LeftPaddle"))
+	if (isTouchingPaddle(paddle1, x_pos, y_pos, "LeftPaddle"))
 	{
 		pongDirections::ball_direction = direction::RIGHT;
-		pongDirections::movement_angle = calculateReturnAngle(pong_sprite_dynamic.paddle1, true);
-		pongDirections::movement_angle_raw = calculateReturnAngle(pong_sprite_dynamic.paddle1, false);
+		pongDirections::movement_angle = calculateReturnAngle(paddle1, true);
+		pongDirections::movement_angle_raw = calculateReturnAngle(paddle1, false);
 	}
 	//See if we're touching the RIGHT paddle
-	if (isTouchingPaddle(pong_sprite_dynamic.paddle2, pongBall::x_position, pongBall::y_position, "RightPaddle"))
+	if (isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
 	{
 		pongDirections::ball_direction = direction::LEFT;
-		pongDirections::movement_angle = calculateReturnAngle(pong_sprite_dynamic.paddle2, true);
-		pongDirections::movement_angle_raw = calculateReturnAngle(pong_sprite_dynamic.paddle2, false);
+		pongDirections::movement_angle = calculateReturnAngle(paddle2, true);
+		pongDirections::movement_angle_raw = calculateReturnAngle(paddle2, false);
 	}
 	//See if we're touching the TOP of the window
 	if (hasHitEdge("Top") || hasHitEdge("Bottom"))
@@ -33,28 +44,28 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us) {
 	if (pongDirections::ball_direction == direction::LEFT)
 	{
 		//Set X position
-		pongBall::x_position -= ((int)settings::DEFAULT_SPEED - pongDirections::movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
+		x_pos -= ((int)settings::DEFAULT_SPEED - pongDirections::movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 	}
 	else
 	{
 		//Set X position
-		pongBall::x_position += ((int)settings::DEFAULT_SPEED - pongDirections::movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
+		x_pos += ((int)settings::DEFAULT_SPEED - pongDirections::movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
 	}
 	//Apply movement angle
-	pongBall::y_position += pongDirections::movement_angle * (us.delta_time.count() / 1000.f);
+	y_pos += pongDirections::movement_angle * (us.delta_time.count() / 1000.f);
 	if (!pongVariables::freeze_ball)
 	{
 		//Update X position of ball
-		pong_sprite_dynamic.ball1->xPos(pongBall::x_position);
+		ball1->xPos(x_pos);
 
 		//Update Y position of ball
-		pong_sprite_dynamic.ball1->yPos(pongBall::y_position);
+		ball1->yPos(y_pos);
 	}
 	else
 	{
 		//Freeze ball if requested
-		pong_sprite_dynamic.ball1->xPos(pong_sprite_dynamic.ball1->xPos());
-		pong_sprite_dynamic.ball1->yPos(pong_sprite_dynamic.ball1->yPos());
+		ball1->xPos(ball1->xPos());
+		ball1->yPos(ball1->yPos());
 	}
 
 	/* HANDLE WINS */
@@ -74,7 +85,7 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us) {
 	/* CPU PLAYER */
 	if (pongGamemodes::is_against_cpu)
 	{
-		if (pong_sprite_dynamic.ball1->yPos() > (pong_sprite_dynamic.paddle2->yPos() + ((int)settings::BALL_SIZE * 3)) && pong_sprite_dynamic.ball1->yPos() < (pong_sprite_dynamic.paddle2->yPos() + (int)settings::PADDLE_HEIGHT - ((int)settings::BALL_SIZE * 3)))
+		if (ball1->yPos() > (paddle2->yPos() + ((int)settings::BALL_SIZE * 3)) && ball1->yPos() < (paddle2->yPos() + (int)settings::PADDLE_HEIGHT - ((int)settings::BALL_SIZE * 3)))
 		{
 			pongDirections::right_paddle_moving = false;
 		}
@@ -82,11 +93,11 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us) {
 		{
 			//Ball is out of paddle range, move to it
 			pongDirections::right_paddle_moving = true;
-			if (pong_sprite_dynamic.ball1->yPos() > pong_sprite_dynamic.paddle2->yPos())
+			if (ball1->yPos() > paddle2->yPos())
 			{
 				pongDirections::right_paddle_direction = direction::DOWN;
 			}
-			if (pong_sprite_dynamic.ball1->yPos() < (pong_sprite_dynamic.paddle2->yPos() + (int)settings::PADDLE_HEIGHT - ((int)settings::BALL_SIZE * 3)))
+			if (ball1->yPos() < (paddle2->yPos() + (int)settings::PADDLE_HEIGHT - ((int)settings::BALL_SIZE * 3)))
 			{
 				pongDirections::right_paddle_direction = direction::UP;
 			}
@@ -100,12 +111,12 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us) {
 		if (pongDirections::left_paddle_direction == direction::UP)
 		{
 			//Update Y position of paddle UP
-			pong_sprite_dynamic.paddle1->yPos(pong_sprite_dynamic.paddle1->yPos() - ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
+			paddle1->yPos(paddle1->yPos() - ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
 		}
 		else
 		{
 			//Update Y position of paddle DOWN
-			pong_sprite_dynamic.paddle1->yPos(pong_sprite_dynamic.paddle1->yPos() + ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
+			paddle1->yPos(paddle1->yPos() + ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
 		}
 	}
 	//Right Paddle
@@ -123,12 +134,12 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us) {
 		if (pongDirections::right_paddle_direction == direction::UP)
 		{
 			//Update Y position of paddle UP
-			pong_sprite_dynamic.paddle2->yPos(pong_sprite_dynamic.paddle2->yPos() - ((int)settings::DEFAULT_SPEED / pongVariables::cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+			paddle2->yPos(paddle2->yPos() - ((int)settings::DEFAULT_SPEED / pongVariables::cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 		}
 		else
 		{
 			//Update Y position of paddle DOWN
-			pong_sprite_dynamic.paddle2->yPos(pong_sprite_dynamic.paddle2->yPos() + ((int)settings::DEFAULT_SPEED / pongVariables::cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+			paddle2->yPos(paddle2->yPos() + ((int)settings::DEFAULT_SPEED / pongVariables::cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
 		}
 	}
 }
@@ -178,7 +189,7 @@ int gamestateIsPlaying::calculateReturnAngle(const ASGE::Sprite* paddle, bool in
 	int paddle_bottom_y = paddle->yPos();
 	int paddle_middle_y = paddle_bottom_y + ((int)settings::PADDLE_HEIGHT / 2);
 	int paddle_top_y = paddle_bottom_y + (int)settings::PADDLE_HEIGHT;
-	int ball_bottom_y = pong_sprite_dynamic.ball1->yPos();
+	int ball_bottom_y = ball1->yPos();
 	int ball_middle_y = ball_bottom_y + ((int)settings::BALL_SIZE / 2);
 	int ball_top_y = ball_bottom_y + (int)settings::BALL_SIZE;
 
@@ -225,7 +236,7 @@ bool gamestateIsPlaying::hasHitEdge(std::string edgeName) const
 	//Touching left?
 	if (edgeName == "Left")
 	{
-		if (pong_sprite_dynamic.ball1->xPos() - (int)settings::BALL_SIZE <= 0)
+		if (ball1->xPos() - (int)settings::BALL_SIZE <= 0)
 		{
 			return true; //Hit
 		}
@@ -234,7 +245,7 @@ bool gamestateIsPlaying::hasHitEdge(std::string edgeName) const
 	//Touching right?
 	if (edgeName == "Right")
 	{
-		if (pong_sprite_dynamic.ball1->xPos() >= (int)settings::GAMEWINDOW_MAX_WIDTH)
+		if (ball1->xPos() >= (int)settings::GAMEWINDOW_MAX_WIDTH)
 		{
 			return true; //Hit
 		}
@@ -243,7 +254,7 @@ bool gamestateIsPlaying::hasHitEdge(std::string edgeName) const
 	//Touching top?
 	if (edgeName == "Top")
 	{
-		if (pong_sprite_dynamic.ball1->yPos() <= 0)
+		if (ball1->yPos() <= 0)
 		{
 			return true; //Hit
 		}
@@ -252,7 +263,7 @@ bool gamestateIsPlaying::hasHitEdge(std::string edgeName) const
 	//Touching bottom?
 	if (edgeName == "Bottom")
 	{
-		if (pong_sprite_dynamic.ball1->yPos() + (int)settings::BALL_SIZE >= (int)settings::GAMEWINDOW_MAX_HEIGHT)
+		if (ball1->yPos() + (int)settings::BALL_SIZE >= (int)settings::GAMEWINDOW_MAX_HEIGHT)
 		{
 			return true; //Hit
 		}
@@ -299,14 +310,14 @@ void gamestateIsPlaying::handleWin(std::string winner_name)
 	}
 
 	//Reset ball position
-	pong_sprite_dynamic.ball1->xPos(((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - ((int)settings::BALL_SIZE / 2));
-	pong_sprite_dynamic.ball1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::BALL_SIZE / 2));
+	ball1->xPos(((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - ((int)settings::BALL_SIZE / 2));
+	ball1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::BALL_SIZE / 2));
 
 	//Reset paddle positions
-	pong_sprite_dynamic.paddle1->xPos(100);
-	pong_sprite_dynamic.paddle1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
-	pong_sprite_dynamic.paddle2->xPos((int)settings::GAMEWINDOW_MAX_WIDTH - 100);
-	pong_sprite_dynamic.paddle2->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
+	paddle1->xPos(100);
+	paddle1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
+	paddle2->xPos((int)settings::GAMEWINDOW_MAX_WIDTH - 100);
+	paddle2->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
 
 	//Play SFX
 	PlaySound(TEXT("Resources_Temp\\BEEP_009.wav"), NULL, SND_ASYNC);

@@ -16,7 +16,6 @@
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Animation/effects.h"
-#include "AlienPong/Sprites/sprites.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -34,6 +33,9 @@ IS_PAUSED
 class gamestateIsPaused
 {
 public:
+	//Deconstructor
+	~gamestateIsPaused();
+
 	//Key Handler
 	void keyHandler(ASGE::SharedEventData data);
 
@@ -43,14 +45,16 @@ public:
 	//Updater
 	void updateState(const ASGE::GameTime & us);
 
+	//Load Sprites
+	void loadSprites(ASGE::Renderer* renderer);
+
 
 private:
 	//Global effects
 	pongVHS pong_vhs;
 
-	//Sprites
-	spritesStatic pong_sprite_static;
-	spritesDynamic pong_sprite_dynamic;
+
+	ASGE::Sprite* menu_overlay_paused = nullptr; //in-game PAUSE screen
 };
 
 #endif

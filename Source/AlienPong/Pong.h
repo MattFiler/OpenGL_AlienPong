@@ -55,10 +55,6 @@ private:
 	//Global effects
 	pongVHS pong_vhs;
 
-	//Sprites
-	spritesStatic pong_sprite_static;
-	spritesDynamic pong_sprite_dynamic;
-
 	//Gamestates
 	gamestateIsGameOver pong_gamestate_gameover;
 	gamestateIsInLoadscreen pong_gamestate_loadscreen;
@@ -79,6 +75,10 @@ private:
 
 	//Asset loader (through PongPAK)
 	void loadAssets();
+
+
+	ASGE::Sprite* menu_background = nullptr; //Menu background
+	ASGE::Sprite* monitor_overlay = nullptr;  //monitor overlay effect
 };
 
 #endif
