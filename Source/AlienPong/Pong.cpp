@@ -165,6 +165,16 @@ Update the scene
 */
 void Pong::update(const ASGE::GameTime & us)
 {
+	//Close game & cleanup (if requested)
+	if (pongGamestate::has_requested_shutdown) {
+		pong_filehandler.ClearupFiles();
+		while (pong_filehandler.cleanup_counter != 45)
+		{
+			//Wait to delete
+		}
+		signalExit();
+	}
+
 	//Update timers
 	if (pongGamestate::current_gamestate == gamestate::IS_PLAYING)
 	{

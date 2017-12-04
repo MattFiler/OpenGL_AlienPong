@@ -11,6 +11,7 @@ namespace pongGamestate
 {
 	extern gamestate current_gamestate;
 	extern bool show_debug_text;
+	extern bool has_requested_shutdown;
 }
 
 #endif

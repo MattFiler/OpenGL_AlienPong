@@ -178,11 +178,6 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 	if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
 	{
 		//Close game & cleanup
-		pong_filehandler.ClearupFiles();
-		while (pong_filehandler.cleanup_counter != 45)
-		{
-			//Wait to delete
-		}
-		exit(0);
+		pongGamestate::has_requested_shutdown = true;
 	}
 }
