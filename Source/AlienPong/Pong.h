@@ -19,6 +19,7 @@
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Gamestates/gamestates.h"
 #include "AlienPong/Core/PongPAK/PongPAK.h"
+#include "AlienPong/Entities/entities.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -48,10 +49,6 @@ public:
 
 
 private:
-	//Global generic values
-	GameVars_FX pong_fx;
-	GameVars_Scores pong_points;
-
 	//PongPAK (file handler)
 	PongPAK pong_filehandler;
 

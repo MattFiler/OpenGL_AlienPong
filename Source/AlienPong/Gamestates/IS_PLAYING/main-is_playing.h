@@ -43,12 +43,20 @@ public:
 	//Updater
 	void updateState(const ASGE::GameTime & us);
 
+	//Hit detection
+	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const;
+
+	//Calculate return angles
+	int calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses) const;
+
+	//Has hit edge?
+	bool hasHitEdge(std::string edgeName) const;
+
+	//Handle winner
+	void handleWin(std::string winner_name);
+
 
 private:
-	//Global generic values
-	GameVars_FX pong_fx;
-	GameVars_Scores pong_points;
-
 	//Global effects
 	pongVHS pong_vhs;
 

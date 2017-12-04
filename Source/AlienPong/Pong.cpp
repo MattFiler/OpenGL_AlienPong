@@ -95,7 +95,40 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 	//Get key
 	auto key = static_cast<const ASGE::KeyEvent*>(data.get());
 
-	
+	//Handle gamestate-specific inputs
+	switch (pongGamestate::current_gamestate)
+	{
+		case gamestate::IS_IN_LOADSCREEN:
+		{
+			pong_gamestate_loadscreen.keyHandler(data);
+			break;
+		}
+		case gamestate::IS_IN_MENU:
+		{
+			pong_gamestate_menu.keyHandler(data);
+			break;
+		}
+		case gamestate::IS_PLAYING:
+		{
+			pong_gamestate_playing.keyHandler(data);
+			break;
+		}
+		case gamestate::IS_PAUSED:
+		{
+			pong_gamestate_paused.keyHandler(data);
+			break;
+		}
+		case gamestate::PLAYER_HAS_WON:
+		{
+			pong_gamestate_scored.keyHandler(data);
+			break;
+		}
+		case gamestate::IS_GAME_OVER:
+		{
+			pong_gamestate_gameover.keyHandler(data);
+			break;
+		}
+	}
 }
 
 
@@ -155,9 +188,6 @@ void Pong::render(const ASGE::GameTime & us)
 {
 	//Render global background
 	renderer->renderSprite(*pong_sprite_static.menu_background);
-
-	//Debug text
-	renderer->renderText(("PONG CLASS: " + std::to_string(pongVariables::global_game_timer)).c_str(), 155, 155, 1, ASGE::COLOURS::WHITE);
 
 	//Render gamestate-specific elements
 	switch (pongGamestate::current_gamestate)

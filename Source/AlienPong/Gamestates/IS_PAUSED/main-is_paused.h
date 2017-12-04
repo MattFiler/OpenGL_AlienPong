@@ -45,10 +45,6 @@ public:
 
 
 private:
-	//Global generic values
-	GameVars_FX pong_fx;
-	GameVars_Scores pong_points;
-
 	//Global effects
 	pongVHS pong_vhs;
 

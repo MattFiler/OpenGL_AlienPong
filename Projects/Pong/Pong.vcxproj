@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\direction.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\gamemode.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\gamestate.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\menuState.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\player.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\GameFont\GameFont.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\GameVars.h" />
@@ -48,8 +49,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\AlienPong\Animation\VHS Effect\vhs_fx.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Core\GameFont\GameFont.cpp" />
-    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\fx.cpp" />
-    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\scores.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\input-is_game_over.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\render-is_game_over.cpp" />

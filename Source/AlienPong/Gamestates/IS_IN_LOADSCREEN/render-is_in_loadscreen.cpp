@@ -15,12 +15,9 @@ Render everything for gamestate
 */
 void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer)
 {
-	//Load sprites
+	//Load sprites - DON'T USE THIS FOREVER
 	pong_sprite_static.loadSprites(renderer);
 	pong_sprite_dynamic.loadSprites(renderer);
-
-	//Debug text
-	renderer->renderText(("INLOADSCREEN CLASS: " + std::to_string(pongVariables::global_game_timer)).c_str(), 55, 55, 1, ASGE::COLOURS::WHITE);
 
 	//Render loading screen for first few seconds
 	if (pongVariables::global_game_timer < 3.2f)
@@ -45,7 +42,7 @@ void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Rende
 		if (pongVariables::global_game_timer < stage_0)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading);
-			pong_fx.has_requested = true;
+			pongFX::has_requested = true;
 		}
 		if (pongVariables::global_game_timer < stage_1 && pongVariables::global_game_timer >= stage_0)
 		{
@@ -70,7 +67,7 @@ void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Rende
 		if ((pongVariables::global_game_timer < stage_6 && pongVariables::global_game_timer >= stage_5) || pongVariables::global_game_timer >= stage_6)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s5);
-			pong_fx.has_finished_cycle = false;
+			pongFX::has_finished_cycle = false;
 		}
 	}
 	else

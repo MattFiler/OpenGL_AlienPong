@@ -15,8 +15,10 @@
 #include "AlienPong/Core/enums.h"
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
+#include "AlienPong/Core/GameFont/GameFont.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Sprites/sprites.h"
+#include "AlienPong/Core/PongPak/PongPak.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -34,6 +36,8 @@ IS_IN_MENU
 class gamestateIsInMenu
 {
 public:
+	~gamestateIsInMenu();
+
 	//Key Handler
 	void keyHandler(ASGE::SharedEventData data);
 
@@ -45,16 +49,15 @@ public:
 
 
 private:
-	//Global generic values
-	GameVars_FX pong_fx;
-	GameVars_Scores pong_points;
-
 	//Global effects
 	pongVHS pong_vhs;
 
 	//Sprites
 	spritesStatic pong_sprite_static;
 	spritesDynamic pong_sprite_dynamic;
+
+	//PongPAK
+	PongPAK pong_filehandler;
 };
 
 #endif
