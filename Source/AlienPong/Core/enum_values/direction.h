@@ -4,18 +4,17 @@
 #ifndef ENUM_VALS_DIRECTION_H
 #define ENUM_VALS_DIRECTION_H
 
-class directionValues
+namespace pongDirections
 {
-public:
-	directionValues();
+	extern direction ball_direction;
+	extern direction left_paddle_direction;
+	extern direction right_paddle_direction;
 
-	direction ball_direction;
-	direction left_paddle_direction;
-	direction right_paddle_direction;
-	bool right_paddle_moving;
-	bool left_paddle_moving;
-	int movement_angle;
-	int movement_angle_raw;
-};
+	extern bool right_paddle_moving;
+	extern bool left_paddle_moving;
+
+	extern int movement_angle;
+	extern int movement_angle_raw;
+}
 
 #endif

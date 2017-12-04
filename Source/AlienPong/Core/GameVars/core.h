@@ -3,25 +3,21 @@
 #ifndef GAMEVARS_CORE_H
 #define GAMEVARS_CORE_H
 
-class GameVars_Core
+namespace pongVariables 
 {
-public:
-	//Main void
-	GameVars_Core();
-
 	//Freeze ball?
-	bool freeze_ball;
+	extern bool freeze_ball;
 
 	//Timers
-	float game_timer;
-	float global_game_timer;
+	extern float game_timer;
+	extern float global_game_timer;
 
 	//CPU modifiers
-	int cpu_speed_modifier_check;
-	float cpu_speed_modifier;
+	extern int cpu_speed_modifier_check;
+	extern float cpu_speed_modifier;
 
 	//Audio checks
-	bool has_performed_startup_sound;
-};
+	extern bool has_performed_startup_sound;
+}
 
 #endif

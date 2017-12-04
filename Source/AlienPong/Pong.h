@@ -46,16 +46,10 @@ public:
 	~Pong();
 	virtual bool init() override;
 
-private:
-	//Global enum values
-	directionValues pong_direction;
-	gamemodeValues pong_gamemode;
-	gamestateValues pong_gamestate;
-	player pong_player;
 
+private:
 	//Global generic values
 	GameVars_FX pong_fx;
-	GameVars_Core pong_vars;
 	GameVars_Scores pong_points;
 
 	//PongPAK (file handler)

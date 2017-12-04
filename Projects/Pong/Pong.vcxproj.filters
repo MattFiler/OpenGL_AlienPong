@@ -236,25 +236,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\player.cpp">
-      <Filter>Source\Core\enum_values</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\direction.cpp">
-      <Filter>Source\Core\enum_values</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\gamemode.cpp">
-      <Filter>Source\Core\enum_values</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Core\enum_values\gamestate.cpp">
-      <Filter>Source\Core\enum_values</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\fx.cpp">
       <Filter>Source\Core\GameVars</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\scores.cpp">
-      <Filter>Source\Core\GameVars</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Core\GameVars\core.cpp">
       <Filter>Source\Core\GameVars</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\main.cpp">

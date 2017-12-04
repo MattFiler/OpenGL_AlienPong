@@ -4,13 +4,10 @@
 #ifndef ENUM_VALS_GAMEMODE_H
 #define ENUM_VALS_GAMEMODE_H
 
-class gamemodeValues
+namespace pongGamemodes
 {
-public:
-	gamemodeValues();
-
-	gamemode current_gamemode;
-	bool is_against_cpu;
-};
+	extern gamemode current_gamemode;
+	extern bool is_against_cpu;
+}
 
 #endif

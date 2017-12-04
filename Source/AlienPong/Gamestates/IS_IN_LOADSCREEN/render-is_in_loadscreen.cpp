@@ -20,10 +20,10 @@ void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Rende
 	pong_sprite_dynamic.loadSprites(renderer);
 
 	//Debug text
-	renderer->renderText(("INLOADSCREEN CLASS: " + std::to_string(pong_vars.global_game_timer)).c_str(), 55, 55, 1, ASGE::COLOURS::WHITE);
+	renderer->renderText(("INLOADSCREEN CLASS: " + std::to_string(pongVariables::global_game_timer)).c_str(), 55, 55, 1, ASGE::COLOURS::WHITE);
 
 	//Render loading screen for first few seconds
-	if (pong_vars.global_game_timer < 3.2f)
+	if (pongVariables::global_game_timer < 3.2f)
 	{
 		//Speed
 		float stage_0 = 0.3f;
@@ -35,39 +35,39 @@ void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Rende
 		float stage_6 = 2.8f;
 
 		//Play SFX
-		if (!pong_vars.has_performed_startup_sound) {
+		if (!pongVariables::has_performed_startup_sound) {
 			PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC);
 			//PlaySound(TEXT("Resources_Temp\\../../Resources/Audio/Interactive_Terminal_BG_Loop.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
-			pong_vars.has_performed_startup_sound = true;
+			pongVariables::has_performed_startup_sound = true;
 		}
 
 		//Animation
-		if (pong_vars.global_game_timer < stage_0)
+		if (pongVariables::global_game_timer < stage_0)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading);
 			pong_fx.has_requested = true;
 		}
-		if (pong_vars.global_game_timer < stage_1 && pong_vars.global_game_timer >= stage_0)
+		if (pongVariables::global_game_timer < stage_1 && pongVariables::global_game_timer >= stage_0)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s0);
 		}
-		if (pong_vars.global_game_timer < stage_2 && pong_vars.global_game_timer >= stage_1)
+		if (pongVariables::global_game_timer < stage_2 && pongVariables::global_game_timer >= stage_1)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s1);
 		}
-		if (pong_vars.global_game_timer < stage_3 && pong_vars.global_game_timer >= stage_2)
+		if (pongVariables::global_game_timer < stage_3 && pongVariables::global_game_timer >= stage_2)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s2);
 		}
-		if (pong_vars.global_game_timer < stage_4 && pong_vars.global_game_timer >= stage_3)
+		if (pongVariables::global_game_timer < stage_4 && pongVariables::global_game_timer >= stage_3)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s3);
 		}
-		if (pong_vars.global_game_timer < stage_5 && pong_vars.global_game_timer >= stage_4)
+		if (pongVariables::global_game_timer < stage_5 && pongVariables::global_game_timer >= stage_4)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s4);
 		}
-		if ((pong_vars.global_game_timer < stage_6 && pong_vars.global_game_timer >= stage_5) || pong_vars.global_game_timer >= stage_6)
+		if ((pongVariables::global_game_timer < stage_6 && pongVariables::global_game_timer >= stage_5) || pongVariables::global_game_timer >= stage_6)
 		{
 			renderer->renderSprite(*pong_sprite_static.menu_overlay_loading_s5);
 			pong_fx.has_finished_cycle = false;
@@ -75,6 +75,6 @@ void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Rende
 	}
 	else
 	{
-		pong_gamestate.current_gamestate = gamestate::IS_IN_MENU; //Take us out of the animation
+		pongGamestate::current_gamestate = gamestate::IS_IN_MENU; //Take us out of the animation
 	}
 }

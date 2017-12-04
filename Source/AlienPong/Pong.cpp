@@ -105,14 +105,14 @@ Update the scene
 void Pong::update(const ASGE::GameTime & us)
 {
 	//Update timers
-	if (pong_gamestate.current_gamestate == gamestate::IS_PLAYING)
+	if (pongGamestate::current_gamestate == gamestate::IS_PLAYING)
 	{
-		pong_vars.game_timer += (us.delta_time.count() / 1000.f);
+		pongVariables::game_timer += (us.delta_time.count() / 1000.f);
 	}
-	pong_vars.global_game_timer += (us.delta_time.count() / 1000.f);
+	pongVariables::global_game_timer += (us.delta_time.count() / 1000.f);
 
 	//Update gamestate-specific elements
-	switch (pong_gamestate.current_gamestate)
+	switch (pongGamestate::current_gamestate)
 	{
 		case gamestate::IS_IN_LOADSCREEN:
 		{
@@ -157,10 +157,10 @@ void Pong::render(const ASGE::GameTime & us)
 	renderer->renderSprite(*pong_sprite_static.menu_background);
 
 	//Debug text
-	renderer->renderText(("PONG CLASS: " + std::to_string(pong_vars.global_game_timer)).c_str(), 155, 155, 1, ASGE::COLOURS::WHITE);
+	renderer->renderText(("PONG CLASS: " + std::to_string(pongVariables::global_game_timer)).c_str(), 155, 155, 1, ASGE::COLOURS::WHITE);
 
 	//Render gamestate-specific elements
-	switch (pong_gamestate.current_gamestate)
+	switch (pongGamestate::current_gamestate)
 	{
 		case gamestate::IS_IN_LOADSCREEN:
 		{

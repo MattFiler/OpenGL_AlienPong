@@ -31,7 +31,6 @@ public:
 	float time_in_seconds;
 
 private:
-	GameVars_Core pong_vars;
 	spritesStatic pong_sprite_static;
 };
 
