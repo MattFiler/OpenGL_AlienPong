@@ -8,14 +8,8 @@
 #define PONGPAK_H
 
 /*
-
-//////// PONG - Created by Matt Filer ////////
-/////////////// PongPAK HEADER ///////////////
-
+PongPAK
 */
-
-
-
 class PongPAK 
 {
 public:

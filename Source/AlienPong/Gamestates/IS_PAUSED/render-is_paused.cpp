@@ -7,5 +7,4 @@ void gamestateIsPaused::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 {
 	//Game is paused
 	renderer->renderSprite(*menu_overlay_paused);
-	pongFX::has_requested = true;
 }

@@ -44,9 +44,6 @@ public:
 	//Renderer
 	void renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer);
 
-	//Updater
-	void updateState(const ASGE::GameTime & us);
-
 	//Load Sprites
 	void loadSprites(ASGE::Renderer* renderer);
 

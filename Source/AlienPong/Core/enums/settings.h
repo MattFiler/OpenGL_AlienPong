@@ -6,7 +6,7 @@
 /*
 	Define game settings.
 */
-enum class settings : int 
+enum class settings : int
 {
 	GAMEWINDOW_MAX_WIDTH = 1024, //Game width
 	GAMEWINDOW_MAX_HEIGHT = 768, //Game height

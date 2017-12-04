@@ -16,8 +16,8 @@
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Animation/effects.h"
-#include "AlienPong/Entities/entities.h"
 #include "AlienPong/Core/GameFont/GameFont.h"
+#include "AlienPong/Core/shared.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -55,6 +55,10 @@ private:
 	//Global effects
 	pongVHS pong_vhs;
 
+	//Shared
+	pongShared pong_shared;
+
+
 	ASGE::Sprite* paddle1 = nullptr; //Paddle 1
 	ASGE::Sprite* paddle2 = nullptr; //Paddle 2
 	ASGE::Sprite* ball1 = nullptr; //Ball
@@ -63,19 +67,6 @@ private:
 	ASGE::Sprite* menu_overlay_mode_timed = nullptr; //in-game MODE overlay timed
 	ASGE::Sprite* menu_overlay_mode_score = nullptr; //in-game MODE overlay score
 	ASGE::Sprite* menu_overlay_score_box = nullptr; //in-game score box overlay
-
-
-	//Hit detection
-	bool isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, std::string spriteName) const;
-
-	//Calculate return angles
-	int calculateReturnAngle(const ASGE::Sprite* paddle, bool include_reverses) const;
-
-	//Has hit edge?
-	bool hasHitEdge(std::string edgeName) const;
-
-	//Handle winner
-	void handleWin(std::string winner_name);
 };
 
 #endif

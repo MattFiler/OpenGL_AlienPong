@@ -3,6 +3,9 @@
 #ifndef GAMEVARS_SCORES_H
 #define GAMEVARS_SCORES_H
 
+/*
+Define our score data
+*/
 namespace pongScores
 {
 	//In-game scores

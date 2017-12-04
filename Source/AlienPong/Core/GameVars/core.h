@@ -3,11 +3,15 @@
 #ifndef GAMEVARS_CORE_H
 #define GAMEVARS_CORE_H
 
+/*
+Define our generic global variables
+*/
 namespace pongVariables 
 {
-	//Freeze/reset ball?
+	//Freeze/reset ball & paddles?
 	extern bool freeze_ball;
 	extern bool reset_ball;
+	extern bool reset_paddles;
 
 	//Timers
 	extern float game_timer;

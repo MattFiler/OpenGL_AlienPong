@@ -16,6 +16,7 @@ Define default global values
 //Default timers and runtime modifiers
 bool pongVariables::freeze_ball = true;
 bool pongVariables::reset_ball = true;
+bool pongVariables::reset_paddles = true;
 float pongVariables::game_timer = 0;
 float pongVariables::global_game_timer = 0;
 int pongVariables::cpu_speed_modifier_check = 0;
@@ -53,6 +54,9 @@ bool pongGamemodes::is_against_cpu = false;
 //Default gamestate
 gamestate pongGamestate::current_gamestate = gamestate::IS_IN_LOADSCREEN;
 
+//Show debug text?
+bool pongGamestate::show_debug_text = true; //Do not enable on final build.
+
 
 /* pongPlayers */
 
@@ -75,14 +79,15 @@ int pongScores::scoreboard_cpu = 0;
 
 /* pongFX */
 
-//Start/stop checkers
-bool pongFX::is_performing = false;
-bool pongFX::has_requested = false;
-bool pongFX::has_finished_cycle = false;
-
 //Timers
 float pongFX::time_started = 0.0;
 float pongFX::time_in_seconds = 0.07;
+
+
+/* pongAnimationState */
+
+//FX State
+animationState pongAnimationState::state = animationState::IS_IDLE;
 
 
 /* pongMenuState */
@@ -93,24 +98,6 @@ menuState pongMenuState::menu_tab = menuState::MENU_TAB_1;
 
 //Menu selections
 menuOption pongMenuState::menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
-
-
-/* pongBall */
-
-//Main ball
-float pongBall::x_position = 0;
-float pongBall::y_position = 0;
-
-
-/* pongPaddle */
-
-//Paddle 1
-float pongPaddle::paddle1_x_position = 0;
-float pongPaddle::paddle1_y_position = 0;
-
-//Paddle 2
-float pongPaddle::paddle2_x_position = 0;
-float pongPaddle::paddle2_y_position = 0;
 
 #endif
 

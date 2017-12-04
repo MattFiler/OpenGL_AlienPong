@@ -16,6 +16,7 @@
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Animation/effects.h"
+#include "AlienPong/Core/shared.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -52,6 +53,9 @@ public:
 private:
 	//Global effects
 	pongVHS pong_vhs;
+
+	//Shared
+	pongShared pong_shared;
 
 
 	ASGE::Sprite* menu_overlay_paused = nullptr; //in-game PAUSE screen

@@ -3,7 +3,8 @@
 /*
 Handle user inputs
 */
-void gamestateIsGameOver::keyHandler(ASGE::SharedEventData data) {
+void gamestateIsGameOver::keyHandler(ASGE::SharedEventData data) 
+{
 	//Get key
 	auto key = static_cast<const ASGE::KeyEvent*>(data.get());
 
@@ -15,7 +16,7 @@ void gamestateIsGameOver::keyHandler(ASGE::SharedEventData data) {
 		//Play SFX
 		PlaySound(TEXT("Resources_Temp\\BEEP_016.wav"), NULL, SND_ASYNC);
 
-		//Reset game and return to menu TODO
-		//resetGame();
+		//Reset game and return to menu
+		pong_shared.reset();
 	}
 }

@@ -17,6 +17,5 @@ void gamestatePlayerHasWon::keyHandler(ASGE::SharedEventData data) {
 
 		//Return to game
 		pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-		pongFX::has_finished_cycle = false;
 	}
 }

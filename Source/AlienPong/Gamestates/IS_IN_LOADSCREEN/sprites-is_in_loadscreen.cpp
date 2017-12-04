@@ -60,7 +60,8 @@ gamestateIsInLoadscreen::~gamestateIsInLoadscreen()
 /*
 Load sprites
 */
-void gamestateIsInLoadscreen::loadSprites(ASGE::Renderer* renderer) {
+void gamestateIsInLoadscreen::loadSprites(ASGE::Renderer* renderer) 
+{
 	//Loading overlay
 	menu_overlay_loading = renderer->createRawSprite();
 	menu_overlay_loading->loadTexture("Resources_Temp\\overlay_loading_s.png");

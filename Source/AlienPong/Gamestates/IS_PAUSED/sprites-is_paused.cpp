@@ -18,7 +18,8 @@ gamestateIsPaused::~gamestateIsPaused()
 /*
 Load sprites
 */
-void gamestateIsPaused::loadSprites(ASGE::Renderer* renderer) {
+void gamestateIsPaused::loadSprites(ASGE::Renderer* renderer) 
+{
 	//overlay PAUSE screen
 	menu_overlay_paused = renderer->createRawSprite();
 	menu_overlay_paused->loadTexture("Resources_Temp\\overlay_ingame_paused.png");

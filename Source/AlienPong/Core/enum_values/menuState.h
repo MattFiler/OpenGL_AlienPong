@@ -4,6 +4,9 @@
 #ifndef ENUM_VALS_MENUSTATE_H
 #define ENUM_VALS_MENUSTATE_H
 
+/*
+Define our menu data
+*/
 namespace pongMenuState
 {
 	extern menuState menu_page;

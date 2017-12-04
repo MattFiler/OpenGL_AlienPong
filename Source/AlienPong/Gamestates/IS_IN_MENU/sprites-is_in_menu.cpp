@@ -39,7 +39,8 @@ gamestateIsInMenu::~gamestateIsInMenu()
 /*
 Load sprites
 */
-void gamestateIsInMenu::loadSprites(ASGE::Renderer* renderer) {
+void gamestateIsInMenu::loadSprites(ASGE::Renderer* renderer) 
+{
 	//Two Player overlay
 	menu_overlay_twoPlayer = renderer->createRawSprite();
 	menu_overlay_twoPlayer->loadTexture("Resources_Temp\\overlay_mode_oneplayer.png");

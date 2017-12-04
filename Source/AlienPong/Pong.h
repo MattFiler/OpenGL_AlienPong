@@ -19,7 +19,6 @@
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Gamestates/gamestates.h"
 #include "AlienPong/Core/PongPAK/PongPAK.h"
-#include "AlienPong/Entities/entities.h"
 
 //Windows-only Resources
 #ifdef _WIN32

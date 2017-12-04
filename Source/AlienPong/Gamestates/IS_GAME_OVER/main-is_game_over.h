@@ -16,6 +16,7 @@
 #include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 #include "AlienPong/Animation/effects.h"
+#include "AlienPong/Core/shared.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -42,9 +43,6 @@ public:
 	//Renderer
 	void renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer);
 
-	//Updater
-	void updateState(const ASGE::GameTime & us);
-
 	//Load Sprites
 	void loadSprites(ASGE::Renderer* renderer);
 
@@ -52,6 +50,9 @@ public:
 private:
 	//Global effects
 	pongVHS pong_vhs;
+
+	//Shared
+	pongShared pong_shared;
 
 
 	ASGE::Sprite* menu_overlay_win_p1 = nullptr; //in-game WIN screen - P1

@@ -3,7 +3,8 @@
 /*
 Handle user inputs
 */
-void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data) {
+void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data) 
+{
 	//Get key
 	auto key = static_cast<const ASGE::KeyEvent*>(data.get());
 
@@ -110,7 +111,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data) {
 	//Handle menu selections
 	if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 	{
-		if (pongGamestate::current_gamestate == gamestate::IS_IN_MENU && pongMenuState::menu_page == menuState::MENU_PAGE_2)
+		if (pongMenuState::menu_page == menuState::MENU_PAGE_2)
 		{
 			//Play SFX
 			PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
@@ -121,6 +122,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data) {
 			pongScores::p2 = 0;
 			pongVariables::freeze_ball = false;
 			pongVariables::reset_ball = true;
+			pongVariables::reset_paddles = true;
 
 			//Reset angle & direction
 			pongDirections::movement_angle = 0;

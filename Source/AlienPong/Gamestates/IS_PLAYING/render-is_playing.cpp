@@ -48,4 +48,17 @@ void gamestateIsPlaying::renderState(const ASGE::GameTime & us, ASGE::Renderer* 
 		renderer->setFont(GameFont::fonts[0]->id);
 		renderer->renderText((std::to_string(int((60 - pongVariables::game_timer) + 0.5)) + " Seconds Remaining").c_str(), 50, (int)settings::GAMEWINDOW_MAX_HEIGHT - 50, 0.4, ASGE::COLOURS::WHITE);
 	}
+
+	//Debug output
+	if (pongGamestate::show_debug_text)
+	{
+		renderer->setFont(GameFont::fonts[0]->id);
+		renderer->renderText(("Ball Direction: " + std::to_string((int)pongDirections::ball_direction)).c_str(), 150, 200, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("Movement Angle: " + std::to_string((int)pongDirections::movement_angle)).c_str(), 150, 250, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("Ball XPos: " + std::to_string((int)ball1->xPos())).c_str(), 150, 300, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("Ball YPos: " + std::to_string((int)ball1->yPos())).c_str(), 150, 350, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("World Speed: " + std::to_string((int)settings::DEFAULT_SPEED)).c_str(), 150, 400, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("Ball Calc'd Speed: " + std::to_string(((int)settings::DEFAULT_SPEED - pongDirections::movement_angle_raw) * (us.delta_time.count() / 1000.f))).c_str(), 150, 450, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("Frame Time: " + std::to_string((float)(us.delta_time.count() / 1000.f))).c_str(), 150, 500, 0.5, ASGE::COLOURS::WHITE);
+	}
 }

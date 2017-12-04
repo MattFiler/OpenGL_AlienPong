@@ -4,6 +4,9 @@
 #ifndef ENUM_VALS_DIRECTION_H
 #define ENUM_VALS_DIRECTION_H
 
+/*
+Define our direction data
+*/
 namespace pongDirections
 {
 	extern direction ball_direction;

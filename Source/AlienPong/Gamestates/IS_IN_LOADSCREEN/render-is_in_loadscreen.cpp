@@ -22,13 +22,13 @@ void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Rende
 			PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Startup_SHORTENED.wav"), NULL, SND_ASYNC);
 			//PlaySound(TEXT("Resources_Temp\\../../Resources/Audio/Interactive_Terminal_BG_Loop.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
 			pongVariables::has_performed_startup_sound = true;
+			pongAnimationState::state = animationState::HAS_BEEN_REQUESTED;
 		}
 
 		//Animation
 		if (pongVariables::global_game_timer < stage_0)
 		{
 			renderer->renderSprite(*menu_overlay_loading);
-			pongFX::has_requested = true;
 		}
 		if (pongVariables::global_game_timer < stage_1 && pongVariables::global_game_timer >= stage_0)
 		{
@@ -53,7 +53,6 @@ void gamestateIsInLoadscreen::renderState(const ASGE::GameTime & us, ASGE::Rende
 		if ((pongVariables::global_game_timer < stage_6 && pongVariables::global_game_timer >= stage_5) || pongVariables::global_game_timer >= stage_6)
 		{
 			renderer->renderSprite(*menu_overlay_loading_s5);
-			pongFX::has_finished_cycle = false;
 		}
 	}
 	else

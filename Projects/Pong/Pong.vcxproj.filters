@@ -7,35 +7,17 @@
     <Filter Include="Source">
       <UniqueIdentifier>{150ff3c8-9b98-46c7-9e2b-ccd67ca720c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headers\Entities">
-      <UniqueIdentifier>{ba2296cd-a566-416d-ab80-9301e39108ce}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headers\Gamestates">
       <UniqueIdentifier>{bf4f5e22-1e40-4f0b-956d-9be48ad12121}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\Core">
       <UniqueIdentifier>{efa653d8-176c-4cc9-9f05-11eebbac1ac5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Entities">
-      <UniqueIdentifier>{e8d5362d-5a2e-4ad9-8e28-209df1a4ef6a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Gamestates">
       <UniqueIdentifier>{4430db28-3835-4c08-8002-5806d69c1fa2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Core">
       <UniqueIdentifier>{5cae7aa5-2fd0-4ad6-a749-ba4925bae362}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\Entities\Ball">
-      <UniqueIdentifier>{f752ee54-8a74-48a4-a0eb-b3647bda4e20}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\Entities\Paddle">
-      <UniqueIdentifier>{714742ff-c9db-49cb-8fd6-3caf4d2cf19b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Entities\Ball">
-      <UniqueIdentifier>{993fab8f-ab6b-4eab-9f2e-2cbb467ad376}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Entities\Paddle">
-      <UniqueIdentifier>{43f21c10-23ce-461f-bb6a-416165d67ee8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Gamestates\IS_GAME_OVER">
       <UniqueIdentifier>{674aa3ba-3855-4d8e-976a-cbea75274604}</UniqueIdentifier>
@@ -210,14 +192,11 @@
     <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\menuState.h">
       <Filter>Headers\Core\enum_values</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Entities\entities.h">
-      <Filter>Headers\Entities</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\shared.h">
+      <Filter>Headers\Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Entities\Paddle\paddle_values.h">
-      <Filter>Headers\Entities\Paddle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Entities\Ball\ball_values.h">
-      <Filter>Headers\Entities\Ball</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\animationState.h">
+      <Filter>Headers\Core\enum_values</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,25 +221,13 @@
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\render-is_game_over.cpp">
       <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\update-is_game_over.cpp">
-      <Filter>Source\Gamestates\IS_GAME_OVER</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\update-is_in_loadscreen.cpp">
-      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\render-is_in_loadscreen.cpp">
-      <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\input-is_in_loadscreen.cpp">
       <Filter>Source\Gamestates\IS_IN_LOADSCREEN</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\input-is_in_menu.cpp">
       <Filter>Source\Gamestates\IS_IN_MENU</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\render-is_in_menu.cpp">
-      <Filter>Source\Gamestates\IS_IN_MENU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_IN_MENU\update-is_in_menu.cpp">
       <Filter>Source\Gamestates\IS_IN_MENU</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PAUSED\input-is_paused.cpp">
@@ -287,9 +254,6 @@
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\render-player_has_won.cpp">
       <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\update-player_has_won.cpp">
-      <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_PLAYING\sprites-is_playing.cpp">
       <Filter>Source\Gamestates\IS_PLAYING</Filter>
     </ClCompile>
@@ -307,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\sprites-player_has_won.cpp">
       <Filter>Source\Gamestates\PLAYER_HAS_WON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\shared.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

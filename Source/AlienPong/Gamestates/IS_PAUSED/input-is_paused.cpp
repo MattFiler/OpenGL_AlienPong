@@ -3,7 +3,8 @@
 /*
 Handle user inputs
 */
-void gamestateIsPaused::keyHandler(ASGE::SharedEventData data) {
+void gamestateIsPaused::keyHandler(ASGE::SharedEventData data)
+{
 	//Get key
 	auto key = static_cast<const ASGE::KeyEvent*>(data.get());
 	
@@ -15,7 +16,6 @@ void gamestateIsPaused::keyHandler(ASGE::SharedEventData data) {
 
 		//Un-pause
 		pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-		pongFX::has_finished_cycle = false;
 		pongVariables::freeze_ball = false;
 	}
 
@@ -25,7 +25,7 @@ void gamestateIsPaused::keyHandler(ASGE::SharedEventData data) {
 		//Play SFX
 		PlaySound(TEXT("Resources_Temp\\BEEP_018.wav"), NULL, SND_ASYNC);
 
-		//Reset game and return to menu TODO
-		//resetGame();
+		//Reset game and return to menu
+		pong_shared.reset();
 	}
 }

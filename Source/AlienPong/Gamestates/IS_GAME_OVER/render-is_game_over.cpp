@@ -15,12 +15,10 @@ void gamestateIsGameOver::renderState(const ASGE::GameTime & us, ASGE::Renderer*
 		if (pongGamemodes::is_against_cpu)
 		{
 			renderer->renderSprite(*menu_overlay_win_player); //Human wins
-			pongFX::has_requested = true;
 		}
 		else
 		{
 			renderer->renderSprite(*menu_overlay_win_p1); //P1 wins
-			pongFX::has_requested = true;
 		}
 	}
 	if (pongScores::p1 < pongScores::p2)
@@ -28,12 +26,10 @@ void gamestateIsGameOver::renderState(const ASGE::GameTime & us, ASGE::Renderer*
 		if (pongGamemodes::is_against_cpu)
 		{
 			renderer->renderSprite(*menu_overlay_win_cpu); //CPU wins
-			pongFX::has_requested = true;
 		}
 		else
 		{
 			renderer->renderSprite(*menu_overlay_win_p2); //P2 wins
-			pongFX::has_requested = true;
 		}
 	}
 }

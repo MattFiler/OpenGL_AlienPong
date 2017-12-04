@@ -6,30 +6,21 @@
 
 //Game definitions
 #include "AlienPong/Core/enums.h"
+#include "AlienPong/Core/enum_values.h"
 #include "AlienPong/Core/GameVars.h"
 
 #ifndef VHS_FX_H
 #define VHS_FX_H
 
-/*
-	// PONG REWORK 3 //
-
-	---ANIMATION
-	Handle our VHS effect.
-*/
-
+//Pong VHS animation
 class pongVHS
 {
 public:
-	pongVHS();
 	~pongVHS(); 
 
 	void loadSprites(ASGE::Renderer* renderer);
 	void renderFX(ASGE::Renderer* renderer);
 
-	animationState pongfx_state;
-	float time_started;
-	float time_in_seconds;
 
 private:
 	ASGE::Sprite* menu_background_s00 = nullptr; //Menu background s00

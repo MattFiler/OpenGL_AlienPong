@@ -1,23 +1,15 @@
 #include "PongPAK.h"
 
 
-
 /*
-
-//////// PONG - Created by Matt Filer ////////
-////////////////// PongPAK ///////////////////
-
+PongPAK constructor
 */
-
-
-
-
 PongPAK::PongPAK() 
 {
-	//output_array = { " " };
 	output_counter = 0;
 	cleanup_counter = 0;
 }
+
 
 /*
 	Fetch requested file from PongPAK
@@ -74,6 +66,7 @@ void PongPAK::FetchFile(std::string requested_file)
 	pong_pak.close();
 	output_file.close(); 
 }
+
 
 /*
 	Clear up any files exported from PongPAK

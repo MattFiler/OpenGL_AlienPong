@@ -3,7 +3,8 @@
 /*
 Handle user inputs
 */
-void gamestateIsPlaying::keyHandler(ASGE::SharedEventData data) {
+void gamestateIsPlaying::keyHandler(ASGE::SharedEventData data)
+{
 	//Get key
 	auto key = static_cast<const ASGE::KeyEvent*>(data.get());
 
@@ -54,6 +55,7 @@ void gamestateIsPlaying::keyHandler(ASGE::SharedEventData data) {
 	if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
 	{
 		pongGamestate::current_gamestate = gamestate::IS_PAUSED;
+		pongAnimationState::state = animationState::HAS_BEEN_REQUESTED;
 
 		//Play SFX
 		PlaySound(TEXT("Resources_Temp\\BEEP_005.wav"), NULL, SND_ASYNC);
