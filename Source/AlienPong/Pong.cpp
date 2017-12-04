@@ -117,26 +117,32 @@ void Pong::update(const ASGE::GameTime & us)
 		case gamestate::IS_IN_LOADSCREEN:
 		{
 			pong_gamestate_loadscreen.updateState(us);
+			break;
 		}
 		case gamestate::IS_IN_MENU:
 		{
 			pong_gamestate_menu.updateState(us);
+			break;
 		}
 		case gamestate::IS_PLAYING:
 		{
 			pong_gamestate_playing.updateState(us);
+			break;
 		}
 		case gamestate::IS_PAUSED:
 		{
 			pong_gamestate_paused.updateState(us);
+			break;
 		}
 		case gamestate::PLAYER_HAS_WON:
 		{
 			pong_gamestate_scored.updateState(us);
+			break;
 		}
 		case gamestate::IS_GAME_OVER:
 		{
 			pong_gamestate_gameover.updateState(us);
+			break;
 		}
 	}
 }
@@ -145,37 +151,46 @@ void Pong::update(const ASGE::GameTime & us)
 /*
 Render the scene
 */
-void Pong::render(const ASGE::GameTime &)
+void Pong::render(const ASGE::GameTime & us)
 {
 	//Render global background
 	renderer->renderSprite(*pong_sprite_static.menu_background);
+
+	//Debug text
+	renderer->renderText(("PONG CLASS: " + std::to_string(pong_vars.global_game_timer)).c_str(), 155, 155, 1, ASGE::COLOURS::WHITE);
 
 	//Render gamestate-specific elements
 	switch (pong_gamestate.current_gamestate)
 	{
 		case gamestate::IS_IN_LOADSCREEN:
 		{
-			pong_gamestate_loadscreen.renderState(renderer.get());
+			pong_gamestate_loadscreen.renderState(us, renderer.get());
+			break;
 		}
 		case gamestate::IS_IN_MENU:
 		{
-			pong_gamestate_menu.renderState(renderer.get());
+			pong_gamestate_menu.renderState(us, renderer.get());
+			break;
 		}
 		case gamestate::IS_PLAYING:
 		{
-			pong_gamestate_playing.renderState(renderer.get());
+			pong_gamestate_playing.renderState(us, renderer.get());
+			break;
 		}
 		case gamestate::IS_PAUSED:
 		{
-			pong_gamestate_paused.renderState(renderer.get());
+			pong_gamestate_paused.renderState(us, renderer.get());
+			break;
 		}
 		case gamestate::PLAYER_HAS_WON:
 		{
-			pong_gamestate_scored.renderState(renderer.get());
+			pong_gamestate_scored.renderState(us, renderer.get());
+			break;
 		}
 		case gamestate::IS_GAME_OVER:
 		{
-			pong_gamestate_gameover.renderState(renderer.get());
+			pong_gamestate_gameover.renderState(us, renderer.get());
+			break;
 		}
 	}
 

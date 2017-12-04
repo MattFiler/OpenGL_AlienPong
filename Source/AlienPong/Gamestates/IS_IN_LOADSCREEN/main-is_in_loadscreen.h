@@ -34,11 +34,13 @@ IS_IN_LOADSCREEN
 class gamestateIsInLoadscreen
 {
 public:
+	~gamestateIsInLoadscreen();
+
 	//Key Handler
 	void keyHandler(ASGE::SharedEventData data);
 
 	//Renderer
-	void renderState(ASGE::Renderer* renderer);
+	void renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer);
 
 	//Updater
 	void updateState(const ASGE::GameTime & us);

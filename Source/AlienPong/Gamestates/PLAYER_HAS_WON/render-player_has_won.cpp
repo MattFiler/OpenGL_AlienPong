@@ -3,7 +3,7 @@
 /*
 Render everything for gamestate
 */
-void gamestatePlayerHasWon::renderState(ASGE::Renderer* renderer)
+void gamestatePlayerHasWon::renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer)
 {
 
 }
