@@ -58,17 +58,8 @@
     <Filter Include="Headers\Core\enums">
       <UniqueIdentifier>{1e8c12f1-b77c-4a66-a6bb-6fa28fa3c705}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Core\enums">
-      <UniqueIdentifier>{07223645-7f9c-40d6-8d31-8ebe66bc5875}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headers\Core\enum_values">
       <UniqueIdentifier>{3c14bbf3-6150-42b2-8c6f-0744c3b6581e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Core\enum_values">
-      <UniqueIdentifier>{f6513093-8e78-482b-b1a9-5365dba61225}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Core\GameVars">
-      <UniqueIdentifier>{dac6b38d-3139-4832-87b0-d46908e7ecd6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\Core\GameVars">
       <UniqueIdentifier>{8dcc1ee7-079d-430a-a326-9eb9298b4f70}</UniqueIdentifier>

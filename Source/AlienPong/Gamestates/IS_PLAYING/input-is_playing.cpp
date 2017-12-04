@@ -16,7 +16,7 @@ void gamestateIsPlaying::keyHandler(ASGE::SharedEventData data)
 		pongDirections::left_paddle_direction = direction::UP;
 	}
 	//Move Down
-	if (key->key == ASGE::KEYS::KEY_S)
+	else if (key->key == ASGE::KEYS::KEY_S)
 	{
 		pongDirections::left_paddle_moving = true;
 		pongDirections::left_paddle_direction = direction::DOWN;
@@ -38,7 +38,7 @@ void gamestateIsPlaying::keyHandler(ASGE::SharedEventData data)
 			pongDirections::right_paddle_direction = direction::UP;
 		}
 		//Move Down
-		if (key->key == ASGE::KEYS::KEY_DOWN)
+		else if (key->key == ASGE::KEYS::KEY_DOWN)
 		{
 			pongDirections::right_paddle_moving = true;
 			pongDirections::right_paddle_direction = direction::DOWN;

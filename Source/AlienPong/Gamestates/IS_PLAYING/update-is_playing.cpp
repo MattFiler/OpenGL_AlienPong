@@ -36,7 +36,7 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 		pongDirections::movement_angle_raw = pong_shared.calculateReturnAngle(paddle1, false, ball1);
 	}
 	//See if we're touching the RIGHT paddle
-	if (pong_shared.isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
+	else if (pong_shared.isTouchingPaddle(paddle2, x_pos, y_pos, "RightPaddle"))
 	{
 		pongDirections::ball_direction = direction::LEFT;
 		pongDirections::movement_angle = pong_shared.calculateReturnAngle(paddle2, true, ball1);
@@ -86,7 +86,7 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 		pong_shared.handleWin("p2");
 	}
 	//See if we're touching the RIGHT of the window
-	if (pong_shared.hasHitEdge("Right", ball1))
+	else if (pong_shared.hasHitEdge("Right", ball1))
 	{
 		//Player 1 wins
 		pongAnimationState::state = animationState::HAS_BEEN_REQUESTED;

@@ -20,7 +20,7 @@ void gamestateIsPaused::keyHandler(ASGE::SharedEventData data)
 	}
 
 	//Return to main menu
-	if (key->key == ASGE::KEYS::KEY_M && key->action == ASGE::KEYS::KEY_RELEASED)
+	else if (key->key == ASGE::KEYS::KEY_M && key->action == ASGE::KEYS::KEY_RELEASED)
 	{
 		//Play SFX
 		PlaySound(TEXT("Resources_Temp\\BEEP_018.wav"), NULL, SND_ASYNC);

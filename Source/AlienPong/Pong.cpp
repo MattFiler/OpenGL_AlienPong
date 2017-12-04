@@ -6,7 +6,7 @@ Default constructor
 */
 Pong::Pong()
 {
-	//Change Resolution
+	//Set Resolution
 	game_width = (int)settings::GAMEWINDOW_MAX_WIDTH;
 	game_height = (int)settings::GAMEWINDOW_MAX_HEIGHT;
 }
@@ -217,7 +217,7 @@ void Pong::update(const ASGE::GameTime & us)
 	/*
 	Score-based game mode scripts
 	*/
-	if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_SCORE)
+	else if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_SCORE)
 	{
 		if (pongScores::p1 == 5 || pongScores::p2 == 5)
 		{

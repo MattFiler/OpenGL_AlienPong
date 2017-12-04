@@ -29,12 +29,8 @@
 struct GameFont;
 
 /*
-
-//////// PONG - Created by Matt Filer ////////
-//////////////// GAME HEADER /////////////////
-
+Main Pong header
 */
-
 #ifndef GAME_H
 #define GAME_H
 

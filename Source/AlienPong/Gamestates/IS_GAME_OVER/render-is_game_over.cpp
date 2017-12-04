@@ -10,7 +10,7 @@ void gamestateIsGameOver::renderState(const ASGE::GameTime & us, ASGE::Renderer*
 	{
 		renderer->renderSprite(*menu_overlay_win_draw); //Draw
 	}
-	if (pongScores::p1 > pongScores::p2)
+	else if (pongScores::p1 > pongScores::p2)
 	{
 		if (pongGamemodes::is_against_cpu)
 		{
@@ -21,7 +21,7 @@ void gamestateIsGameOver::renderState(const ASGE::GameTime & us, ASGE::Renderer*
 			renderer->renderSprite(*menu_overlay_win_p1); //P1 wins
 		}
 	}
-	if (pongScores::p1 < pongScores::p2)
+	else if (pongScores::p1 < pongScores::p2)
 	{
 		if (pongGamemodes::is_against_cpu)
 		{

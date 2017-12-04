@@ -30,7 +30,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 	}
 
 	//Swap top/bottom tabs on current menu group
-	if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED)
+	else if (key->key == ASGE::KEYS::KEY_TAB && key->action == ASGE::KEYS::KEY_RELEASED)
 	{
 		//Play SFX
 		PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
@@ -49,7 +49,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 	}
 
 	//Swap menu selections within current tab
-	if (pongMenuState::menu_page == menuState::MENU_PAGE_2 && pongMenuState::menu_tab == menuState::MENU_TAB_1) //Page 2, Tab 1
+	else if (pongMenuState::menu_page == menuState::MENU_PAGE_2 && pongMenuState::menu_tab == menuState::MENU_TAB_1) //Page 2, Tab 1
 	{
 		//Go down on press of down
 		if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
@@ -65,7 +65,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 			}
 		}
 		//Go up on press of up
-		if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+		else if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
 			if ((int)pongMenuState::menu_option != 0)
 			{
@@ -78,7 +78,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 			}
 		}
 	}
-	if (pongMenuState::menu_page == menuState::MENU_PAGE_2 && pongMenuState::menu_tab == menuState::MENU_TAB_2) //Page 2, Tab 2
+	else if (pongMenuState::menu_page == menuState::MENU_PAGE_2 && pongMenuState::menu_tab == menuState::MENU_TAB_2) //Page 2, Tab 2
 	{
 		//Go down on press of down
 		if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
@@ -94,7 +94,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 			}
 		}
 		//Go up on press of up
-		if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
+		else if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
 			if ((int)pongMenuState::menu_option != 15)
 			{
@@ -175,7 +175,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 	}
 
 	//Quit game on ESC when in main menu
-	if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
+	else if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
 	{
 		//Close game & cleanup
 		pongGamestate::has_requested_shutdown = true;

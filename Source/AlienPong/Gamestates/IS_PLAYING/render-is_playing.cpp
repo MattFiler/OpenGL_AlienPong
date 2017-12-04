@@ -7,9 +7,9 @@ void gamestateIsPlaying::renderState(const ASGE::GameTime & us, ASGE::Renderer* 
 {
 	if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_INFINITE)
 		renderer->renderSprite(*menu_overlay_mode_regular); //MODE OVERLAY: regular
-	if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_SCORE)
+	else if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_SCORE)
 		renderer->renderSprite(*menu_overlay_mode_score); //MODE OVERLAY: score
-	if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_TIMED)
+	else if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_TIMED)
 		renderer->renderSprite(*menu_overlay_mode_timed); //MODE OVERLAY: timed
 
 	//Render score box
