@@ -7,11 +7,18 @@ Open the solution in Visual Studio 2017. The game uses the ASGE framework. The p
 Also included is PongPAK - a tool for creating archive files for "Pong Terminal".
 
 ## Controls
-Swap primary menu groups: Q
-Swap secondary menu groups: TAB
-Swap menu choices: UP/DOWN ARROW
+- Swap primary menu groups: Q
 
-Left paddle up: W
-Left paddle down: S
-Right paddle up: UP ARROW
-Right paddle down: DOWN ARROW
+- Swap secondary menu groups: TAB
+
+- Swap menu choices: UP/DOWN ARROW
+
+
+
+- Left paddle up: W
+
+- Left paddle down: S
+
+- Right paddle up: UP ARROW
+
+- Right paddle down: DOWN ARROW
