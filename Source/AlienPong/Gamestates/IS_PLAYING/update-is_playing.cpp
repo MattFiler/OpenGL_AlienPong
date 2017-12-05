@@ -50,15 +50,16 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 
 	/* BALL MOVEMENT */
 	//Movement direction
+	float ball_x_modifier = ((int)settings::DEFAULT_SPEED - pongDirections::movement_angle_raw) * (us.delta_time.count() / 1000.f);
 	if (pongDirections::ball_direction == direction::LEFT)
 	{
 		//Set X position
-		x_pos -= ((int)settings::DEFAULT_SPEED - pongDirections::movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
+		x_pos -= ball_x_modifier; //speed - angle to account for vertical velocity
 	}
 	else
 	{
 		//Set X position
-		x_pos += ((int)settings::DEFAULT_SPEED - pongDirections::movement_angle_raw) * (us.delta_time.count() / 1000.f); //speed - angle to account for vertical velocity
+		x_pos += ball_x_modifier; //speed - angle to account for vertical velocity
 	}
 	//Apply movement angle
 	y_pos += pongDirections::movement_angle * (us.delta_time.count() / 1000.f);
@@ -119,15 +120,16 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 	//Left Paddle
 	if (pongDirections::left_paddle_moving)
 	{
+		float leftpaddle_move_speed = ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f);
 		if (pongDirections::left_paddle_direction == direction::UP)
 		{
 			//Update Y position of paddle UP
-			paddle1->yPos(paddle1->yPos() - ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
+			paddle1->yPos(paddle1->yPos() - leftpaddle_move_speed);
 		}
 		else
 		{
 			//Update Y position of paddle DOWN
-			paddle1->yPos(paddle1->yPos() + ((int)settings::DEFAULT_SPEED / 2)  * (us.delta_time.count() / 1000.f));
+			paddle1->yPos(paddle1->yPos() + leftpaddle_move_speed);
 		}
 	}
 	//Right Paddle
@@ -142,15 +144,16 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 				pongVariables::cpu_speed_modifier_check = int(pongVariables::game_timer);
 			}
 		}
+		float rightpaddle_move_speed = ((int)settings::DEFAULT_SPEED / pongVariables::cpu_speed_modifier)  * (us.delta_time.count() / 1000.f);
 		if (pongDirections::right_paddle_direction == direction::UP)
 		{
 			//Update Y position of paddle UP
-			paddle2->yPos(paddle2->yPos() - ((int)settings::DEFAULT_SPEED / pongVariables::cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+			paddle2->yPos(paddle2->yPos() - rightpaddle_move_speed);
 		}
 		else
 		{
 			//Update Y position of paddle DOWN
-			paddle2->yPos(paddle2->yPos() + ((int)settings::DEFAULT_SPEED / pongVariables::cpu_speed_modifier)  * (us.delta_time.count() / 1000.f));
+			paddle2->yPos(paddle2->yPos() + rightpaddle_move_speed);
 		}
 	}
 }
