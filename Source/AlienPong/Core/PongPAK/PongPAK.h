@@ -13,13 +13,18 @@ PongPAK
 class PongPAK 
 {
 public:
+	PongPAK();
+	void FetchFile(std::string requested_file);
+	void ClearupFiles();
+	
+	int getOutputCounter();
+	int getCleanupCounter();
+
+
+private:
 	std::string output_array[45];
 	int output_counter;
 	int cleanup_counter;
-
-	PongPAK();
-	void PongPAK::FetchFile(std::string requested_file);
-	void PongPAK::ClearupFiles();
 };
 
 #endif

@@ -44,22 +44,12 @@ bool pongShared::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, 
 	}
 
 	//See if we hit any area on the paddle
-	/*
-	TODO: When using vectors, calculate path between the two vectors and see if it intersects the paddle.
-	Should solve the lag issue when frames skip and the ball hit isn't registered.
-	*/
-	if (ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + (int)settings::PADDLE_WIDTH))
+	if ((ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + (int)settings::PADDLE_WIDTH)) &&
+		(y >(sprite->yPos() - (int)settings::BALL_SIZE) && y < (sprite->yPos() + (int)settings::PADDLE_HEIGHT)))
 	{
-		if (y >(sprite->yPos() - (int)settings::BALL_SIZE) && y < (sprite->yPos() + (int)settings::PADDLE_HEIGHT))
-		{
-			//Play SFX
-			PlaySound(TEXT("Resources_Temp\\BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		//Play SFX
+		PlaySound(TEXT("Resources_Temp\\BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+		return true;
 	}
 
 	return false;

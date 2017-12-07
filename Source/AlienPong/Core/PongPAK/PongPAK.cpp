@@ -79,3 +79,21 @@ void PongPAK::ClearupFiles()
 		cleanup_counter += 1;
 	}
 }
+
+
+/*
+Return output counter when requested
+*/
+int PongPAK::getOutputCounter()
+{
+	return output_counter;
+}
+
+
+/*
+Return cleanup counter when requested
+*/
+int PongPAK::getCleanupCounter()
+{
+	return cleanup_counter;
+}

@@ -1,8 +1,8 @@
 # Pong Terminal
-An Alien: Isolation inspired remake of the classic 2D game for ESD. 
+An Alien: Isolation inspired remake of the classic 2D game for ESD based on ASGE.
 
 ## Build Instructions
-Open the solution in Visual Studio 2017. The game uses the ASGE framework. The projects are prelinked and can be launched either with debugging or without. Don't forget to update your Working Directory to "$(OutDir)" and Windows SDK Version in the project properties.
+Open the solution in Visual Studio 2017. Don't forget to update your Working Directory to "$(OutDir)" and Windows SDK Version in the project properties to your installed version.
 
 Also included is PongPAK - a tool for creating archive files for "Pong Terminal".
 

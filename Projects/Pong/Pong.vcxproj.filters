@@ -58,12 +58,6 @@
     <Filter Include="Headers\Core\enums">
       <UniqueIdentifier>{1e8c12f1-b77c-4a66-a6bb-6fa28fa3c705}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headers\Core\enum_values">
-      <UniqueIdentifier>{3c14bbf3-6150-42b2-8c6f-0744c3b6581e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\Core\GameVars">
-      <UniqueIdentifier>{8dcc1ee7-079d-430a-a326-9eb9298b4f70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headers\Core\PongPAK">
       <UniqueIdentifier>{c3b802d5-d133-4922-825d-06e55fe91cae}</UniqueIdentifier>
     </Filter>
@@ -87,6 +81,9 @@
     </Filter>
     <Filter Include="Source\Animation\VHS Effect">
       <UniqueIdentifier>{c662d0e9-3872-434c-8c4c-3a52b3432fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Core\namespaces">
+      <UniqueIdentifier>{3c14bbf3-6150-42b2-8c6f-0744c3b6581e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -114,34 +111,7 @@
     <ClInclude Include="..\..\Source\AlienPong\Core\enums\gamemode.h">
       <Filter>Headers\Core\enums</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\player.h">
-      <Filter>Headers\Core\enum_values</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\direction.h">
-      <Filter>Headers\Core\enum_values</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\gamemode.h">
-      <Filter>Headers\Core\enum_values</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\gamestate.h">
-      <Filter>Headers\Core\enum_values</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\scores.h">
-      <Filter>Headers\Core\GameVars</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\core.h">
-      <Filter>Headers\Core\GameVars</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars\fx.h">
-      <Filter>Headers\Core\GameVars</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\AlienPong\Core\enums.h">
-      <Filter>Headers\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\GameVars.h">
-      <Filter>Headers\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values.h">
       <Filter>Headers\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.h">
@@ -180,14 +150,38 @@
     <ClInclude Include="..\..\Source\AlienPong\Gamestates\PLAYER_HAS_WON\main-player_has_won.h">
       <Filter>Headers\Gamestates\PLAYER_HAS_WON</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\menuState.h">
-      <Filter>Headers\Core\enum_values</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\AlienPong\Core\shared.h">
       <Filter>Headers\Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\enum_values\animationState.h">
-      <Filter>Headers\Core\enum_values</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces.h">
+      <Filter>Headers\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\direction.h">
+      <Filter>Headers\Core\namespaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\gamemode.h">
+      <Filter>Headers\Core\namespaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\gamestate.h">
+      <Filter>Headers\Core\namespaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\menuState.h">
+      <Filter>Headers\Core\namespaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\player.h">
+      <Filter>Headers\Core\namespaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\animationState.h">
+      <Filter>Headers\Core\namespaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\core.h">
+      <Filter>Headers\Core\namespaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\fx.h">
+      <Filter>Headers\Core\namespaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\scores.h">
+      <Filter>Headers\Core\namespaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

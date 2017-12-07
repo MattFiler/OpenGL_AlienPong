@@ -13,8 +13,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/enum_values.h"
-#include "AlienPong/Core/GameVars.h"
+#include "AlienPong/Core/namespaces.h"
 #include "AlienPong/Core/GameFont/GameFont.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Core/PongPak/PongPak.h"
@@ -49,13 +48,6 @@ public:
 
 
 private:
-	//Global effects
-	pongVHS pong_vhs;
-
-	//PongPAK
-	PongPAK pong_filehandler;
-
-
 	ASGE::Sprite* menu_overlay_twoPlayer = nullptr; //Menu TwoPlayer overlay
 	ASGE::Sprite* menu_overlay_onePlayer = nullptr; //Menu OnePlayer overlay
 	ASGE::Sprite* menu_overlay_controls = nullptr; //Menu controls overlay

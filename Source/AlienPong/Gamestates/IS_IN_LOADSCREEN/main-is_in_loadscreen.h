@@ -13,8 +13,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/enum_values.h"
-#include "AlienPong/Core/GameVars.h"
+#include "AlienPong/Core/namespaces.h"
 #include "AlienPong/Animation/effects.h"
 
 //Windows-only Resources
@@ -44,10 +43,6 @@ public:
 
 
 private:
-	//Global effects
-	pongVHS pong_vhs;
-
-
 	ASGE::Sprite* menu_overlay_loading = nullptr; //Menu loading overlay
 	ASGE::Sprite* menu_overlay_loading_s0 = nullptr; //Menu loading overlay S0
 	ASGE::Sprite* menu_overlay_loading_s1 = nullptr; //Menu loading overlay S1

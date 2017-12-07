@@ -9,8 +9,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/enum_values.h"
-#include "AlienPong/Core/GameVars.h"
+#include "AlienPong/Core/namespaces.h"
 
 //Windows-only Resources
 #ifdef _WIN32

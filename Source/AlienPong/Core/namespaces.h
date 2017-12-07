@@ -1,0 +1,10 @@
+#pragma once
+#include "namespaces\direction.h"
+#include "namespaces\gamemode.h"
+#include "namespaces\gamestate.h"
+#include "namespaces\player.h"
+#include "namespaces\menuState.h"
+#include "namespaces\animationState.h"
+#include "namespaces\core.h"
+#include "namespaces\fx.h"
+#include "namespaces\scores.h"

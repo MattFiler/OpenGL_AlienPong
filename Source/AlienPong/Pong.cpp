@@ -68,7 +68,7 @@ bool Pong::init()
 
 	//Load all assets before we begin
 	loadAssets();
-	while (pong_filehandler.output_counter != 45)
+	while (pong_filehandler.getOutputCounter() != 45)
 	{
 		//Wait to load in
 	}
@@ -168,7 +168,7 @@ void Pong::update(const ASGE::GameTime & us)
 	//Close game & cleanup (if requested)
 	if (pongGamestate::has_requested_shutdown) {
 		pong_filehandler.ClearupFiles();
-		while (pong_filehandler.cleanup_counter != 45)
+		while (pong_filehandler.getCleanupCounter() != 45)
 		{
 			//Wait to delete
 		}

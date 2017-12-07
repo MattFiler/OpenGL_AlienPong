@@ -13,8 +13,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/enum_values.h"
-#include "AlienPong/Core/GameVars.h"
+#include "AlienPong/Core/namespaces.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Core/GameFont/GameFont.h"
 #include "AlienPong/Core/shared.h"
@@ -52,9 +51,6 @@ public:
 
 
 private:
-	//Global effects
-	pongVHS pong_vhs;
-
 	//Shared
 	pongShared pong_shared;
 

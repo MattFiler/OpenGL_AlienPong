@@ -6,8 +6,7 @@
 
 //Game definitions
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/enum_values.h"
-#include "AlienPong/Core/GameVars.h"
+#include "AlienPong/Core/namespaces.h"
 
 #ifndef VHS_FX_H
 #define VHS_FX_H
