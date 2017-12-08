@@ -37,6 +37,8 @@ void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_TIMED ? "> PLAY VS CPU - Best of 60 seconds" : "  PLAY VS CPU - Best of 60 seconds", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
 			//Option 3 - VS CPU first to 5
 			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_SCORE ? "> PLAY VS CPU - First to 5" : "  PLAY VS CPU - First to 5", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
+			//Option 4 - crazy mode
+			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_CRAZY ? "> PLAY VS CPU - TEST MODE" : "  PLAY VS CPU - TEST MODE", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 55, 0.5, ASGE::COLOURS::WHITE);
 		}
 	}
 	else //Tab 1
@@ -79,6 +81,8 @@ void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_TIMED ? "> PLAY VS PLAYER - Best of 60 seconds" : "  PLAY VS PLAYER - Best of 60 seconds", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
 			//Option 3 - first to 5
 			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_SCORE ? "> PLAY VS PLAYER - First to 5" : "  PLAY VS PLAYER - First to 5", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
+			//Option 4 - crazy mode
+			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_CRAZY ? "> PLAY VS PLAYER - TEST MODE" : "  PLAY VS PLAYER - TEST MODE", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 55, 0.5, ASGE::COLOURS::WHITE);
 		}
 	}
 }

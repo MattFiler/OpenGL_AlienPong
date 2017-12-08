@@ -17,9 +17,9 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 	if (pong_variables.reset_paddles == true)
 	{
 		paddle1->xPos(100);
-		paddle1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
+		paddle1->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - (pong_variables.paddle_height / 2));
 		paddle2->xPos((int)settings::GAMEWINDOW_MAX_WIDTH - 100);
-		paddle2->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - ((int)settings::PADDLE_HEIGHT / 2));
+		paddle2->yPos(((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - (pong_variables.paddle_height / 2));
 		pong_variables.reset_paddles = false;
 	}
 
@@ -97,7 +97,7 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 	/* CPU PLAYER */
 	if (pong_gamemode.is_against_cpu)
 	{
-		if (ball1->yPos() > (paddle2->yPos() + ((int)settings::BALL_SIZE * 3)) && ball1->yPos() < (paddle2->yPos() + (int)settings::PADDLE_HEIGHT - ((int)settings::BALL_SIZE * 3)))
+		if (ball1->yPos() > (paddle2->yPos() + ((int)settings::BALL_SIZE * 3)) && ball1->yPos() < (paddle2->yPos() + pong_variables.paddle_height - ((int)settings::BALL_SIZE * 3)))
 		{
 			pong_directions.right_paddle_moving = false;
 		}
@@ -109,7 +109,7 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 			{
 				pong_directions.right_paddle_direction = direction::DOWN;
 			}
-			if (ball1->yPos() < (paddle2->yPos() + (int)settings::PADDLE_HEIGHT - ((int)settings::BALL_SIZE * 3)))
+			if (ball1->yPos() < (paddle2->yPos() + pong_variables.paddle_height - ((int)settings::BALL_SIZE * 3)))
 			{
 				pong_directions.right_paddle_direction = direction::UP;
 			}
@@ -155,5 +155,16 @@ void gamestateIsPlaying::updateState(const ASGE::GameTime & us)
 			//Update Y position of paddle DOWN
 			paddle2->yPos(paddle2->yPos() + rightpaddle_move_speed);
 		}
+	}
+	
+	//Crazy gamemode modifiers
+	if (pong_gamemode.current_gamemode == gamemode::GAMEMODE_CRAZY)
+	{
+		if (pong_variables.paddle_height - (us.delta_time.count() / 1000.f) > 10)
+		{
+			pong_variables.paddle_height -= ((us.delta_time.count() / 1000.f) * 2);
+		}
+		paddle1->height(pong_variables.paddle_height);
+		paddle2->height(pong_variables.paddle_height);
 	}
 }

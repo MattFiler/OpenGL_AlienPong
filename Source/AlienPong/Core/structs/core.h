@@ -23,6 +23,9 @@ struct pongVariables
 
 	//Audio checks
 	static bool has_performed_startup_sound;
+
+	//Paddle Size
+	static float paddle_height;
 };
 
 #endif

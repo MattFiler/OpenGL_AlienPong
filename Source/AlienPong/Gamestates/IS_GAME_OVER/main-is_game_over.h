@@ -16,6 +16,7 @@
 #include "AlienPong/Core/structs.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Core/shared.h"
+#include "AlienPong/Core/GameFont/GameFont.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -52,6 +53,12 @@ private:
 
 	//Pong Directions
 	pongDirections pong_directions;
+
+	//Pong Gamemodes
+	pongGamemodes pong_gamemode;
+
+	//Pong Variables
+	pongVariables pong_variables;
 
 
 	ASGE::Sprite* menu_overlay_win_p1 = nullptr; //in-game WIN screen - P1

@@ -227,6 +227,21 @@ void Pong::update(const ASGE::GameTime & us)
 			pong_variables.freeze_ball = true;
 		}
 	}
+
+
+	/*
+	Crazy game mode scripts
+	*/
+	else if (pong_gamemode.current_gamemode == gamemode::GAMEMODE_CRAZY)
+	{
+		if (pong_scores.p1 == 1 || pong_scores.p2 == 1)
+		{
+			pong_directions.right_paddle_moving = false;
+			pong_directions.left_paddle_moving = false;
+			pong_gamestate.current_gamestate = gamestate::IS_GAME_OVER;
+			pong_variables.freeze_ball = true;
+		}
+	}
 }
 
 

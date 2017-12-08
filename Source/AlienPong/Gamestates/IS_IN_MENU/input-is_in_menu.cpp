@@ -54,7 +54,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 		//Go down on press of down
 		if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			if ((int)pong_menu_state.menu_option != 10)
+			if ((int)pong_menu_state.menu_option != 15)
 			{
 				pong_menu_state.menu_option = static_cast<menuOption>((int)pong_menu_state.menu_option + 5);
 				PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
@@ -83,7 +83,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 		//Go down on press of down
 		if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			if ((int)pong_menu_state.menu_option != 25)
+			if ((int)pong_menu_state.menu_option != 30)
 			{
 				pong_menu_state.menu_option = static_cast<menuOption>((int)pong_menu_state.menu_option + 5);
 				PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
@@ -96,7 +96,7 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 		//Go up on press of up
 		else if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			if ((int)pong_menu_state.menu_option != 15)
+			if ((int)pong_menu_state.menu_option != 20)
 			{
 				pong_menu_state.menu_option = static_cast<menuOption>((int)pong_menu_state.menu_option - 5);
 				PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
@@ -150,6 +150,13 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 				pong_gamemode.current_gamemode = gamemode::GAMEMODE_SCORE;
 				pong_gamemode.is_against_cpu = false;
 			}
+			//Selected crazy mode
+			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_CRAZY)
+			{
+				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+				pong_gamemode.current_gamemode = gamemode::GAMEMODE_CRAZY;
+				pong_gamemode.is_against_cpu = false;
+			}
 			//Selected VS CPU infinite mode
 			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_INFINITE)
 			{
@@ -169,6 +176,13 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 			{
 				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
 				pong_gamemode.current_gamemode = gamemode::GAMEMODE_SCORE;
+				pong_gamemode.is_against_cpu = true;
+			}
+			//Selected VS CPU crazy mode
+			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_CRAZY)
+			{
+				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+				pong_gamemode.current_gamemode = gamemode::GAMEMODE_CRAZY;
 				pong_gamemode.is_against_cpu = true;
 			}
 		}

@@ -48,6 +48,11 @@ void gamestateIsPlaying::renderState(const ASGE::GameTime & us, ASGE::Renderer* 
 		renderer->setFont(GameFont::fonts[0]->id);
 		renderer->renderText((std::to_string(int((60 - pong_variables.game_timer) + 0.5)) + " Seconds Remaining").c_str(), 50, (int)settings::GAMEWINDOW_MAX_HEIGHT - 50, 0.4, ASGE::COLOURS::WHITE);
 	}
+	if (pong_gamemode.current_gamemode == gamemode::GAMEMODE_CRAZY)
+	{
+		renderer->setFont(GameFont::fonts[0]->id);
+		renderer->renderText((std::to_string(int((pong_variables.game_timer) + 0.5)) + " Seconds Played").c_str(), 50, (int)settings::GAMEWINDOW_MAX_HEIGHT - 50, 0.4, ASGE::COLOURS::WHITE);
+	}
 
 	//Debug output
 	if (pongGamestate::show_debug_text)

@@ -1,4 +1,5 @@
 #include "../structs.h"
+#include "../enums/settings.h"
 
 #ifndef DEFINE_ALL_VALUES
 #define DEFINE_ALL_VALUES
@@ -21,6 +22,9 @@ float pongVariables::cpu_speed_modifier = 2;
 
 //Set audio checks
 bool pongVariables::has_performed_startup_sound = false;
+
+//Paddle Size
+float pongVariables::paddle_height = (int)settings::PADDLE_HEIGHT;
 
 
 /* pongDirections */
@@ -54,7 +58,7 @@ gamestate pongGamestate::current_gamestate = gamestate::IS_IN_LOADSCREEN;
 //Show debug text?
 bool pongGamestate::show_debug_text = false; //Do not enable on final build.
 
-											 //User wants to close?
+//User wants to close?
 bool pongGamestate::has_requested_shutdown = false;
 
 

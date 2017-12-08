@@ -32,4 +32,10 @@ void gamestateIsGameOver::renderState(const ASGE::GameTime & us, ASGE::Renderer*
 			renderer->renderSprite(*menu_overlay_win_p2); //P2 wins
 		}
 	}
+
+	if (pong_gamemode.current_gamemode == gamemode::GAMEMODE_CRAZY)
+	{
+		renderer->setFont(GameFont::fonts[0]->id);
+		renderer->renderText(("You Lasted " + std::to_string(int((pong_variables.game_timer) + 0.5)) + " Seconds").c_str(), 50, (int)settings::GAMEWINDOW_MAX_HEIGHT - 50, 0.4, ASGE::COLOURS::WHITE);
+	}
 }

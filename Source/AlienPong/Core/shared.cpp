@@ -28,6 +28,9 @@ void pongShared::reset()
 	pong_variables.cpu_speed_modifier = 2;
 	pong_directions.movement_angle = 0;
 	pong_directions.movement_angle_raw = 0;
+
+	//Reset Crazy gamemode
+	pong_variables.paddle_height = (int)settings::PADDLE_HEIGHT;
 }
 
 
@@ -45,7 +48,7 @@ bool pongShared::isTouchingPaddle(const ASGE::Sprite* sprite, float x, float y, 
 
 	//See if we hit any area on the paddle
 	if ((ball_x_pos > sprite->xPos() && ball_x_pos < (sprite->xPos() + (int)settings::PADDLE_WIDTH)) &&
-		(y >(sprite->yPos() - (int)settings::BALL_SIZE) && y < (sprite->yPos() + (int)settings::PADDLE_HEIGHT)))
+		(y >(sprite->yPos() - (int)settings::BALL_SIZE) && y < (sprite->yPos() + pong_variables.paddle_height)))
 	{
 		//Play SFX
 		PlaySound(TEXT("Resources_Temp\\BEEP_021.wav"), NULL, SND_ASYNC | SND_NOSTOP);
@@ -63,8 +66,8 @@ int pongShared::calculateReturnAngle(const ASGE::Sprite* paddle, bool include_re
 {
 	//Save Y vals
 	int paddle_bottom_y = paddle->yPos();
-	int paddle_middle_y = paddle_bottom_y + ((int)settings::PADDLE_HEIGHT / 2);
-	int paddle_top_y = paddle_bottom_y + (int)settings::PADDLE_HEIGHT;
+	int paddle_middle_y = paddle_bottom_y + (pong_variables.paddle_height / 2);
+	int paddle_top_y = paddle_bottom_y + pong_variables.paddle_height;
 	int ball_bottom_y = ball1->yPos();
 	int ball_middle_y = ball_bottom_y + ((int)settings::BALL_SIZE / 2);
 	int ball_top_y = ball_bottom_y + (int)settings::BALL_SIZE;
@@ -191,6 +194,9 @@ void pongShared::handleWin(std::string winner_name)
 
 	//Play SFX
 	PlaySound(TEXT("Resources_Temp\\BEEP_009.wav"), NULL, SND_ASYNC);
+
+	//Reset Crazy gamemode
+	pong_variables.paddle_height = (int)settings::PADDLE_HEIGHT;
 
 	//Reset angle
 	pong_directions.movement_angle = 0;
