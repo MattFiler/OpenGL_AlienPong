@@ -49,7 +49,15 @@
     <ClCompile Include="..\..\Source\AlienPong\Core\GameFont\GameFont.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Core\shared.cpp" />
-    <ClCompile Include="..\..\Source\AlienPong\Core\structs\defineStructs.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\animationState.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\core.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\player.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\direction.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\fx.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\gamestate.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\menuState.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\scores.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\gamemode.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\input-is_game_over.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\render-is_game_over.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\sprites-is_game_over.cpp" />
@@ -76,7 +84,7 @@
     <ProjectGuid>{7F5C3AA2-D205-44FE-B63C-F411DEE5C8F7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Pong</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

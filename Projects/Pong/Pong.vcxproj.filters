@@ -263,7 +263,31 @@
     <ClCompile Include="..\..\Source\AlienPong\Core\shared.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\AlienPong\Core\structs\defineStructs.cpp">
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\animationState.cpp">
+      <Filter>Source\Core\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\scores.cpp">
+      <Filter>Source\Core\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\core.cpp">
+      <Filter>Source\Core\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\direction.cpp">
+      <Filter>Source\Core\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\fx.cpp">
+      <Filter>Source\Core\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\gamemode.cpp">
+      <Filter>Source\Core\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\gamestate.cpp">
+      <Filter>Source\Core\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\menuState.cpp">
+      <Filter>Source\Core\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\player.cpp">
       <Filter>Source\Core\structs</Filter>
     </ClCompile>
   </ItemGroup>

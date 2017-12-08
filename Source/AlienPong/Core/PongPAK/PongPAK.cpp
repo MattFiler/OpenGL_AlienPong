@@ -75,9 +75,13 @@ void PongPAK::ClearupFiles()
 {
 	for (int i = 0; i < output_counter; i++)
 	{
+		//Delete file
 		remove(("Resources_Temp\\" + output_array[i]).c_str());
 		cleanup_counter += 1;
 	}
+
+	//Delete directory
+	_rmdir("Resources_Temp");
 }
 
 
@@ -96,4 +100,28 @@ Return cleanup counter when requested
 int PongPAK::getCleanupCounter()
 {
 	return cleanup_counter;
+}
+
+
+/*
+Update the scoreboard
+*/
+void PongPAK::readScoreboard()
+{
+	std::fstream scoreboard_file;
+	scoreboard_file.open("Resources/scoreboard.pongpak");
+	scoreboard_file >> pong_scores.scoreboard_p1 >> pong_scores.scoreboard_p2 >> pong_scores.scoreboard_player >> pong_scores.scoreboard_cpu;
+	scoreboard_file.close();
+}
+
+
+/*
+Save the scoreboard
+*/
+void PongPAK::saveScoreboard()
+{
+	std::fstream scoreboard_file;
+	scoreboard_file.open("Resources/scoreboard.pongpak");
+	scoreboard_file << pong_scores.scoreboard_p1 << std::endl << pong_scores.scoreboard_p2 << std::endl << pong_scores.scoreboard_player << std::endl << pong_scores.scoreboard_cpu;
+	scoreboard_file.close();
 }

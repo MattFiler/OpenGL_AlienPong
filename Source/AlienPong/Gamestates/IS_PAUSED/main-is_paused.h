@@ -16,6 +16,7 @@
 #include "AlienPong/Core/structs.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Core/shared.h"
+#include "AlienPong/Core/PongPAK/PongPAK.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -61,6 +62,9 @@ private:
 
 	//Pong Directions
 	pongDirections pong_directions;
+
+	//PongPAK
+	PongPAK pong_filehandler;
 
 
 	ASGE::Sprite* menu_overlay_paused = nullptr; //in-game PAUSE screen

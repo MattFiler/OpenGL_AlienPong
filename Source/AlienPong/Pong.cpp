@@ -91,6 +91,9 @@ bool Pong::init()
 	//Load Jixellation font to slot 0
 	GameFont::fonts[0] = new GameFont(renderer->loadFont("Resources_Temp\\Jixellation.ttf", 45), "default", 45);
 
+	//Read-in existing scoreboard
+	pong_filehandler.readScoreboard();
+
 	//Load FX Sprites
 	pong_vhs.loadSprites(renderer.get());
 
@@ -181,7 +184,6 @@ void Pong::update(const ASGE::GameTime & us)
 		pong_variables.game_timer += (us.delta_time.count() / 1000.f);
 	}
 	pong_variables.global_game_timer += (us.delta_time.count() / 1000.f);
-
 
 	//Update gamestate-specific elements
 	switch (pong_gamestate.current_gamestate)

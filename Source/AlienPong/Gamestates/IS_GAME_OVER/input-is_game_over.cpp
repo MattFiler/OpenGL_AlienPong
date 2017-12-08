@@ -16,6 +16,9 @@ void gamestateIsGameOver::keyHandler(ASGE::SharedEventData data)
 		//Play SFX
 		PlaySound(TEXT("Resources_Temp\\BEEP_016.wav"), NULL, SND_ASYNC);
 
+		//Update existing scoreboard file
+		pong_filehandler.saveScoreboard();
+
 		//Reset game and return to menu
 		pong_shared.reset();
 	}
