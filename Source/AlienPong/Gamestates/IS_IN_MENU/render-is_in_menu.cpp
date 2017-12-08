@@ -6,9 +6,9 @@ Render everything for gamestate
 void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer)
 {
 	//Handle menu screens
-	if (pongMenuState::menu_tab == menuState::MENU_TAB_2) //Tab 2
+	if (pong_menu_state.menu_tab == menuState::MENU_TAB_2) //Tab 2
 	{
-		if (pongMenuState::menu_page == menuState::MENU_PAGE_1) //Page 1, Tab 2
+		if (pong_menu_state.menu_page == menuState::MENU_PAGE_1) //Page 1, Tab 2
 		{
 			//Render SCOREBOARD
 			renderer->renderSprite(*menu_overlay_scoreboard);
@@ -17,13 +17,13 @@ void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 			//Scoreboard
 			renderer->renderText("Scoreboard", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.6, ASGE::COLOURS::WHITE);
 			renderer->renderText("  Player 1 Rounds Won:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
-			renderer->renderText((std::to_string(pongScores::scoreboard_p1)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
+			renderer->renderText((std::to_string(pong_scores.scoreboard_p1)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.4, ASGE::COLOURS::WHITE);
 			renderer->renderText("  Player 2 Rounds Won:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
-			renderer->renderText((std::to_string(pongScores::scoreboard_p2)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
+			renderer->renderText((std::to_string(pong_scores.scoreboard_p2)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 5, 0.4, ASGE::COLOURS::WHITE);
 			renderer->renderText("  Human (VS CPU) Rounds Won:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
-			renderer->renderText((std::to_string(pongScores::scoreboard_player)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
+			renderer->renderText((std::to_string(pong_scores.scoreboard_player)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 35, 0.4, ASGE::COLOURS::WHITE);
 			renderer->renderText("  CPU Rounds Won:", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 180, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 65, 0.4, ASGE::COLOURS::WHITE);
-			renderer->renderText((std::to_string(pongScores::scoreboard_cpu)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 65, 0.4, ASGE::COLOURS::WHITE);
+			renderer->renderText((std::to_string(pong_scores.scoreboard_cpu)).c_str(), ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) + 220, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 65, 0.4, ASGE::COLOURS::WHITE);
 		}
 		else //Page 2, Tab 2
 		{
@@ -32,16 +32,16 @@ void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 			renderer->setFont(GameFont::fonts[0]->id);
 
 			//Option 1 - VS CPU 
-			renderer->renderText(pongMenuState::menu_option == menuOption::MENU_OPTION_CPU_INFINITE ? "> PLAY VS CPU - Infinite" : "  PLAY VS CPU - Infinite", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.5, ASGE::COLOURS::WHITE);
+			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_INFINITE ? "> PLAY VS CPU - Infinite" : "  PLAY VS CPU - Infinite", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.5, ASGE::COLOURS::WHITE);
 			//Option 2 - VS CPU timed
-			renderer->renderText(pongMenuState::menu_option == menuOption::MENU_OPTION_CPU_TIMED ? "> PLAY VS CPU - Best of 60 seconds" : "  PLAY VS CPU - Best of 60 seconds", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
+			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_TIMED ? "> PLAY VS CPU - Best of 60 seconds" : "  PLAY VS CPU - Best of 60 seconds", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
 			//Option 3 - VS CPU first to 5
-			renderer->renderText(pongMenuState::menu_option == menuOption::MENU_OPTION_CPU_SCORE ? "> PLAY VS CPU - First to 5" : "  PLAY VS CPU - First to 5", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
+			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_SCORE ? "> PLAY VS CPU - First to 5" : "  PLAY VS CPU - First to 5", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
 		}
 	}
 	else //Tab 1
 	{
-		if (pongMenuState::menu_page == menuState::MENU_PAGE_1) //Page 1, Tab 1
+		if (pong_menu_state.menu_page == menuState::MENU_PAGE_1) //Page 1, Tab 1
 		{
 			//Render CONTROLS
 			renderer->renderSprite(*menu_overlay_controls);
@@ -74,11 +74,11 @@ void gamestateIsInMenu::renderState(const ASGE::GameTime & us, ASGE::Renderer* r
 			renderer->setFont(GameFont::fonts[0]->id);
 
 			//Option 1 - freeplay
-			renderer->renderText(pongMenuState::menu_option == menuOption::MENU_OPTION_PVP_INFINITE ? "> PLAY VS PLAYER - Infinite" : "  PLAY VS PLAYER - Infinite", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.5, ASGE::COLOURS::WHITE);
+			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_INFINITE ? "> PLAY VS PLAYER - Infinite" : "  PLAY VS PLAYER - Infinite", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 65, 0.5, ASGE::COLOURS::WHITE);
 			//Option 2 - timed 
-			renderer->renderText(pongMenuState::menu_option == menuOption::MENU_OPTION_PVP_TIMED ? "> PLAY VS PLAYER - Best of 60 seconds" : "  PLAY VS PLAYER - Best of 60 seconds", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
+			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_TIMED ? "> PLAY VS PLAYER - Best of 60 seconds" : "  PLAY VS PLAYER - Best of 60 seconds", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) - 25, 0.5, ASGE::COLOURS::WHITE);
 			//Option 3 - first to 5
-			renderer->renderText(pongMenuState::menu_option == menuOption::MENU_OPTION_PVP_SCORE ? "> PLAY VS PLAYER - First to 5" : "  PLAY VS PLAYER - First to 5", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
+			renderer->renderText(pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_SCORE ? "> PLAY VS PLAYER - First to 5" : "  PLAY VS PLAYER - First to 5", ((int)settings::GAMEWINDOW_MAX_WIDTH / 2) - 190, ((int)settings::GAMEWINDOW_MAX_HEIGHT / 2) + 15, 0.5, ASGE::COLOURS::WHITE);
 		}
 	}
 }

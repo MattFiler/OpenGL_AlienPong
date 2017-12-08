@@ -9,7 +9,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/namespaces.h"
+#include "AlienPong/Core/structs.h"
 
 //Windows-only Resources
 #ifdef _WIN32
@@ -40,6 +40,29 @@ public:
 
 	//Handle winner
 	void handleWin(std::string winner_name);
+
+
+private:
+	//Pong Scores
+	pongScores pong_scores;
+
+	//Pong Gamestate
+	pongGamestate pong_gamestate;
+
+	//Pong Gamemode
+	pongGamemodes pong_gamemode;
+
+	//Pong Menu State
+	pongMenuState pong_menu_state;
+
+	//Pong Variables
+	pongVariables pong_variables;
+
+	//Pong Directions
+	pongDirections pong_directions;
+
+	//Pong Players
+	pongPlayers pong_players;
 };
 
 #endif

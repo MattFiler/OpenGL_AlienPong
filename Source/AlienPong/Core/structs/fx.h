@@ -6,11 +6,11 @@
 /*
 Define our FX data
 */
-namespace pongFX
+struct pongFX
 {
 	//Timers
-	extern float time_started;
-	extern float time_in_seconds;
-}
+	static float time_started;
+	static float time_in_seconds;
+};
 
 #endif

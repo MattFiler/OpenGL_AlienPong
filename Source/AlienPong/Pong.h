@@ -13,7 +13,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/namespaces.h"
+#include "AlienPong/Core/structs.h"
 #include "AlienPong/Core/GameFont/GameFont.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Gamestates/gamestates.h"
@@ -56,6 +56,28 @@ private:
 	gamestateIsPaused pong_gamestate_paused;
 	gamestateIsPlaying pong_gamestate_playing;
 	gamestatePlayerHasWon pong_gamestate_scored;
+
+
+	//Pong Gamestate
+	pongGamestate pong_gamestate;
+
+	//Pong Variables
+	pongVariables pong_variables;
+
+	//Pong Directions
+	pongDirections pong_directions;
+
+	//Pong Scores
+	pongScores pong_scores;
+
+	//Pong Gamemodes
+	pongGamemodes pong_gamemode;
+
+	//Pong Animation State
+	pongAnimationState pong_animation;
+
+	//Pong FX
+	pongFX pong_fx;
 
 
 	//Engine functions

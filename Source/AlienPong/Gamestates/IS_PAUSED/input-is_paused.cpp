@@ -15,8 +15,8 @@ void gamestateIsPaused::keyHandler(ASGE::SharedEventData data)
 		PlaySound(TEXT("Resources_Temp\\BEEP_011.wav"), NULL, SND_ASYNC);
 
 		//Un-pause
-		pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-		pongVariables::freeze_ball = false;
+		pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+		pong_variables.freeze_ball = false;
 	}
 
 	//Return to main menu

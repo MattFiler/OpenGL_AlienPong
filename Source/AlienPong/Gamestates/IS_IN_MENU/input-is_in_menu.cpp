@@ -15,17 +15,17 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 		PlaySound(TEXT("Resources_Temp\\BEEP_018.wav"), NULL, SND_ASYNC);
 
 		//Update display
-		if (pongMenuState::menu_page == menuState::MENU_PAGE_1)
+		if (pong_menu_state.menu_page == menuState::MENU_PAGE_1)
 		{
-			pongMenuState::menu_page = menuState::MENU_PAGE_2;
-			pongMenuState::menu_tab = menuState::MENU_TAB_1;
-			pongMenuState::menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
+			pong_menu_state.menu_page = menuState::MENU_PAGE_2;
+			pong_menu_state.menu_tab = menuState::MENU_TAB_1;
+			pong_menu_state.menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
 		}
 		else
 		{
-			pongMenuState::menu_page = menuState::MENU_PAGE_1;
-			pongMenuState::menu_tab = menuState::MENU_TAB_1;
-			pongMenuState::menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
+			pong_menu_state.menu_page = menuState::MENU_PAGE_1;
+			pong_menu_state.menu_tab = menuState::MENU_TAB_1;
+			pong_menu_state.menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
 		}
 	}
 
@@ -36,27 +36,27 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 		PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_02.wav"), NULL, SND_ASYNC);
 
 		//Update screen vars
-		if (pongMenuState::menu_tab == menuState::MENU_TAB_1)
+		if (pong_menu_state.menu_tab == menuState::MENU_TAB_1)
 		{
-			pongMenuState::menu_tab = menuState::MENU_TAB_2;
-			pongMenuState::menu_option = menuOption::MENU_OPTION_CPU_INFINITE;
+			pong_menu_state.menu_tab = menuState::MENU_TAB_2;
+			pong_menu_state.menu_option = menuOption::MENU_OPTION_CPU_INFINITE;
 		}
 		else
 		{
-			pongMenuState::menu_tab = menuState::MENU_TAB_1;
-			pongMenuState::menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
+			pong_menu_state.menu_tab = menuState::MENU_TAB_1;
+			pong_menu_state.menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
 		}
 	}
 
 	//Swap menu selections within current tab
-	else if (pongMenuState::menu_page == menuState::MENU_PAGE_2 && pongMenuState::menu_tab == menuState::MENU_TAB_1) //Page 2, Tab 1
+	else if (pong_menu_state.menu_page == menuState::MENU_PAGE_2 && pong_menu_state.menu_tab == menuState::MENU_TAB_1) //Page 2, Tab 1
 	{
 		//Go down on press of down
 		if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			if ((int)pongMenuState::menu_option != 10)
+			if ((int)pong_menu_state.menu_option != 10)
 			{
-				pongMenuState::menu_option = static_cast<menuOption>((int)pongMenuState::menu_option + 5);
+				pong_menu_state.menu_option = static_cast<menuOption>((int)pong_menu_state.menu_option + 5);
 				PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 			}
 			else
@@ -67,9 +67,9 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 		//Go up on press of up
 		else if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			if ((int)pongMenuState::menu_option != 0)
+			if ((int)pong_menu_state.menu_option != 0)
 			{
-				pongMenuState::menu_option = static_cast<menuOption>((int)pongMenuState::menu_option - 5);
+				pong_menu_state.menu_option = static_cast<menuOption>((int)pong_menu_state.menu_option - 5);
 				PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 			}
 			else
@@ -78,14 +78,14 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 			}
 		}
 	}
-	else if (pongMenuState::menu_page == menuState::MENU_PAGE_2 && pongMenuState::menu_tab == menuState::MENU_TAB_2) //Page 2, Tab 2
+	else if (pong_menu_state.menu_page == menuState::MENU_PAGE_2 && pong_menu_state.menu_tab == menuState::MENU_TAB_2) //Page 2, Tab 2
 	{
 		//Go down on press of down
 		if (key->key == ASGE::KEYS::KEY_DOWN && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			if ((int)pongMenuState::menu_option != 25)
+			if ((int)pong_menu_state.menu_option != 25)
 			{
-				pongMenuState::menu_option = static_cast<menuOption>((int)pongMenuState::menu_option + 5);
+				pong_menu_state.menu_option = static_cast<menuOption>((int)pong_menu_state.menu_option + 5);
 				PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 			}
 			else
@@ -96,9 +96,9 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 		//Go up on press of up
 		else if (key->key == ASGE::KEYS::KEY_UP && key->action == ASGE::KEYS::KEY_RELEASED)
 		{
-			if ((int)pongMenuState::menu_option != 15)
+			if ((int)pong_menu_state.menu_option != 15)
 			{
-				pongMenuState::menu_option = static_cast<menuOption>((int)pongMenuState::menu_option - 5);
+				pong_menu_state.menu_option = static_cast<menuOption>((int)pong_menu_state.menu_option - 5);
 				PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_04.wav"), NULL, SND_ASYNC);
 			}
 			else
@@ -111,65 +111,65 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 	//Handle menu selections
 	if (key->key == ASGE::KEYS::KEY_ENTER && key->action == ASGE::KEYS::KEY_RELEASED)
 	{
-		if (pongMenuState::menu_page == menuState::MENU_PAGE_2)
+		if (pong_menu_state.menu_page == menuState::MENU_PAGE_2)
 		{
 			//Play SFX
 			PlaySound(TEXT("Resources_Temp\\Interactive_Terminal_Telem_07.wav"), NULL, SND_ASYNC);
 
 			//Reset points & states
-			pongVariables::game_timer = 0;
-			pongScores::p1 = 0;
-			pongScores::p2 = 0;
-			pongVariables::freeze_ball = false;
-			pongVariables::reset_ball = true;
-			pongVariables::reset_paddles = true;
+			pong_variables.game_timer = 0;
+			pong_scores.p1 = 0;
+			pong_scores.p2 = 0;
+			pong_variables.freeze_ball = false;
+			pong_variables.reset_ball = true;
+			pong_variables.reset_paddles = true;
 
 			//Reset angle & direction
-			pongDirections::movement_angle = 0;
-			pongDirections::movement_angle_raw = 0;
-			pongDirections::ball_direction = direction::RIGHT;
+			pong_directions.movement_angle = 0;
+			pong_directions.movement_angle_raw = 0;
+			pong_directions.ball_direction = direction::RIGHT;
 
 			//Selected infinite mode
-			if (pongMenuState::menu_option == menuOption::MENU_OPTION_PVP_INFINITE)
+			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_INFINITE)
 			{
-				pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-				pongGamemodes::current_gamemode = gamemode::GAMEMODE_INFINITE;
-				pongGamemodes::is_against_cpu = false;
+				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+				pong_gamemode.current_gamemode = gamemode::GAMEMODE_INFINITE;
+				pong_gamemode.is_against_cpu = false;
 			}
 			//Selected timed mode
-			if (pongMenuState::menu_option == menuOption::MENU_OPTION_PVP_TIMED)
+			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_TIMED)
 			{
-				pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-				pongGamemodes::current_gamemode = gamemode::GAMEMODE_TIMED;
-				pongGamemodes::is_against_cpu = false;
+				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+				pong_gamemode.current_gamemode = gamemode::GAMEMODE_TIMED;
+				pong_gamemode.is_against_cpu = false;
 			}
 			//Selected score-based mode
-			if (pongMenuState::menu_option == menuOption::MENU_OPTION_PVP_SCORE)
+			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_PVP_SCORE)
 			{
-				pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-				pongGamemodes::current_gamemode = gamemode::GAMEMODE_SCORE;
-				pongGamemodes::is_against_cpu = false;
+				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+				pong_gamemode.current_gamemode = gamemode::GAMEMODE_SCORE;
+				pong_gamemode.is_against_cpu = false;
 			}
 			//Selected VS CPU infinite mode
-			if (pongMenuState::menu_option == menuOption::MENU_OPTION_CPU_INFINITE)
+			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_INFINITE)
 			{
-				pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-				pongGamemodes::current_gamemode = gamemode::GAMEMODE_INFINITE;
-				pongGamemodes::is_against_cpu = true;
+				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+				pong_gamemode.current_gamemode = gamemode::GAMEMODE_INFINITE;
+				pong_gamemode.is_against_cpu = true;
 			}
 			//Selected VS CPU timed mode
-			if (pongMenuState::menu_option == menuOption::MENU_OPTION_CPU_TIMED)
+			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_TIMED)
 			{
-				pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-				pongGamemodes::current_gamemode = gamemode::GAMEMODE_TIMED;
-				pongGamemodes::is_against_cpu = true;
+				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+				pong_gamemode.current_gamemode = gamemode::GAMEMODE_TIMED;
+				pong_gamemode.is_against_cpu = true;
 			}
 			//Selected VS CPU score-based mode
-			if (pongMenuState::menu_option == menuOption::MENU_OPTION_CPU_SCORE)
+			if (pong_menu_state.menu_option == menuOption::MENU_OPTION_CPU_SCORE)
 			{
-				pongGamestate::current_gamestate = gamestate::IS_PLAYING;
-				pongGamemodes::current_gamemode = gamemode::GAMEMODE_SCORE;
-				pongGamemodes::is_against_cpu = true;
+				pong_gamestate.current_gamestate = gamestate::IS_PLAYING;
+				pong_gamemode.current_gamemode = gamemode::GAMEMODE_SCORE;
+				pong_gamemode.is_against_cpu = true;
 			}
 		}
 	}
@@ -178,6 +178,6 @@ void gamestateIsInMenu::keyHandler(ASGE::SharedEventData data)
 	else if (key->key == ASGE::KEYS::KEY_ESCAPE && key->action == ASGE::KEYS::KEY_RELEASED)
 	{
 		//Close game & cleanup
-		pongGamestate::has_requested_shutdown = true;
+		pong_gamestate.has_requested_shutdown = true;
 	}
 }

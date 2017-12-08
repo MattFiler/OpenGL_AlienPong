@@ -13,7 +13,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/namespaces.h"
+#include "AlienPong/Core/structs.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Core/shared.h"
 
@@ -49,6 +49,9 @@ public:
 private:
 	//Shared
 	pongShared pong_shared;
+
+	//Pong Directions
+	pongDirections pong_directions;
 
 
 	ASGE::Sprite* menu_overlay_win_p1 = nullptr; //in-game WIN screen - P1

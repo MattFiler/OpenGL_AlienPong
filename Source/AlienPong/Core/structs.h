@@ -1,0 +1,10 @@
+#pragma once
+#include "structs\direction.h"
+#include "structs\gamemode.h"
+#include "structs\gamestate.h"
+#include "structs\player.h"
+#include "structs\menuState.h"
+#include "structs\animationState.h"
+#include "structs\core.h"
+#include "structs\fx.h"
+#include "structs\scores.h"

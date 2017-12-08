@@ -22,19 +22,19 @@
     <ClInclude Include="..\..\Source\AlienPong\Core\enums\menuState.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\enums\player.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\enums\settings.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\GameFont\GameFont.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\animationState.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\core.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\direction.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\fx.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\gamemode.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\gamestate.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\menuState.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\player.h" />
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\scores.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.h" />
     <ClInclude Include="..\..\Source\AlienPong\Core\shared.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\animationState.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\core.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\direction.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\fx.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\gamemode.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\gamestate.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\menuState.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\player.h" />
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\scores.h" />
     <ClInclude Include="..\..\Source\AlienPong\Gamestates\gamestates.h" />
     <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\main-is_game_over.h" />
     <ClInclude Include="..\..\Source\AlienPong\Gamestates\IS_IN_LOADSCREEN\main-is_in_loadscreen.h" />
@@ -49,6 +49,7 @@
     <ClCompile Include="..\..\Source\AlienPong\Core\GameFont\GameFont.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Core\PongPAK\PongPAK.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Core\shared.cpp" />
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\defineStructs.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\input-is_game_over.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\render-is_game_over.cpp" />
     <ClCompile Include="..\..\Source\AlienPong\Gamestates\IS_GAME_OVER\sprites-is_game_over.cpp" />
@@ -75,7 +76,7 @@
     <ProjectGuid>{7F5C3AA2-D205-44FE-B63C-F411DEE5C8F7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Pong</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

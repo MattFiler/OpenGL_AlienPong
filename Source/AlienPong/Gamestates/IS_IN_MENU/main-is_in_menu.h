@@ -13,7 +13,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/namespaces.h"
+#include "AlienPong/Core/structs.h"
 #include "AlienPong/Core/GameFont/GameFont.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Core/PongPak/PongPak.h"
@@ -48,6 +48,25 @@ public:
 
 
 private:
+	//Pong Variables
+	pongVariables pong_variables;
+
+	//Pong Scores
+	pongScores pong_scores;
+
+	//Pong Directions
+	pongDirections pong_directions;
+
+	//Pong Gamemodes
+	pongGamemodes pong_gamemode;
+
+	//Pong Gamestate
+	pongGamestate pong_gamestate;
+
+	//Pong Menu State
+	pongMenuState pong_menu_state;
+
+
 	ASGE::Sprite* menu_overlay_twoPlayer = nullptr; //Menu TwoPlayer overlay
 	ASGE::Sprite* menu_overlay_onePlayer = nullptr; //Menu OnePlayer overlay
 	ASGE::Sprite* menu_overlay_controls = nullptr; //Menu controls overlay

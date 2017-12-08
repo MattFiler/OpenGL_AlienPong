@@ -129,7 +129,7 @@ void Pong::keyHandler(ASGE::SharedEventData data)
 	auto key = static_cast<const ASGE::KeyEvent*>(data.get());
 
 	//Handle gamestate-specific inputs
-	switch (pongGamestate::current_gamestate)
+	switch (pong_gamestate.current_gamestate)
 	{
 		case gamestate::IS_IN_MENU:
 		{
@@ -166,7 +166,7 @@ Update the scene
 void Pong::update(const ASGE::GameTime & us)
 {
 	//Close game & cleanup (if requested)
-	if (pongGamestate::has_requested_shutdown) {
+	if (pong_gamestate.has_requested_shutdown) {
 		pong_filehandler.ClearupFiles();
 		while (pong_filehandler.getCleanupCounter() != 45)
 		{
@@ -176,15 +176,15 @@ void Pong::update(const ASGE::GameTime & us)
 	}
 
 	//Update timers
-	if (pongGamestate::current_gamestate == gamestate::IS_PLAYING)
+	if (pong_gamestate.current_gamestate == gamestate::IS_PLAYING)
 	{
-		pongVariables::game_timer += (us.delta_time.count() / 1000.f);
+		pong_variables.game_timer += (us.delta_time.count() / 1000.f);
 	}
-	pongVariables::global_game_timer += (us.delta_time.count() / 1000.f);
+	pong_variables.global_game_timer += (us.delta_time.count() / 1000.f);
 
 
 	//Update gamestate-specific elements
-	switch (pongGamestate::current_gamestate)
+	switch (pong_gamestate.current_gamestate)
 	{
 		case gamestate::IS_PLAYING:
 		{
@@ -202,14 +202,14 @@ void Pong::update(const ASGE::GameTime & us)
 	/*
 	Timed game mode scripts
 	*/
-	if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_TIMED)
+	if (pong_gamemode.current_gamemode == gamemode::GAMEMODE_TIMED)
 	{
-		if (pongVariables::game_timer > 60)
+		if (pong_variables.game_timer > 60)
 		{
-			pongDirections::right_paddle_moving = false;
-			pongDirections::left_paddle_moving = false;
-			pongGamestate::current_gamestate = gamestate::IS_GAME_OVER;
-			pongVariables::freeze_ball = true;
+			pong_directions.right_paddle_moving = false;
+			pong_directions.left_paddle_moving = false;
+			pong_gamestate.current_gamestate = gamestate::IS_GAME_OVER;
+			pong_variables.freeze_ball = true;
 		}
 	}
 
@@ -217,14 +217,14 @@ void Pong::update(const ASGE::GameTime & us)
 	/*
 	Score-based game mode scripts
 	*/
-	else if (pongGamemodes::current_gamemode == gamemode::GAMEMODE_SCORE)
+	else if (pong_gamemode.current_gamemode == gamemode::GAMEMODE_SCORE)
 	{
-		if (pongScores::p1 == 5 || pongScores::p2 == 5)
+		if (pong_scores.p1 == 5 || pong_scores.p2 == 5)
 		{
-			pongDirections::right_paddle_moving = false;
-			pongDirections::left_paddle_moving = false;
-			pongGamestate::current_gamestate = gamestate::IS_GAME_OVER;
-			pongVariables::freeze_ball = true;
+			pong_directions.right_paddle_moving = false;
+			pong_directions.left_paddle_moving = false;
+			pong_gamestate.current_gamestate = gamestate::IS_GAME_OVER;
+			pong_variables.freeze_ball = true;
 		}
 	}
 }
@@ -239,11 +239,11 @@ void Pong::render(const ASGE::GameTime & us)
 	pong_vhs.renderFX(renderer.get());
 
 	//Render global background (when not doing VFX)
-	if (pongAnimationState::state != animationState::IS_PERFORMING)
+	if (pong_animation.state != animationState::IS_PERFORMING)
 		renderer->renderSprite(*menu_background);
 
 	//Render gamestate-specific elements
-	switch (pongGamestate::current_gamestate)
+	switch (pong_gamestate.current_gamestate)
 	{
 		case gamestate::IS_IN_LOADSCREEN:
 		{
@@ -281,12 +281,12 @@ void Pong::render(const ASGE::GameTime & us)
 	renderer->renderSprite(*monitor_overlay);
 
 	//Debug output
-	if (pongGamestate::show_debug_text)
+	if (pong_gamestate.show_debug_text)
 	{
 		renderer->setFont(GameFont::fonts[0]->id);
-		renderer->renderText(("Gamestate: " + std::to_string((int)pongGamestate::current_gamestate)).c_str(), 150, 550, 0.5, ASGE::COLOURS::WHITE);
-		renderer->renderText(("Anim Start: " + std::to_string((int)pongFX::time_started)).c_str(), 150, 600, 0.5, ASGE::COLOURS::WHITE);
-		renderer->renderText(("Anim State: " + std::to_string((int)pongAnimationState::state)).c_str(), 150, 650, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("Gamestate: " + std::to_string((int)pong_gamestate.current_gamestate)).c_str(), 150, 550, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("Anim Start: " + std::to_string((int)pong_fx.time_started)).c_str(), 150, 600, 0.5, ASGE::COLOURS::WHITE);
+		renderer->renderText(("Anim State: " + std::to_string((int)pong_animation.state)).c_str(), 150, 650, 0.5, ASGE::COLOURS::WHITE);
 	}
 }
 

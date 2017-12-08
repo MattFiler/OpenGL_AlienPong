@@ -6,28 +6,28 @@
 void pongShared::reset()
 {
 	//Reset points
-	pongScores::p1 = 0;
-	pongScores::p2 = 0;
+	pong_scores.p1 = 0;
+	pong_scores.p2 = 0;
 
 	//Open and reset menu
-	pongGamestate::current_gamestate = gamestate::IS_IN_MENU;
-	pongMenuState::menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
-	pongMenuState::menu_page = menuState::MENU_PAGE_1;
-	pongMenuState::menu_tab = menuState::MENU_TAB_1;
+	pong_gamestate.current_gamestate = gamestate::IS_IN_MENU;
+	pong_menu_state.menu_option = menuOption::MENU_OPTION_PVP_INFINITE;
+	pong_menu_state.menu_page = menuState::MENU_PAGE_1;
+	pong_menu_state.menu_tab = menuState::MENU_TAB_1;
 
 	//Reset gamestates, settings & vars
-	pongGamemodes::current_gamemode = gamemode::NO_GAMEMODE;
-	pongGamemodes::is_against_cpu = false;
-	pongVariables::game_timer = 0;
-	pongVariables::freeze_ball = true;
-	pongVariables::reset_ball = true;
-	pongVariables::reset_paddles = true;
-	pongDirections::left_paddle_moving = false;
-	pongDirections::right_paddle_moving = false;
-	pongDirections::ball_direction = direction::RIGHT;
-	pongVariables::cpu_speed_modifier = 2;
-	pongDirections::movement_angle = 0;
-	pongDirections::movement_angle_raw = 0;
+	pong_gamemode.current_gamemode = gamemode::NO_GAMEMODE;
+	pong_gamemode.is_against_cpu = false;
+	pong_variables.game_timer = 0;
+	pong_variables.freeze_ball = true;
+	pong_variables.reset_ball = true;
+	pong_variables.reset_paddles = true;
+	pong_directions.left_paddle_moving = false;
+	pong_directions.right_paddle_moving = false;
+	pong_directions.ball_direction = direction::RIGHT;
+	pong_variables.cpu_speed_modifier = 2;
+	pong_directions.movement_angle = 0;
+	pong_directions.movement_angle_raw = 0;
 }
 
 
@@ -157,49 +157,49 @@ void pongShared::handleWin(std::string winner_name)
 	if (winner_name == "p1") //Left side wins
 	{
 		//Update points 
-		pongScores::p1 += 1;
-		if (pongGamemodes::is_against_cpu)
+		pong_scores.p1 += 1;
+		if (pong_gamemode.is_against_cpu)
 		{
-			pongPlayers::winner = player::PLAYER_HUMAN; //PLAYER
-			pongScores::scoreboard_player += 1;
+			pong_players.winner = player::PLAYER_HUMAN; //PLAYER
+			pong_scores.scoreboard_player += 1;
 		}
 		else
 		{
-			pongPlayers::winner = player::PLAYER_P1; //P1
-			pongScores::scoreboard_p1 += 1;
+			pong_players.winner = player::PLAYER_P1; //P1
+			pong_scores.scoreboard_p1 += 1;
 		}
 	}
 	else //Right side wins
 	{
 		//Update points 
-		pongScores::p2 += 1;
-		if (pongGamemodes::is_against_cpu)
+		pong_scores.p2 += 1;
+		if (pong_gamemode.is_against_cpu)
 		{
-			pongPlayers::winner = player::PLAYER_CPU; //CPU
-			pongScores::scoreboard_cpu += 1;
+			pong_players.winner = player::PLAYER_CPU; //CPU
+			pong_scores.scoreboard_cpu += 1;
 		}
 		else
 		{
-			pongPlayers::winner = player::PLAYER_P2; //P2
-			pongScores::scoreboard_p2 += 1;
+			pong_players.winner = player::PLAYER_P2; //P2
+			pong_scores.scoreboard_p2 += 1;
 		}
 	}
 
 	//Reset ball & paddle position
-	pongVariables::reset_ball = true;
-	pongVariables::reset_paddles = true;
+	pong_variables.reset_ball = true;
+	pong_variables.reset_paddles = true;
 
 	//Play SFX
 	PlaySound(TEXT("Resources_Temp\\BEEP_009.wav"), NULL, SND_ASYNC);
 
 	//Reset angle
-	pongDirections::movement_angle = 0;
-	pongDirections::movement_angle_raw = 0;
+	pong_directions.movement_angle = 0;
+	pong_directions.movement_angle_raw = 0;
 
 	//Try stop paddle moving ASAP!
-	pongDirections::right_paddle_moving = false;
-	pongDirections::left_paddle_moving = false;
+	pong_directions.right_paddle_moving = false;
+	pong_directions.left_paddle_moving = false;
 
 	//Update gamestate
-	pongGamestate::current_gamestate = gamestate::PLAYER_HAS_WON;
+	pong_gamestate.current_gamestate = gamestate::PLAYER_HAS_WON;
 }

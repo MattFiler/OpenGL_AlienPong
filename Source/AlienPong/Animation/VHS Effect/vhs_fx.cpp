@@ -84,43 +84,43 @@ void pongVHS::loadSprites(ASGE::Renderer* renderer)
 	Render FX if requested (and not already performing)
 */
 void pongVHS::renderFX(ASGE::Renderer* renderer) {
-	if (pongAnimationState::state == animationState::HAS_BEEN_REQUESTED || //Has requested effect?
-		pongAnimationState::state == animationState::IS_PERFORMING //Is performing effect?
+	if (pong_animation.state == animationState::HAS_BEEN_REQUESTED || //Has requested effect?
+		pong_animation.state == animationState::IS_PERFORMING //Is performing effect?
 		)
 	{
-		if (pongAnimationState::state != animationState::HAS_FINISHED)
+		if (pong_animation.state != animationState::HAS_FINISHED)
 		{
-			if (pongAnimationState::state == animationState::HAS_BEEN_REQUESTED)
+			if (pong_animation.state == animationState::HAS_BEEN_REQUESTED)
 			{
-				pongFX::time_started = pongVariables::global_game_timer; //Log start time (if not already performing)
+				pong_fx.time_started = pong_variables.global_game_timer; //Log start time (if not already performing)
 			}
-			pongAnimationState::state = animationState::IS_IDLE;
+			pong_animation.state = animationState::IS_IDLE;
 
 			//Run animation
-			if (pongVariables::global_game_timer - pongFX::time_started < 0.01)
+			if (pong_variables.global_game_timer - pong_fx.time_started < 0.01)
 			{
 				renderer->renderSprite(*menu_background_s00);
-				pongAnimationState::state = animationState::IS_PERFORMING;
+				pong_animation.state = animationState::IS_PERFORMING;
 			}
-			if (pongVariables::global_game_timer - pongFX::time_started < 0.03 && pongVariables::global_game_timer - pongFX::time_started >= 0.01)
+			if (pong_variables.global_game_timer - pong_fx.time_started < 0.03 && pong_variables.global_game_timer - pong_fx.time_started >= 0.01)
 			{
 				renderer->renderSprite(*menu_background_s01);
-				pongAnimationState::state = animationState::IS_PERFORMING;
+				pong_animation.state = animationState::IS_PERFORMING;
 			}
-			if (pongVariables::global_game_timer - pongFX::time_started < 0.04 && pongVariables::global_game_timer - pongFX::time_started >= 0.03)
+			if (pong_variables.global_game_timer - pong_fx.time_started < 0.04 && pong_variables.global_game_timer - pong_fx.time_started >= 0.03)
 			{
 				renderer->renderSprite(*menu_background_s02);
-				pongAnimationState::state = animationState::IS_PERFORMING;
+				pong_animation.state = animationState::IS_PERFORMING;
 			}
-			if (pongVariables::global_game_timer - pongFX::time_started < 0.06 && pongVariables::global_game_timer - pongFX::time_started >= 0.04)
+			if (pong_variables.global_game_timer - pong_fx.time_started < 0.06 && pong_variables.global_game_timer - pong_fx.time_started >= 0.04)
 			{
 				renderer->renderSprite(*menu_background_s03);
-				pongAnimationState::state = animationState::IS_PERFORMING;
+				pong_animation.state = animationState::IS_PERFORMING;
 			}
-			if (pongVariables::global_game_timer - pongFX::time_started < 0.07 && pongVariables::global_game_timer - pongFX::time_started >= 0.06)
+			if (pong_variables.global_game_timer - pong_fx.time_started < 0.07 && pong_variables.global_game_timer - pong_fx.time_started >= 0.06)
 			{
 				renderer->renderSprite(*menu_background_s04);
-				pongAnimationState::state = animationState::HAS_FINISHED;
+				pong_animation.state = animationState::HAS_FINISHED;
 			}
 		}
 	}

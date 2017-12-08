@@ -6,7 +6,7 @@ Render everything for gamestate
 void gamestatePlayerHasWon::renderState(const ASGE::GameTime & us, ASGE::Renderer* renderer)
 {
 	//Render round win screen
-	switch (pongPlayers::winner)
+	switch (pong_players.winner)
 	{
 		case player::PLAYER_P1:
 		{

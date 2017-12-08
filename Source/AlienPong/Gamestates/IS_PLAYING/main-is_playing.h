@@ -13,7 +13,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/namespaces.h"
+#include "AlienPong/Core/structs.h"
 #include "AlienPong/Animation/effects.h"
 #include "AlienPong/Core/GameFont/GameFont.h"
 #include "AlienPong/Core/shared.h"
@@ -53,6 +53,24 @@ public:
 private:
 	//Shared
 	pongShared pong_shared;
+
+	//Pong Directions
+	pongDirections pong_directions;
+
+	//Pong Variables
+	pongVariables pong_variables;
+
+	//Pong Scores
+	pongScores pong_scores;
+
+	//Pong Gamestate
+	pongGamestate pong_gamestate;
+
+	//Pong Gamemodes
+	pongGamemodes pong_gamemode;
+
+	//Pong Animation State
+	pongAnimationState pong_animation;
 
 
 	ASGE::Sprite* paddle1 = nullptr; //Paddle 1

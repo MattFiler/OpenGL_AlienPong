@@ -7,11 +7,11 @@
 /*
 Define our gamestate data
 */
-namespace pongGamestate
+struct pongGamestate
 {
-	extern gamestate current_gamestate;
-	extern bool show_debug_text;
-	extern bool has_requested_shutdown;
-}
+	static gamestate current_gamestate;
+	static bool show_debug_text;
+	static bool has_requested_shutdown;
+};
 
 #endif

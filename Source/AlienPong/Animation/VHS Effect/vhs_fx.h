@@ -6,7 +6,7 @@
 
 //Game definitions
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/namespaces.h"
+#include "AlienPong/Core/structs.h"
 
 #ifndef VHS_FX_H
 #define VHS_FX_H
@@ -22,6 +22,16 @@ public:
 
 
 private:
+	//Pong Variables
+	pongVariables pong_variables;
+
+	//Pong Animation State
+	pongAnimationState pong_animation;
+
+	//Pong FX
+	pongFX pong_fx;
+
+
 	ASGE::Sprite* menu_background_s00 = nullptr; //Menu background s00
 	ASGE::Sprite* menu_background_s01 = nullptr; //Menu background s01
 	ASGE::Sprite* menu_background_s02 = nullptr; //Menu background s02

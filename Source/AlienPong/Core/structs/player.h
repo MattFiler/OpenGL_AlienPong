@@ -7,9 +7,9 @@
 /*
 Define our player data
 */
-namespace pongPlayers
+struct pongPlayers
 {
-	extern player winner;
-}
+	static player winner;
+};
 
 #endif

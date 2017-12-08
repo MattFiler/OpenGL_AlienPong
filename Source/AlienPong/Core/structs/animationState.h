@@ -7,9 +7,9 @@
 /*
 Define our animation data
 */
-namespace pongAnimationState
+struct pongAnimationState
 {
-	extern animationState state;
-}
+	static animationState state;
+};
 
 #endif

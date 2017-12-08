@@ -82,8 +82,11 @@
     <Filter Include="Source\Animation\VHS Effect">
       <UniqueIdentifier>{c662d0e9-3872-434c-8c4c-3a52b3432fab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headers\Core\namespaces">
+    <Filter Include="Headers\Core\structs">
       <UniqueIdentifier>{3c14bbf3-6150-42b2-8c6f-0744c3b6581e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\structs">
+      <UniqueIdentifier>{61c4496e-ef6e-4217-8f20-bd13b26f7949}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,35 +156,35 @@
     <ClInclude Include="..\..\Source\AlienPong\Core\shared.h">
       <Filter>Headers\Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces.h">
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs.h">
       <Filter>Headers\Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\direction.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\gamemode.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\gamemode.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\gamestate.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\gamestate.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\menuState.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\menuState.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\player.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\player.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\scores.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\animationState.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\animationState.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\core.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\core.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\fx.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\direction.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AlienPong\Core\namespaces\scores.h">
-      <Filter>Headers\Core\namespaces</Filter>
+    <ClInclude Include="..\..\Source\AlienPong\Core\structs\fx.h">
+      <Filter>Headers\Core\structs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AlienPong\Core\shared.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AlienPong\Core\structs\defineStructs.cpp">
+      <Filter>Source\Core\structs</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

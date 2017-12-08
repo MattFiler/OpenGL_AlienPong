@@ -7,10 +7,10 @@
 /*
 Define our gamemode data
 */
-namespace pongGamemodes
+struct pongGamemodes
 {
-	extern gamemode current_gamemode;
-	extern bool is_against_cpu;
-}
+	static gamemode current_gamemode;
+	static bool is_against_cpu;
+};
 
 #endif

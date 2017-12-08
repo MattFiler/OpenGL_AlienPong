@@ -13,7 +13,7 @@
 
 //AlienPong Resources
 #include "AlienPong/Core/enums.h"
-#include "AlienPong/Core/namespaces.h"
+#include "AlienPong/Core/structs.h"
 #include "AlienPong/Animation/effects.h"
 
 //Windows-only Resources
@@ -43,6 +43,16 @@ public:
 
 
 private:
+	//Pong Gamestate
+	pongVariables pong_variables;
+
+	//Pong Gamestate
+	pongGamestate pong_gamestate;
+
+	//Pong Animation State
+	pongAnimationState pong_animation;
+
+
 	ASGE::Sprite* menu_overlay_loading = nullptr; //Menu loading overlay
 	ASGE::Sprite* menu_overlay_loading_s0 = nullptr; //Menu loading overlay S0
 	ASGE::Sprite* menu_overlay_loading_s1 = nullptr; //Menu loading overlay S1
