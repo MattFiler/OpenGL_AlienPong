@@ -362,3 +362,7 @@ paket-files/
 !/Libs/**/[Dd]ebug/*.lib
 !/Libs/**/[Rr]elease
 !/Libs/**/[Rr]elease/*.lib
+
+
+#Incorrect build location
+Projects/Pong/Resources_Temp/
